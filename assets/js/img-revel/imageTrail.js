@@ -31,7 +31,7 @@ export class ImageTrail {
     activeImagesCount = 0; // Counter for active images
     isIdle = true; // Flag to check if all images are inactive
     // Mouse distance from the previous trigger, required to show the next image
-    threshold = 80;
+    threshold = 140;
 
     /**
      * Constructor for the ImageTrail class.
@@ -102,8 +102,8 @@ export class ImageTrail {
         let distance = getMouseDistance(mousePos, lastMousePos);
         
         // Smoothly interpolate between cached mouse position and current mouse position for smoother visual effects.
-        cacheMousePos.x = lerp(cacheMousePos.x || mousePos.x, mousePos.x, 0.1);
-        cacheMousePos.y = lerp(cacheMousePos.y || mousePos.y, mousePos.y, 0.1);
+        cacheMousePos.x = lerp(cacheMousePos.x || mousePos.x, mousePos.x, 0.08);
+        cacheMousePos.y = lerp(cacheMousePos.y || mousePos.y, mousePos.y, 0.08);
 
         // If the calculated distance is greater than the defined threshold, show the next image and update lastMousePos.
         if ( distance > this.threshold ) {
@@ -138,6 +138,11 @@ export class ImageTrail {
         // Stop any ongoing GSAP animations on the target image element to prepare for new animations.
         gsap.killTweensOf(img.DOM.el);
 
+        // Determine animation duration based on image position for smoother first transition
+        const isFirstImage = this.imgPosition === 0;
+        const duration = isFirstImage ? 1.5 : 0.8;
+        const ease = isFirstImage ? 'power4.out' : 'power3.out';
+
         // Define GSAP timeline.
         img.timeline = gsap.timeline({
             onStart: () => this.onImageActivated(),
@@ -149,21 +154,24 @@ export class ImageTrail {
             scale: 1,
             zIndex: this.zIndexVal,
             x: cacheMousePos.x - img.rect.width/2 ,
-            y: cacheMousePos.y - img.rect.height/2
+            y: cacheMousePos.y - img.rect.height/2,
+            rotation: isFirstImage ? -10 : 0 // Add slight rotation for first image
         }, {
-            duration: 0.4,
-            ease: 'power1',
+            duration: duration,
+            ease: ease,
             x: mousePos.x - img.rect.width/2,
-            y: mousePos.y - img.rect.height/2
+            y: mousePos.y - img.rect.height/2,
+            rotation: 0 // Rotate to normal
         }, 0)
         // then make it disappear
         .to(img.DOM.el, {
-            duration: 0.4,
-            ease: 'power3',
+            duration: duration,
+            ease: ease,
             opacity: 0,
             scale: 0.2
-        }, 0.4)
+        }, duration)
     }
+
     
     /**
      * onImageActivated function is called when an image's activation (display) animation begins.
