@@ -2953,7 +2953,7 @@ input[type=color] {
 }
 .design-service-accordion .accordion-buttons i {
   font-weight: 400;
-  font-size: 80px;
+  font-size: 60px;
   line-height: 0.87;
   color: #E0EEEE;
   margin-bottom: 0;
@@ -2965,7 +2965,7 @@ input[type=color] {
 }
 @media (max-width: 767px) {
   .design-service-accordion .accordion-buttons i {
-    font-size: 50px;
+    font-size: 40px;
   }
 }
 .design-service-accordion .accordion-buttons:not(.collapsed) img {
@@ -4530,6 +4530,10 @@ body.tp-magic-cursor #magic-cursor {
   background-color: var(--tp-common-black);
 }
 
+html.agntix-dark #ball {
+  background-color: var(--tp-theme-green) !important;
+}
+
 .cursor-bg-red #ball {
   background-color: #FF535B !important;
 }
@@ -4657,6 +4661,11 @@ body.tp-magic-cursor #magic-cursor {
   right: 0;
   z-index: 9;
   width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+.agntix-dark .header-transparent {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .header-fixed {
@@ -4686,7 +4695,7 @@ body.tp-magic-cursor #magic-cursor {
   }
 }
 .tp-header-menu > nav > ul > li > a {
-  padding: 35px 0;
+  padding: 4px 0;
   font-weight: 500;
   font-size: 17px;
   display: inline-block;
@@ -4762,6 +4771,9 @@ body.tp-magic-cursor #magic-cursor {
   .tp-header-2-area {
     margin-top: 20px;
   }
+}
+.tp-header-2-area {
+  padding: 18px 0;
 }
 .tp-header-2-area.header-black-style .tp-header-2-bar {
   background: transparent !important;
@@ -24212,6 +24224,29 @@ html.agntix-dark .header-sticky .theme-switcher-btn {
 @media only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
   .design-testimonial-right .tp-testimonial-ratting-box {
     transform: translateY(0);
+  }
+}
+.design-testimonial-title-box .tp-section-title-dirtyline {
+  font-size: 120px;
+}
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .design-testimonial-title-box .tp-section-title-dirtyline {
+    font-size: 100px;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .design-testimonial-title-box .tp-section-title-dirtyline {
+    font-size: 90px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .design-testimonial-title-box .tp-section-title-dirtyline {
+    font-size: 80px;
+  }
+}
+@media (max-width: 767px) {
+  .design-testimonial-title-box .tp-section-title-dirtyline {
+    font-size: 60px;
   }
 }
 .design-testimonial-slide-wrap.studio-testimonial-color .design-testimonial-author h4 {
@@ -46041,8 +46076,9 @@ p.color-g {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  min-width: 42px;
+  height: 42px;
+  padding: 0 10px;
   border: 1px solid var(--tp-theme-green);
   border-radius: 50%;
   background-color: transparent;

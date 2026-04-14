@@ -247,7 +247,7 @@
 	// 12. Sticky Header Js //
 	$(window).on('scroll', function () {
 		let scroll = $(window).scrollTop();
-		if (scroll < 20) {
+		if (scroll < 100) {
 			$("#header-sticky").removeClass("header-sticky");
 		} else {
 			$("#header-sticky").addClass("header-sticky");
@@ -295,6 +295,8 @@
 	function toggleTheme() {
 		const theme = $("html").hasClass("agntix-dark") ? "light" : "dark";
 		applyTheme(theme);
+		// Scroll to recent work section instantly
+		gsap.to(window, {duration: 0.5, scrollTo: ".design-project-area", ease: "power1.in"});
 	}
 
 	function injectThemeToggleButton() {
@@ -317,7 +319,7 @@
 		if ($("#theme-toggle-sticky").length) return;
 		let $stickyHeader = $("#header-sticky");
 		if (!$stickyHeader.length) return;
-		let $target = $stickyHeader.find(".tp-header-14-bar-wrap, .tp-header-right").first();
+		let $target = $stickyHeader.find(".tp-header-14-bar-wrap, .tp-header-right, .tp-header-2-right").first();
 		if (!$target.length) return;
 		let $wrapper = $("<button id=\"theme-toggle-sticky\" type=\"button\" class=\"theme-switcher-btn\" aria-label=\"Toggle dark mode\" style=\"display: none;\"></button>");
 		let $menuButton = $target.find(".tp-offcanvas-open-btn").first();
