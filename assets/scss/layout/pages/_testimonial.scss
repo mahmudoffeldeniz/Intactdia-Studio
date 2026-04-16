@@ -894,7 +894,11 @@
                 line-height: 55px;
                 text-align: center;
                 border-radius: 50%;
-                border: 1px solid rgba(33, 33, 45, 0.08);
+                border: 1px solid var(--tp-common-black);
+                overflow: hidden;
+                & img {
+                    border-radius: 50%;
+                }
             }
             &-title{
                 font-size: 16px;

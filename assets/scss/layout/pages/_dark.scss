@@ -566,7 +566,8 @@
         color: rgba(255, 255, 255, 0.6);
     }
     & .app-testimonial-item-icon span {
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--tp-common-white);
+        overflow: hidden;
     }
     & .app-faq-wrap .ai-faq-accordion-wrap .accordion {
         background: #1a1b1e;
