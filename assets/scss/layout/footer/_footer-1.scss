@@ -429,14 +429,14 @@
             color: var(--tp-common-cream);
         }
         & .tp-footer-widget-title-sm.pre::before {
-            background-color: var(--tp-common-red);
+            background-color: white !important;
         }
         & .tp-footer-widget-social a {
             color: var(--tp-common-white);
             background-color: rgba($color: #fff, $alpha: 0.06);
             &:hover{
                 color: var(--tp-common-white);
-                background-color: var(--tp-common-red);
+                background-color: white !important;
             }
         }
         & .tp-footer-widget-info a {

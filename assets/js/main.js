@@ -281,7 +281,8 @@
 
 	function applyTheme(theme) {
 		let $html = $("html");
-		if (theme === "dark") {
+		let isDark = theme === "dark";
+		if (isDark) {
 			$html.addClass("agntix-dark");
 			$html.removeClass("agntix-light");
 		} else {
@@ -290,6 +291,10 @@
 		}
 		localStorage.setItem("siteTheme", theme);
 		updateThemeButtonIcon(theme);
+
+		// Show the correct static widget for the current theme
+		$('.clutch-widget-light').toggle(!isDark);
+		$('.clutch-widget-dark').toggle(isDark);
 	}
 
 	function toggleTheme() {

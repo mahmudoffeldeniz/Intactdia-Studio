@@ -382,7 +382,7 @@
         color: var(--tp-text-body);
     }
     & .design-service-accordion .accordion-buttons i {
-        color: var(--tp-common-black-7);
+        color: white !important;
     }
     & .design-service-accordion .accordion-buttons:not(.collapsed) i {
         color: var(--tp-common-black);
