@@ -103,7 +103,7 @@
 	"use strict";
 
 	var windowOn = $(window);
-	
+
 	// 01. PreLoader Js//
 	$(window).on('load', function () {
 		$("#preloader").fadeOut(500);
@@ -111,15 +111,15 @@
 	$(window).on('load', function () {
 		$("#loading").fadeOut(500);
 	});
-  
 
-    // 02. mobile menu Js//
+
+	// 02. mobile menu Js//
 	let tpMenuWrap = $('.tp-mobile-menu-active > ul').clone();
 	let tpSideMenu = $('.tp-offcanvas-menu nav');
 	tpSideMenu.append(tpMenuWrap);
 	if ($(tpSideMenu).find('.submenu, .mega-menu').length != 0) {
-	   $(tpSideMenu).find('.submenu, .mega-menu').parent().append
-	   ('<button class="tp-menu-close"><i class="fa-solid fa-plus"></i></button>');
+		$(tpSideMenu).find('.submenu, .mega-menu').parent().append
+			('<button class="tp-menu-close"><i class="fa-solid fa-plus"></i></button>');
 	}
 	let sideMenuList = $('.tp-offcanvas-menu nav > ul > li button.tp-menu-close, .tp-offcanvas-menu nav > ul li.has-dropdown > a, .tp-offcanvas-menu nav > ul li.has-dropdown > ul > li.menu-item-has-children > a');
 	$(sideMenuList).on('click', function (e) {
@@ -129,8 +129,8 @@
 	});
 
 	// 03. header dropdown static Js//
-	$(function() {
-		$('.tp-header-dropdown nav ul li').each(function() {
+	$(function () {
+		$('.tp-header-dropdown nav ul li').each(function () {
 			if ($(this).find('.mega-menu').length > 0) {
 				$(this).addClass('p-static');
 			}
@@ -209,11 +209,11 @@
 
 	// 10. back-to-top //
 	function back_to_top() {
-		
+
 		let btn = $('#back_to_top');
 		let btn_wrapper = $('.back-to-top-wrapper');
 
-		$(window).on('scroll',function () {
+		$(window).on('scroll', function () {
 			if ($(window).scrollTop() > 300) {
 				btn_wrapper.addClass('back-to-top-btn-show');
 			} else {
@@ -227,7 +227,7 @@
 		});
 	}
 	back_to_top();
-	
+
 
 	// 11. Smooth Scroll Js //
 	function smoothSctoll() {
@@ -259,25 +259,71 @@
 	$(".tp-offcanvas-open-btn").on("click", function () {
 		$(".tp-offcanvas-area, .tp-offcanvas-2-area, .body-overlay").addClass("opened");
 	});
-	
+
 	$(".tp-search-open-btn").on("click", function () {
 		$(".tp-search-area, .body-overlay").addClass("opened");
 	});
-	
+
 	$(".cartmini-open-btn").on("click", function () {
 		$(".cartmini__area").addClass("cartmini-opened");
 		$(".body-overlay").addClass("opened");
 	});
 
-	function updateThemeButtonIcon(theme) {
-		let $btn = $("#theme-toggle, #theme-toggle-sticky");
-		if (!$btn.length) return;
-		if (theme === "dark") {
-			$btn.html('<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 21V23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.22 4.22L5.64 5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18.36 18.36L19.78 19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M1 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 12H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.22 19.78L5.64 18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>');
-		} else {
-			$btn.html('<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79C20.67 12.84 20.33 12.86 20 12.86C15.03 12.86 11 8.83 11 3.86C11 3.53 11.02 3.19 11.07 2.86C7.4 3.98 4.86 7.87 4.86 12.54C4.86 17.82 9.08 22.04 14.36 22.04C18.03 22.04 21.6 19.97 23 16.5C22.46 16.65 21.94 16.77 21.4 16.86C21.19 15.63 20.73 14.51 20.01 13.57C20.25 13.01 20.42 12.4 20.5 11.77C20.7 12.05 20.86 12.42 21 12.79Z" fill="currentColor"/></svg>');
+function updateThemeButtonIcon(theme) {
+    let $btn = $("#theme-toggle, #theme-toggle-sticky");
+    if (!$btn.length) return;
+
+    if (theme === "dark") {
+        // ☀️ SUN (icon for light mode)
+        $btn.html(`
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+		<g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+			<path fill="currentColor" d="M12 6c3.31 0 6 2.69 6 6c0 3.31 -2.69 6 -6 6c-3.31 0 -6 -2.69 -6 -6c0 -3.31 2.69 -6 6 -6Z">
+			<animate fill="freeze" attributeName="d" dur="0.6s"
+				values="M12 26c3.31 0 6 2.69 6 6c0 3.31 -2.69 6 -6 6c-3.31 0 -6 -2.69 -6 -6c0 -3.31 2.69 2.69 6 -6Z;M12 6c3.31 0 6 2.69 6 6c0 3.31 -2.69 6 -6 6c-3.31 0 -6 -2.69 -6 -6c0 -3.31 2.69 -6 6 -6Z"/>
+			</path>
+			<g fill="none">
+			<path d="M12 21v1M21 12h1M12 3v-1M3 12h-1" opacity="0">
+				<animateTransform attributeName="transform" dur="30s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+				<set fill="freeze" attributeName="opacity" begin="0.7s" to="1"/>
+			</path>
+			<path d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5" opacity="0">
+				<animateTransform attributeName="transform" dur="30s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+				<set fill="freeze" attributeName="opacity" begin="0.9s" to="1"/>
+			</path>
+			</g>
+		</g>
+		</svg>
+		`);
+    } 
+		else {
+			$btn.html(`
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+		<g fill="currentColor">
+			
+			<!-- // 🌙 MOON (icon for dark mode) -->
+			<path fill-opacity="0" stroke="currentColor" stroke-dasharray="56"
+			stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+			d="M7 6c0 6.08 4.92 11 11 11c0.53 0 1.05 -0.04 1.56 -0.11c-1.61 2.47 -4.39 4.11 -7.56 4.11c-4.97 0 -9 -4.03 -9 -9c0 -3.17 1.64 -5.95 4.11 -7.56c-0.07 0.51 -0.11 1.03 -0.11 1.56Z">
+			<animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="56;0"/>
+			<animate fill="freeze" attributeName="fill-opacity" begin="0.7s" dur="0.4s" to="1"/>
+			</path>
+
+			<!-- ULDUZ 1 -->
+			<path d="M15.22 6.03l2.53 -1.94l-3.19 -0.09l-1.06 -3l-1.06 3l-3.19 0.09l2.53 1.94l-0.91 3.06l2.63 -1.81l2.63 1.81l-0.91 -3.06Z" opacity="0">
+			<animate fill="freeze" attributeName="opacity" begin="1.2s" dur="0.4s" to="1"/>
+			</path>
+
+			<!-- ULDUZ 2 -->
+			<path d="M19.61 12.25l1.64 -1.25l-2.06 -0.05l-0.69 -1.95l-0.69 1.95l-2.06 0.05l1.64 1.25l-0.59 1.98l1.7 -1.17l1.7 1.17l-0.59 -1.98Z" opacity="0">
+			<animate fill="freeze" attributeName="opacity" begin="1.6s" dur="0.4s" to="1"/>
+			</path>
+
+		</g>
+		</svg>
+		`);
 		}
-	}
+		}
 
 	function applyTheme(theme) {
 		let $html = $("html");
@@ -301,7 +347,7 @@
 		const theme = $("html").hasClass("agntix-dark") ? "light" : "dark";
 		applyTheme(theme);
 		// Scroll to recent work section instantly
-		gsap.to(window, {duration: 0.5, scrollTo: ".design-project-area", ease: "power1.in"});
+		gsap.to(window, { duration: 0.5, scrollTo: ".design-project-area", ease: "power1.in" });
 	}
 
 	function injectThemeToggleButton() {
@@ -377,15 +423,15 @@
 		const hasOffcanvas2 = $('.tp-offcanvas-2-area').length;
 		$('.body-overlay').toggleClass('opened', !hasOffcanvas2);
 	});
-	  
+
 
 	// 16. search border style //
 	if ($('.search-input').length > 0) {
 		const tpInput = document.querySelector('.search-input');
 		const searchWrapper = document.querySelector('.search');
-	
+
 		tpInput.addEventListener('focus', () => {
-		searchWrapper.classList.add('focused');
+			searchWrapper.classList.add('focused');
 		});
 		tpInput.addEventListener('blur', () => {
 			searchWrapper.classList.remove('focused');
@@ -394,7 +440,7 @@
 
 	// 17. scroll wrapper //
 	gsap.registerPlugin(ScrollTrigger, ScrollSmoother, ScrollToPlugin);
-	if($('#smooth-wrapper').length && $('#smooth-content').length){
+	if ($('#smooth-wrapper').length && $('#smooth-content').length) {
 		ScrollSmoother.create({
 			smooth: 1.35,
 			effects: true,
@@ -476,11 +522,11 @@
 
 			// default value
 			let defaultStart = "top 10%";
-			let defaultEnd   = "bottom 99%";
+			let defaultEnd = "bottom 99%";
 
 			// if attribute exists → override
 			let startVal = section.dataset.start || defaultStart;
-			let endVal   = section.dataset.end   || defaultEnd;
+			let endVal = section.dataset.end || defaultEnd;
 
 			tl.to(section, {
 				scrollTrigger: {
@@ -566,7 +612,7 @@
 	pp.add("(min-width: 1200px)", () => {
 		if ($('.tp-funfact-panel-wrap').length) {
 			let sections = gsap.utils.toArray(".tp-funfact-panel");
-				gsap.to(sections, {
+			gsap.to(sections, {
 				xPercent: -100 * (sections.length - 1),
 				ease: "none",
 				scrollTrigger: {
@@ -594,10 +640,10 @@
 					end: "+=100%"
 				}
 			})
-			.to(".tp-video-thumb-wrap", {
-				scale: 3.2,
-				ease: "none"
-			})
+				.to(".tp-video-thumb-wrap", {
+					scale: 3.2,
+					ease: "none"
+				})
 		}
 	});
 
@@ -684,7 +730,7 @@
 					delay: tp_delay_value,
 					x: (tp_fade_direction == "left" ? -tp_fade_offset : (tp_fade_direction == "right" ? tp_fade_offset : 0)),
 					y: (tp_fade_direction == "top" ? -tp_fade_offset : (tp_fade_direction == "bottom" ? tp_fade_offset : 0)),
-			    };
+				};
 			if (tp_onscroll_value == 1) {
 				tp_anim_setting.scrollTrigger = {
 					trigger: item,
@@ -792,7 +838,7 @@
 		})
 	});
 
-	
+
 	// 33. addClass removeClass //
 	$('.des-text-moving-wrap .des-text-moving-top, .des-team-wrap .des-team-item-box').on("mouseenter", function () {
 		$(this).addClass('active').siblings().removeClass('active');
@@ -805,9 +851,9 @@
 	}).on("mouseleave", function () {
 		$(this).siblings().addClass('is-active');
 	});
-	$('.design-award-wrap .design-award-item').on('mouseenter', function(){
+	$('.design-award-wrap .design-award-item').on('mouseenter', function () {
 		$(this).addClass('active').parent().siblings().find('.design-award-item').removeClass('active')
-	}).on('mouseleave', function(){
+	}).on('mouseleave', function () {
 		$(this).addClass('active').parent().siblings().find('.design-award-item').addClass('active')
 	})
 
@@ -830,7 +876,7 @@
 			});
 		}
 	})
-	
+
 	// 35. scroll with moving text //
 	function moving_text() {
 		if ($('.moving-text').length > 0) {
@@ -847,7 +893,7 @@
 			});
 		}
 	}
-	$(window).on('load', function() {
+	$(window).on('load', function () {
 		moving_text();
 	});
 
@@ -905,11 +951,11 @@
 			const rightElements = box.querySelectorAll('.tp-text-right-scroll');
 			const tl = gsap.timeline({
 				scrollTrigger: {
-				trigger: box,
-				start: "top 100%",
-				end: "bottom top",
-				scrub: true,
-				markers: false,
+					trigger: box,
+					start: "top 100%",
+					end: "bottom top",
+					scrub: true,
+					markers: false,
 				}
 			});
 			if (rightElements.length) {
@@ -917,10 +963,10 @@
 			}
 		});
 	});
-	  
-	    
+
+
 	// 38. tp-text-invert //
-	function tp_text_invert(){
+	function tp_text_invert() {
 		const split = new SplitText(".tp_text_invert", { type: "lines" });
 		split.lines.forEach((target) => {
 			gsap.to(target, {
@@ -933,13 +979,13 @@
 					end: "bottom center"
 				}
 			});
-		});	
+		});
 	}
-	
+
 
 
 	// 39. tp-text-invert-2 //
-	function tp_text_invert_2(){
+	function tp_text_invert_2() {
 		const split_2 = new SplitText(".tp_text_invert_2", { type: "lines" });
 		split_2.lines.forEach((target) => {
 			gsap.to(target, {
@@ -952,13 +998,13 @@
 					end: "bottom center"
 				}
 			});
-		});	
+		});
 	}
 
-	
+
 
 	// 40. tp-text-invert-3 //
-	function tp_text_invert_3(){
+	function tp_text_invert_3() {
 		const split_3 = new SplitText(".tp_text_invert_3", { type: "lines" });
 		split_3.lines.forEach((target) => {
 			gsap.to(target, {
@@ -971,10 +1017,10 @@
 					end: "bottom center"
 				}
 			});
-		});	
+		});
 	}
 
-	$(function(){
+	$(function () {
 		tp_text_invert();
 		tp_text_invert_2();
 		tp_text_invert_3();
@@ -1002,7 +1048,7 @@
 			animConfig.scrollTrigger = {
 				trigger: areveal,
 				start: 'top 85%',
-			};   
+			};
 		}
 		areveal.anim = gsap.from(areveal.split.chars, animConfig);
 	});
@@ -1012,7 +1058,7 @@
 	if (document.querySelector('.design-project-item')) {
 		const pw = gsap.matchMedia();
 		pw.add("(min-width: 991px)", () => {
-			gsap.set('.design-project-thumb.item-1', { x: 400, rotate: 10,});
+			gsap.set('.design-project-thumb.item-1', { x: 400, rotate: 10, });
 			gsap.set('.design-project-thumb.item-2', { x: -400, rotate: -10, });
 			document.querySelectorAll('.design-project-item').forEach(item => {
 				let tl = gsap.timeline({
@@ -1024,7 +1070,7 @@
 					}
 				});
 				tl.to(item.querySelector('.design-project-thumb.item-1'), { x: 0, rotate: 0 })
-				.to(item.querySelector('.design-project-thumb.item-2'), { x: 0, rotate: 0 }, 0);
+					.to(item.querySelector('.design-project-thumb.item-2'), { x: 0, rotate: 0 }, 0);
 			});
 		});
 	}
@@ -1045,7 +1091,7 @@
 					}
 				});
 				tl.to(item.querySelector('.design-choose-item-1'), { x: 0, rotate: 0 })
-				.to(item.querySelector('.design-choose-item-2'), { x: 0, rotate: 0 }, 0);
+					.to(item.querySelector('.design-choose-item-2'), { x: 0, rotate: 0 }, 0);
 			});
 		});
 	}
@@ -1066,7 +1112,7 @@
 					}
 				});
 				tl.to(item.querySelector('.design-work-item-1'), { x: -400, rotate: -40 })
-				.to(item.querySelector('.design-work-item-2'), { x: 400, rotate: 40 }, 0);
+					.to(item.querySelector('.design-work-item-2'), { x: 400, rotate: 40 }, 0);
 			});
 		});
 	}
@@ -1075,15 +1121,15 @@
 	const aw = gsap.matchMedia();
 	aw.add("(min-width: 991px)", () => {
 		const awardItems = document.querySelectorAll('.design-award-item');
-		awardItems.forEach(function(div){
-			div.addEventListener('mouseenter', function() {
+		awardItems.forEach(function (div) {
+			div.addEventListener('mouseenter', function () {
 				gsap.to(div, {
 					width: '100%',
 					duration: 2,
 					ease: 'expo.out'
 				});
 			});
-			div.addEventListener('mouseleave', function() {
+			div.addEventListener('mouseleave', function () {
 				gsap.to(div, {
 					width: '70%',
 					duration: 2,
@@ -1098,7 +1144,7 @@
 	perspective_1.add("(min-width: 767px)", () => {
 		function perspective() {
 			if ($('.studio-project-wrap').length) {
-				gsap.set('.studio-project-thumb', { perspective: 60,});
+				gsap.set('.studio-project-thumb', { perspective: 60, });
 				$('.studio-project-thumb img').each(function () {
 					var slide = $(this);
 					gsap.fromTo(this, {
@@ -1201,7 +1247,7 @@
 		tp_tab_bg();
 	}
 
-	
+
 	// 49. move animation //
 	if ($('.ar-scroll-image').length > 0) {
 		gsap.to(".ar-scroll-image", {
@@ -1210,7 +1256,7 @@
 				trigger: ".ar-banner-shape",
 				start: "top bottom",
 				end: "bottom top",
-				scrub: true, 
+				scrub: true,
 			}
 		});
 	}
@@ -1221,7 +1267,7 @@
 	});
 
 	// 51. zoom in //
-	$(".anim-zoomin").each(function() {
+	$(".anim-zoomin").each(function () {
 
 		// Add wrap <div>.
 		$(this).wrap('<div class="anim-zoomin-wrap"></div>');
@@ -1239,31 +1285,31 @@
 				markers: false,
 			}
 		});
-		tp_ZoomIn.from($this, { duration: 2, autoAlpha: 0, scale: 1.2, ease: Power2.easeOut, clearProps:"all" });
+		tp_ZoomIn.from($this, { duration: 2, autoAlpha: 0, scale: 1.2, ease: Power2.easeOut, clearProps: "all" });
 
 	});
 
 
-   // 52. scale animation //
-    const zoom_img = document.querySelectorAll(".tp-scale-img");
-    zoom_img.forEach((section) => {
-        let value1 = section.getAttribute("data-value-1");
-        let value2 = section.getAttribute("data-value-2");
-        if (window.innerWidth < 1200) {
-            value1 = Math.max(.95, value1);
-        }
-        gsap.fromTo(section, {
-            ease: 'sine',
-            scale: value1,
-        }, {
-            scale: value2,
-            scrollTrigger: {
-                trigger: section,
-                scrub: true,
-                toggleActions: 'play none none reverse',
-            }
-        });
-    });
+	// 52. scale animation //
+	const zoom_img = document.querySelectorAll(".tp-scale-img");
+	zoom_img.forEach((section) => {
+		let value1 = section.getAttribute("data-value-1");
+		let value2 = section.getAttribute("data-value-2");
+		if (window.innerWidth < 1200) {
+			value1 = Math.max(.95, value1);
+		}
+		gsap.fromTo(section, {
+			ease: 'sine',
+			scale: value1,
+		}, {
+			scale: value2,
+			scrollTrigger: {
+				trigger: section,
+				scrub: true,
+				toggleActions: 'play none none reverse',
+			}
+		});
+	});
 
 	// 53. tp-text-perspective //
 	gsap.utils.toArray(".tp-text-perspective").forEach(splitTextLine => {
@@ -1327,52 +1373,52 @@
 	});
 
 
-    // 55. eye animation width mouse move //
+	// 55. eye animation width mouse move //
 	document.querySelector('body').addEventListener('mousemove', eyeball);
-    function eyeball() {
-      const eye = document.querySelectorAll('.eye');
-      eye.forEach(function(eye) {
-        let x = (eye.getBoundingClientRect().left) + (eye.clientWidth / 3);
-        
-        let y = (eye.getBoundingClientRect().top) + (eye.clientHeight / 3);
-        
-        let radian = Math.atan2(event.pageX - x, event.pageY - y);
-        let rotation = (radian * (180 / Math.PI) * -1) + 270;
-        eye.style.transform = "rotate("+rotation+"deg)"
-      })
-    }
+	function eyeball() {
+		const eye = document.querySelectorAll('.eye');
+		eye.forEach(function (eye) {
+			let x = (eye.getBoundingClientRect().left) + (eye.clientWidth / 3);
+
+			let y = (eye.getBoundingClientRect().top) + (eye.clientHeight / 3);
+
+			let radian = Math.atan2(event.pageX - x, event.pageY - y);
+			let rotation = (radian * (180 / Math.PI) * -1) + 270;
+			eye.style.transform = "rotate(" + rotation + "deg)"
+		})
+	}
 
 
-   // 56. st-award-wrapper //
+	// 56. st-award-wrapper //
 	$(function () {
 		if ($('.st-award-wrapper').length > 0) {
 			$('.st-award-wrapper .ar-award-item').on("mouseenter", function () {
 				let thumbClass = $(this).attr('rel');
 				$('#st-award-thumb').removeClass().addClass(thumbClass);
 				$(this).addClass('active').siblings().removeClass('active');
-	
+
 				$('.st-award-thumb-shape').removeClass('current');
-	
+
 				let shapeNumber = thumbClass.split('-').pop();
 				$('.st-award-thumb-shape.shape-' + shapeNumber).addClass('current');
 			});
 		}
-	});	
-	
-   // 57. it-faq-accordion //
-	$('.it-faq-accordion, .accordion-items').on("click", function(){
+	});
+
+	// 57. it-faq-accordion //
+	$('.it-faq-accordion, .accordion-items').on("click", function () {
 		$(this).addClass('faq-active').siblings().removeClass('faq-active');
 	});
 
-   // 58. tp-porfolio-10-title-wrap //
-	$('.tp-porfolio-10-title-wrap > ul > li').on('mouseenter', function(){
+	// 58. tp-porfolio-10-title-wrap //
+	$('.tp-porfolio-10-title-wrap > ul > li').on('mouseenter', function () {
 		$(this).siblings().removeClass('active');
 		const rel = $(this).attr('rel');
 		$(this).addClass('active');
 		$('#tp-porfolio-10-bg-box').removeClass().addClass(rel);
 	})
 
-    // 58. tp-project-5-2-area anim //
+	// 58. tp-project-5-2-area anim //
 	if ($('.tp-project-5-2-area').length > 0) {
 		let project_text = gsap.timeline({
 			scrollTrigger: {
@@ -1398,14 +1444,14 @@
 			duration: 2
 		}, "+=2")
 	}
-	
+
 	$('.tp-port-slider-title').on("mouseenter", function () {
 		$('#tp-port-slider-wrap').removeClass().addClass($(this).attr('rel'));
 		$(this).addClass('active').siblings().removeClass('active');
 	});
 
 
-    // 59. shaders slider//
+	// 59. shaders slider//
 	if ($('#port-showcase-slider-main').length > 0) {
 		const showcaseSwiper = new Swiper('#showcase-slider', {
 			loop: true,
@@ -1543,27 +1589,27 @@
 	}
 
 
-   // 60. atropos slider//
+	// 60. atropos slider//
 	class AtroposComponent extends HTMLElement {
 		constructor() {
-		  super();
+			super();
 		}
 		connectedCallback() {
-		  this.atropos = new Atropos({
-			el: this.querySelector('.my-atropos'),
-			onEnter() {},
-			onLeave() {},
-			onRotate(x, y) {}
-		  });
+			this.atropos = new Atropos({
+				el: this.querySelector('.my-atropos'),
+				onEnter() { },
+				onLeave() { },
+				onRotate(x, y) { }
+			});
 		}
 		disconnectedCallback() {
-		  this.atropos.destroy();
+			this.atropos.destroy();
 		}
 	}
 	customElements.define('atropos-component', AtroposComponent);
 
 
-   // 61. tp-gsap-bg //
+	// 61. tp-gsap-bg //
 	if ($('.tp-gsap-bg').length > 0) {
 		gsap.set(".tp-gsap-bg", { scaleX: 1 });
 		let mm = gsap.matchMedia();
@@ -1571,8 +1617,8 @@
 			gsap.to(".tp-gsap-bg", {
 				scrollTrigger: {
 					trigger: ".tp-gsap-bg",
-					scrub: 0.2, 
-					start: "top 90%", 
+					scrub: 0.2,
+					start: "top 90%",
 					end: "bottom 100%",
 				},
 				scaleX: 0.85,
@@ -1599,7 +1645,7 @@
 		});
 	}
 
-   // 62. cta section animation //
+	// 62. cta section animation //
 	if ($('.st-cta-area').length > 0) {
 		gsap.set(".st-cta-bg-circle", { scaleX: 1 });
 		let mm = gsap.matchMedia();
@@ -1607,8 +1653,8 @@
 			gsap.to(".st-cta-bg-circle", {
 				scrollTrigger: {
 					trigger: ".st-cta-area",
-					scrub: 0.2, 
-					start: "top 70%", 
+					scrub: 0.2,
+					start: "top 70%",
 					end: "bottom 100%",
 				},
 				duration: 2,
@@ -1624,8 +1670,8 @@
 	if ($('.tp-hero-img-wrap').length > 0) {
 		let t2 = gsap.timeline({
 			scrollTrigger: {
-			trigger: ".tp-hero-img-wrap",
-			start: "top 100%",
+				trigger: ".tp-hero-img-wrap",
+				start: "top 100%",
 			}
 		})
 		t2.from(".img3", {
@@ -1656,7 +1702,7 @@
 	}
 
 	// 64. Function to hide the parent section //
-	$('.hide-button').on('click', function(){
+	$('.hide-button').on('click', function () {
 		$('.tp-header-10-announcement-area').slideUp(200);
 	});
 
@@ -1699,42 +1745,42 @@
 	// 66. Rendom text genarator in hover //
 	document.querySelectorAll('.codetext').forEach((t) => {
 		const arr1 = t.innerHTML.split('');
-		const arr2 = arr1.map(() => randChar()); 
-	  
+		const arr2 = arr1.map(() => randChar());
+
 		t.onpointerover = () => {
-		  const tl = gsap.timeline();
-		  let step = 0;
-	  
-		  tl.fromTo(
-			t,
-			{ innerHTML: arr2.join('') },
-			{
-			  duration: arr1.length / 20, 
-			  ease: 'power4.in',
-			  delay: 0.1,
-			  onUpdate: () => {
-				const progress = Math.floor(tl.progress() * arr1.length);
-				if (step !== progress) { 
+			const tl = gsap.timeline();
+			let step = 0;
 
-					step = progress;
-					arr1.forEach((_, i) => (arr2[i] = randChar()));
-		
-					let start = arr1.slice(0, progress).join('');
-					let end = arr2.slice(progress).join('');
-		
-					if (t.classList.contains('fromRight')) {
-						start = arr2.slice(0, progress).join('');
-						end = arr1.slice(progress).join('');
-					}
+			tl.fromTo(
+				t,
+				{ innerHTML: arr2.join('') },
+				{
+					duration: arr1.length / 20,
+					ease: 'power4.in',
+					delay: 0.1,
+					onUpdate: () => {
+						const progress = Math.floor(tl.progress() * arr1.length);
+						if (step !== progress) {
 
-					t.innerHTML = start + end; 
+							step = progress;
+							arr1.forEach((_, i) => (arr2[i] = randChar()));
+
+							let start = arr1.slice(0, progress).join('');
+							let end = arr2.slice(progress).join('');
+
+							if (t.classList.contains('fromRight')) {
+								start = arr2.slice(0, progress).join('');
+								end = arr1.slice(progress).join('');
+							}
+
+							t.innerHTML = start + end;
+						}
+					},
 				}
-			  },
-			}
-		  );
+			);
 		};
 	});
-	  
+
 	// 67. lowercase character //
 	function randChar() {
 		const chars = "abcdefghijklmnopqrstuvwxyz";
@@ -1746,8 +1792,8 @@
 	if ($('.cr-hero-bottom-wrap, .cr-footer-bg').length > 0) {
 		let t2 = gsap.timeline({
 			scrollTrigger: {
-			trigger: ".cr-hero-bottom-wrap, .cr-footer-bg",
-			start: "top 110%",
+				trigger: ".cr-hero-bottom-wrap, .cr-footer-bg",
+				start: "top 110%",
 			}
 		})
 		t2.from(".bg-b", {
@@ -1760,7 +1806,7 @@
 			opacity: 0,
 			duration: 1
 		}, "-=0.5")
-		
+
 		t2.from(".bg-r", {
 			x: -100,
 			opacity: 0,
@@ -1772,30 +1818,30 @@
 	// 69. Section to title zoom and item uper //
 	const pm = gsap.matchMedia();
 	pm.add("(min-width: 1200px)", () => {
-	if ($('.st-portfolio-area').length > 0) {
-		let project_text = gsap.timeline({
-			scrollTrigger: {
-				trigger: ".st-portfolio-area",
-				start: 'top 5%',
-				end: "bottom 55%",
-				pin: ".st-portfolio-heading",
-				markers: false,
-				pinSpacing: false,
-				scrub: 1,
-			}
-		})
-		project_text.set(".st-portfolio-title", {
-			scale: .9,
-			duration: 2
-		})
-		project_text.to(".st-portfolio-title", {
-			scale: 1.2,
-			duration: 2
-		})
-		project_text.to(".st-portfolio-title", {
-			scale: 1.2,
-			duration: 2
-		}, "+=2")
+		if ($('.st-portfolio-area').length > 0) {
+			let project_text = gsap.timeline({
+				scrollTrigger: {
+					trigger: ".st-portfolio-area",
+					start: 'top 5%',
+					end: "bottom 55%",
+					pin: ".st-portfolio-heading",
+					markers: false,
+					pinSpacing: false,
+					scrub: 1,
+				}
+			})
+			project_text.set(".st-portfolio-title", {
+				scale: .9,
+				duration: 2
+			})
+			project_text.to(".st-portfolio-title", {
+				scale: 1.2,
+				duration: 2
+			})
+			project_text.to(".st-portfolio-title", {
+				scale: 1.2,
+				duration: 2
+			}, "+=2")
 		}
 	})
 
@@ -1828,8 +1874,8 @@
 			ease: Power2.out
 		});
 	});
-	
-	
+
+
 	// 72. career animation //
 	const cr = gsap.matchMedia();
 	tm.add("(min-width: 1200px)", () => {
@@ -1883,80 +1929,80 @@
 		});
 	})
 
-   // 75. portfolio-slicer animation //
+	// 75. portfolio-slicer animation //
 	if ($('.tp-portfolio-slicer-wrap').length > 0) {
 
-        let pw = gsap.matchMedia();
-        pw.add("(min-width: 1200px)", () => {
-            gsap.set('.tp-portfolio-slicer-wrap .pro-img-1 img', {
-                x: '500',
-            })
-            gsap.set('.tp-portfolio-slicer-wrap .pro-img-2 img', {
-                x: '-500',
-            })
-            let projects = gsap.utils.toArray(".tp-portfolio-slicer-wrap");
-            projects.forEach((item) => {
-                var $this = $(item);
-    
-                gsap.to($this.find('.pro-img-1 img'), {
-                    x: '0',
-                    scrollTrigger: {
-                        trigger: $this,
-                        start: 'top 22%',
-                        end: 'bottom 10%',
-                        scrub: 1,
-                        pin: true,
-                        transformOrigin: "50% 50%"
-                    },
-                })
-    
-                gsap.to($this.find('.pro-img-2 img'), {
-                    x: '0',
-                    scrollTrigger: {
-                        trigger: $this,
-                        start: 'top 22%',
-                        end: 'bottom 10%',
-                        scrub: 1,
-                        pin: false,
-                        transformOrigin: "50% 50%"
-                    },
-                })
-            });
-    
-        });
-    }
+		let pw = gsap.matchMedia();
+		pw.add("(min-width: 1200px)", () => {
+			gsap.set('.tp-portfolio-slicer-wrap .pro-img-1 img', {
+				x: '500',
+			})
+			gsap.set('.tp-portfolio-slicer-wrap .pro-img-2 img', {
+				x: '-500',
+			})
+			let projects = gsap.utils.toArray(".tp-portfolio-slicer-wrap");
+			projects.forEach((item) => {
+				var $this = $(item);
 
-   // 76. perspective-slider animation //
+				gsap.to($this.find('.pro-img-1 img'), {
+					x: '0',
+					scrollTrigger: {
+						trigger: $this,
+						start: 'top 22%',
+						end: 'bottom 10%',
+						scrub: 1,
+						pin: true,
+						transformOrigin: "50% 50%"
+					},
+				})
+
+				gsap.to($this.find('.pro-img-2 img'), {
+					x: '0',
+					scrollTrigger: {
+						trigger: $this,
+						start: 'top 22%',
+						end: 'bottom 10%',
+						scrub: 1,
+						pin: false,
+						transformOrigin: "50% 50%"
+					},
+				})
+			});
+
+		});
+	}
+
+	// 76. perspective-slider animation //
 	function perspective() {
 
-        if ($('.tp-perspective-slider').length) {
+		if ($('.tp-perspective-slider').length) {
 
-            gsap.set('.tp-perspective-slider .tp-perspective-main .tp-perspective-inner', { perspective: 60 });
+			gsap.set('.tp-perspective-slider .tp-perspective-main .tp-perspective-inner', { perspective: 60 });
 
-            $('.tp-perspective-slider .tp-perspective-main .tp-perspective-inner .tp-perspective-image').each(function () {
-                var slide = $(this);
+			$('.tp-perspective-slider .tp-perspective-main .tp-perspective-inner .tp-perspective-image').each(function () {
+				var slide = $(this);
 
-                gsap.fromTo(this, {
-                    rotationX: 1.8,
-                    scaleX: 1,
-                    z: '0vh'
-                }, {
-                    rotationX: -.5,
-                    scaleX: 1,
-                    z: '-2vh',
-                    scrollTrigger: {
-                        trigger: slide,
-                        start: "top+=150px bottom",
-                        end: "bottom top",
-                        immediateRender: false,
-                        scrub: 0.1,
-                    }
-                });
-            });
+				gsap.fromTo(this, {
+					rotationX: 1.8,
+					scaleX: 1,
+					z: '0vh'
+				}, {
+					rotationX: -.5,
+					scaleX: 1,
+					z: '-2vh',
+					scrollTrigger: {
+						trigger: slide,
+						start: "top+=150px bottom",
+						end: "bottom top",
+						immediateRender: false,
+						scrub: 0.1,
+					}
+				});
+			});
 
-        }
-    }
-    perspective()
+		}
+	}
+	perspective()
 
 
 	// 77. showcase-portfolio-panel //
@@ -1989,18 +2035,20 @@
 			gsap.fromTo(
 				box.querySelectorAll('.tp-top-bottom-scroll'),
 				{ yPercent: 20 },
-				{ yPercent: -26, ease: "power1.out", scrollTrigger: {
-					trigger: box,
-					start: "top 100%",
-					end: "bottom top",
-					scrub: true,
-					markers: false,
-				}}
+				{
+					yPercent: -26, ease: "power1.out", scrollTrigger: {
+						trigger: box,
+						start: "top 100%",
+						end: "bottom top",
+						scrub: true,
+						markers: false,
+					}
+				}
 			);
 		});
 	});
-	
-	
+
+
 	// 79. project details anim js //
 	let vs = gsap.matchMedia();
 	vd.add("(min-width: 1200px)", () => {
@@ -2060,16 +2108,16 @@
 		});
 	});
 
-	
+
 	// 82. overlay animation //
 	if ($('.tp-pd-5-hero-black-overlay').length > 0) {
 		gsap.to(".tp-pd-5-hero-black-overlay", {
 			opacity: 0,
 			scrollTrigger: {
-			  trigger: ".tp-pd-5-hero-black-anim",
-			  start: "top -40%",
-			  end: "bottom 100%",
-			  scrub: true,
+				trigger: ".tp-pd-5-hero-black-anim",
+				start: "top -40%",
+				end: "bottom 100%",
+				scrub: true,
 			}
 		});
 	}
@@ -2077,10 +2125,10 @@
 		gsap.to(".tp-pd-5-hero-white-overlay", {
 			opacity: 0,
 			scrollTrigger: {
-			  trigger: ".tp-pd-5-hero-white-anim",
-			  start: "top -5%",
-			  end: "bottom 100%",
-			  scrub: true,
+				trigger: ".tp-pd-5-hero-white-anim",
+				start: "top -5%",
+				end: "bottom 100%",
+				scrub: true,
 			}
 		});
 	}
@@ -2088,72 +2136,72 @@
 	// 83. E-commerce plus minus js //
 	function tp_ecommerce() {
 		$('.tp-cart-minus').on('click', function () {
-		  const $input = $(this).siblings('input');
-		  let count = Number($input.val()) - 1;
-		  $input.val(count < 1 ? 1 : count).change();
+			const $input = $(this).siblings('input');
+			let count = Number($input.val()) - 1;
+			$input.val(count < 1 ? 1 : count).change();
 		});
-	  
+
 		$('.tp-cart-plus').on('click', function () {
-		  const $input = $(this).siblings('input');
-		  $input.val(Number($input.val()) + 1).change();
+			const $input = $(this).siblings('input');
+			$input.val(Number($input.val()) + 1).change();
 		});
-	  
+
 		$('.tp-color-variation-btn').on('click', function () {
-		  $(this).addClass('active').siblings().removeClass('active');
+			$(this).addClass('active').siblings().removeClass('active');
 		});
 
 		//  tpReturnCustomerLoginForm //
 		$('.tp-checkout-login-form-reveal-btn').on('click', function () {
 			$('#tpReturnCustomerLoginForm').slideToggle(400);
-		  });
-		
+		});
+
 		//  Show Coupon Toggle Js //
 		$('.tp-checkout-coupon-form-reveal-btn').on('click', function () {
-		$('#tpCheckoutCouponForm').slideToggle(400);
+			$('#tpCheckoutCouponForm').slideToggle(400);
 		});
-	
+
 		// Create An Account Toggle Js //
 		$('#cbox').on('click', function () {
 			$('#cbox_info').slideToggle(900);
 		});
-	
+
 		// Shipping Box Toggle Js //
 		$('#ship-box').on('click', function () {
 			$('#ship-box-info').slideToggle(1000);
 		});
 	}
 	tp_ecommerce();
-	
+
 	// 84. Tab line change js //
 	if ($('#productTabMarker').length > 0) {
-	function tp_tab_line_2() {
-		const marker = document.querySelector('#productTabMarker');
-		const tabs = document.querySelectorAll('.tp-product-tab button');
-		const activeTab = document.querySelector('.tp-product-tab .nav-link.active');
-	
-		// RTL Support
-		const rtl = localStorage.getItem('tp_dir') === 'rtl';
-		const markerPosition = rtl ? 'right' : 'left';
-	
-		// Move the marker to the clicked tab
-		function moveMarkerTo(elem) {
-		marker.style.left = elem.offsetLeft + 'px';
-		marker.style.width = elem.offsetWidth + 'px';
+		function tp_tab_line_2() {
+			const marker = document.querySelector('#productTabMarker');
+			const tabs = document.querySelectorAll('.tp-product-tab button');
+			const activeTab = document.querySelector('.tp-product-tab .nav-link.active');
+
+			// RTL Support
+			const rtl = localStorage.getItem('tp_dir') === 'rtl';
+			const markerPosition = rtl ? 'right' : 'left';
+
+			// Move the marker to the clicked tab
+			function moveMarkerTo(elem) {
+				marker.style.left = elem.offsetLeft + 'px';
+				marker.style.width = elem.offsetWidth + 'px';
+			}
+
+			// Initial position
+			moveMarkerTo(activeTab);
+			marker.style.display = 'block';
+
+			// Add click events to all tabs
+			tabs.forEach(tab => {
+				tab.addEventListener('click', () => {
+					moveMarkerTo(tab);
+				});
+			});
 		}
-	
-		// Initial position
-		moveMarkerTo(activeTab);
-		marker.style.display = 'block';
-	
-		// Add click events to all tabs
-		tabs.forEach(tab => {
-		tab.addEventListener('click', () => {
-			moveMarkerTo(tab);
-		});
-		});
-	}
-	
-	tp_tab_line_2();
+
+		tp_tab_line_2();
 	}
 
 	// 85. Custom Select Js //
@@ -2170,9 +2218,9 @@
 		});
 		options.addEventListener("click", (event) => {
 			if (event.target.tagName === "LI") {
-			const selectedText = event.target.textContent;
-			selected.firstChild.textContent = selectedText;
-			selected.classList.remove("open");
+				const selectedText = event.target.textContent;
+				selected.firstChild.textContent = selectedText;
+				selected.classList.remove("open");
 			}
 		});
 		document.addEventListener("click", () => {
@@ -2217,11 +2265,11 @@
 
 	// 89. Language toggle js //
 	if ($("#header-lang-toggle").length > 0) {
-		window.addEventListener('click', function(e){
-			if (document.getElementById('header-lang-toggle').contains(e.target)){
+		window.addEventListener('click', function (e) {
+			if (document.getElementById('header-lang-toggle').contains(e.target)) {
 				$(".header-lang-submenu").toggleClass("open");
 			}
-			else{
+			else {
 				$(".header-lang-submenu").removeClass("open");
 			}
 		});
@@ -2229,23 +2277,23 @@
 
 	// 90. popup subscribe js //
 	if ($('.subscribe-popup').length) {
-	const loginPopup = document.querySelector(".subscribe-popup");
-	const close = document.querySelector(".close");
-	window.addEventListener("load", function () {
-		if (!sessionStorage.getItem('subscribePopupClosed')) {
-			showPopup();
-		}
-	});
-	function showPopup() {
-		const timeLimit = 5;
-		let i = 0;
-		const timer = setInterval(function () {
-			i++;
-			if (i === timeLimit) {
-				clearInterval(timer);
-				loginPopup.classList.add("show");
+		const loginPopup = document.querySelector(".subscribe-popup");
+		const close = document.querySelector(".close");
+		window.addEventListener("load", function () {
+			if (!sessionStorage.getItem('subscribePopupClosed')) {
+				showPopup();
 			}
-		}, 500);
+		});
+		function showPopup() {
+			const timeLimit = 5;
+			let i = 0;
+			const timer = setInterval(function () {
+				i++;
+				if (i === timeLimit) {
+					clearInterval(timer);
+					loginPopup.classList.add("show");
+				}
+			}, 500);
 		}
 		close.addEventListener("click", function () {
 			loginPopup.classList.remove("show");
@@ -2255,20 +2303,20 @@
 
 	// 91. brand img animation //
 	if ($('.tp-brand-inner-area').length) {
-	gsap.set(".tp-brand-inner-item img", { scale: 1.3, opacity: 0 });
-	gsap.to(".tp-brand-inner-item img", {
-		scale: 1,
-		opacity: 1,
-		duration: 1.5,
-		ease: "bounce.out",
-		stagger: {
-			each: 0.1
-		},
-		scrollTrigger: {
-			trigger: '.tp-brand-inner-area',
-			start: "top 100%"
-		}
-	})
+		gsap.set(".tp-brand-inner-item img", { scale: 1.3, opacity: 0 });
+		gsap.to(".tp-brand-inner-item img", {
+			scale: 1,
+			opacity: 1,
+			duration: 1.5,
+			ease: "bounce.out",
+			stagger: {
+				each: 0.1
+			},
+			scrollTrigger: {
+				trigger: '.tp-brand-inner-area',
+				start: "top 100%"
+			}
+		})
 	}
 
 	// 92. social section img show //
@@ -2280,15 +2328,15 @@
 
 	gsap.utils.toArray("[data-speed-x]").forEach(el => {
 		const speedX = parseFloat(el.dataset.speedX) || 0;
-		let st; 
+		let st;
 
 		st = ScrollTrigger.create({
 			trigger: el,
 			scrub: true,
 			onUpdate: (self) => {
-			const progress = self.progress;
-			const move = progress * speedX * 300;
-			gsap.to(el, { x: -move, overwrite: true, duration: 0 });
+				const progress = self.progress;
+				const move = progress * speedX * 300;
+				gsap.to(el, { x: -move, overwrite: true, duration: 0 });
 			}
 		});
 	});
@@ -2297,44 +2345,44 @@
 	// card add one by one
 	if ($('.cnt-portfolio-ptb').length) {
 		let mm = gsap.matchMedia();
-	
+
 		mm.add("(min-width: 992px)", () => {
-		// Common ScrollTrigger options
-		const baseOptions = {
-			scrub: 1,
-			start: 'top 0%',
-			end: 'bottom 80%',
-			endTrigger: '.cnt-portfolio-ptb',
-			pinSpacing: false,
-			markers: false,
-		};
-	
-		// For px-step-item
-		document.querySelectorAll('.cnt-portfolio-video-wrapper').forEach((item, i) => {
-			gsap.to(item, {
-			scrollTrigger: {
-				trigger: item,
-				pin: item,
-				...baseOptions,
-			}
+			// Common ScrollTrigger options
+			const baseOptions = {
+				scrub: 1,
+				start: 'top 0%',
+				end: 'bottom 80%',
+				endTrigger: '.cnt-portfolio-ptb',
+				pinSpacing: false,
+				markers: false,
+			};
+
+			// For px-step-item
+			document.querySelectorAll('.cnt-portfolio-video-wrapper').forEach((item, i) => {
+				gsap.to(item, {
+					scrollTrigger: {
+						trigger: item,
+						pin: item,
+						...baseOptions,
+					}
+				});
 			});
-		});
-	
-		// For px-step-card with left/right rotation
-		document.querySelectorAll('.cnt-portfolio-video-card').forEach((card, i) => {
-			let rotateValue = i % 2 === 0 ? -5 : 5;
-	
-			gsap.to(card, {
-			rotate: rotateValue,
-			scrollTrigger: {
-				trigger: card,
-				pin: card,
-				...baseOptions,
-				start: 'top 10%',
-				end: 'bottom 110%'
-			}
+
+			// For px-step-card with left/right rotation
+			document.querySelectorAll('.cnt-portfolio-video-card').forEach((card, i) => {
+				let rotateValue = i % 2 === 0 ? -5 : 5;
+
+				gsap.to(card, {
+					rotate: rotateValue,
+					scrollTrigger: {
+						trigger: card,
+						pin: card,
+						...baseOptions,
+						start: 'top 10%',
+						end: 'bottom 110%'
+					}
+				});
 			});
-		});
 		});
 	}
 

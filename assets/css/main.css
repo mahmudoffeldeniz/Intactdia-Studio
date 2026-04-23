@@ -24542,6 +24542,9 @@ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));  line-height: 0.87;
 }
 .design-testimonial-author .col-4 {
   align-self: flex-start;
+  background-color: #f6f6f9;
+  padding: 2px;
+  border-radius: 10px;
 }
 .design-testimonial-review {
   margin-bottom: 10px;
@@ -46371,10 +46374,9 @@ p.color-g {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 42px;
-  height: 42px;
+  min-width: 44px;
+  height: 44px;
   padding: 0 10px;
-  border: 1px solid var(--tp-theme-green);
   border-radius: 50%;
   background-color: transparent;
   color: var(--tp-theme-green);
@@ -46388,7 +46390,7 @@ p.color-g {
 }
 /* Dark mode - all pages */
 html.agntix-dark .theme-switcher-btn {
-  border-color: #fff;
+  border-color: transparent !important;
   color: #fff;
   background-color: rgba(255, 255, 255, 0.08);
 }
@@ -46401,7 +46403,7 @@ html.agntix-dark .theme-switcher-btn svg {
 
 /* Light mode - default (other pages) */
 html.agntix-light .theme-switcher-btn {
-  border-color: var(--tp-theme-green);
+  border-color: transparent !important;
   color: #000;
 }
 html.agntix-light .theme-switcher-btn svg {
