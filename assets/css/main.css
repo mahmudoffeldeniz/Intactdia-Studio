@@ -4158,7 +4158,7 @@ input[type=color] {
   font-weight: 700;
   line-height: 1;
   letter-spacing: -1.6px;
-  color: var(--tp-common-brown);
+  color: #fff;
   font-family: var(--tp-ff-poppins);
 }
 @media only screen and (min-width: 1200px) and (max-width: 1399px) {
@@ -31919,14 +31919,12 @@ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));  line-height: 0.87;
   left: -3.5%;
   height: 1000px;
   width: 107%;
-  display: inline-block;
-  right: 0;
   margin: 0 auto;
   text-align: center;
-}
-.st-cta-wrapper .tp-section-title-playfair {
-  font-size: 120px;
-  color: var(--tp-common-white);
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top center;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px), only screen and (min-width: 768px) and (max-width: 991px) {
   .st-cta-wrapper .tp-section-title-playfair {
