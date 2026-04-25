@@ -31902,6 +31902,14 @@ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));  line-height: 0.87;
   bottom: 0;
   right: 12%;
 }
+.stop-images .content__img {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.content__img {
+  pointer-events: none !important;
+}
 
 .st-cta-ptb {
   overflow: hidden;
@@ -31916,13 +31924,13 @@ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));  line-height: 0.87;
 .st-cta-bg-circle {
   position: absolute;
   top: 0;
-  left: -3.5%;
+  left: -5%;
   height: 1000px;
-  width: 107%;
-  margin: 0 auto;
+  width: 110%;
+  padding: 0;
   text-align: center;
 
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;
 }

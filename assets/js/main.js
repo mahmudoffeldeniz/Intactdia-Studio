@@ -1,103 +1,26 @@
-/***************************************************
-==================== JS INDEX ======================
-****************************************************
+let count = 0;
+const max = 25;
 
-01. PreLoader Js
-02. mobile menu Js
-03. header dropdown static Js
-04. Common Js
-05. Nice Select Js
-06. Masonary Js
-07. magnificPopup img view
-08. magnificPopup video view
-09. Counter Js
-10. Counter Js
-11. Smooth Scroll Js
-12. Sticky Header Js
-13. Open Handlers
-14. Close Handlers
-15. overlay not working js
-16. search border style
-17. scroll wrapper
-18. webgl images hover animation
-19. service panel animation
-20. panel pin section
-21. stack panel pin section
-22. hero animation
-23. pp-top-wrap
-24. tp-funfact-panel
-25. hover reveal for image
-26. button bounce animation
-27. carachter Animation
-28. fade-class-active
-29. text animation paragraph
-30. text bounce animation
-31. scale animation
-32. portfolio panel
-33. addClass removeClass
-34. ScrollMagic Controller
-35. scroll with moving text
-36. text-scale-anim
-37. tp-text-right-scroll
-38. tp-text-invert
-39. tp-text-invert-2
-40. tp-text-invert-3
-41. Fade Effect With Scroll
-42. project anim
-43. choose anim
-44. work anim
-45. award anim
-46. studio-project animation
-47. team animation
-48. price tab
-49. move animation
-50. Active Class
-51. zoom in
-52. scale animation
-53. tp-text-perspective
-54. tp-text-revel-anim
-55. eye animation width mouse move
-56. st-award-wrapper
-57. it-faq-accordion
-58. tp-porfolio-10-title-wrap
-58. tp-project-5-2-area anim
-59. shaders slider
-60. atropos slider
-61. tp-gsap-bg
-62. cta section animation
-63. img animation slider
-64. Function to hide the parent section
-65. tp-split-text
-66. Rendom text genarator in hover
-67. lowercase character
-68. Hero bg Animation
-69. Section to title zoom and item uper
-70. portfolio bg change
-71. Image Reveal Animation
-72. career animation
-73. service animation
-74. contact-category animation
-75. portfolio-slicer animation
-76. perspective-slider animation
-77. showcase-portfolio-panel
-78. scroll animation
-79. project details anim js
-80. progress anim
-81. portfolio item pin js 
-82. overlay animation
-83. E-commerce plus minus js
-84. Tab line change js
-85. Custom Select Js
-86. product banner js
-87. Password Toggle Js
-89. Language toggle js
-90. popup subscribe js
-91. brand img animation
-92. social section img show
+const images = document.querySelectorAll('.content__img');
 
-/***************************************************
-==================== JS INDEX ======================
-****************************************************/
+images.forEach((img) => {
+
+  const observer = new MutationObserver(() => {
+
+    if (img.style.opacity == "1" && !img.dataset.counted) {
+      img.dataset.counted = "true";
+      count++;
+
+      if (count >= max) {
+        document.body.classList.add('stop-images');
+      }
+    }
+
+  });
+
+  observer.observe(img, { attributes: true, attributeFilter: ['style'] });
+
+});
 
 (function ($) {
 	"use strict";
