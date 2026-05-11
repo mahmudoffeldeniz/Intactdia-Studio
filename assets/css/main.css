@@ -33052,7 +33052,7 @@ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));  line-height: 0.87;
   position: absolute;
   height: 100%;
   width: 800px;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   margin-left: -100px;
 }
