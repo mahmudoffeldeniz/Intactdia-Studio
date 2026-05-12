@@ -22,6 +22,145 @@
     <link rel="stylesheet" href="assets/css/spacing.css">
     <link rel="stylesheet" href="assets/css/atropos.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
+    
+    <!-- CSS for new slider design -->
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+        
+        /* Theme-aware header text */
+        .tp-hero-2-subtitle {
+            color: #000 !important;
+        }
+        
+        .agntix-dark .tp-hero-2-subtitle {
+            color: #fff !important;
+        }
+        
+        .social-media-slider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin-top: 50px !important;
+        }
+        
+        .slider-wrapper {
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            padding: 20px 0;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        .slider-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        
+        .slider-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider-track {
+            display: flex;
+            gap: 30px;
+            padding: 0;
+            width: max-content;
+            align-items: center;
+        }
+        
+        .slider-card {
+            flex-shrink: 0;
+            width: 450px;
+            height: 600px;
+            border-radius: 0px;
+            overflow: hidden;
+            border: none;
+            outline: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .slider-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slider-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease-out;
+            will-change: transform;
+        }
+        
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 20px 40px 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .slider-card:hover .card-overlay {
+            transform: translateY(0);
+        }
+        
+        .card-overlay h3 {
+            color: white;
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 50px !important;
+            text-align: center;
+        }
+        
+     
+        
+        .agntix-dark .card-overlay h3 {
+            color: #fff;
+            font-weight: 800;
+            text-shadow: 1px 1px 2px rgb(0, 0, 0);
+        }
+        
+        /* Scrollbar styling */
+        .slider-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .slider-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .slider-wrapper::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        
+        .slider-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
     <!-- CSS here -->
     <!-- CSS here -->
 
@@ -100,7 +239,7 @@
                                         <path d="M0 6H24V7.5H0V6Z" fill="currentcolor" />
                                     </svg>
                                 </span>
-                            </button>
+                            </button> 
                         </div>
                     </div>
                 </div>
@@ -220,121 +359,120 @@
     <main>
 
         <!-- project slider area start -->
-        <div class="parallax-slider-wrapper">
-            <div class="parallax-sliders">
-                <div class="parallax-slider-inner">
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Morex Kargo</h4>
+        <section class="social-media-slider">
+            <div class="container-fluid">
+                <div class="slider-wrapper">
+                    <div class="slider-container">
+                        <div class="slider-track">
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm1.webp" alt="Morex Kargo">
+                                    <div class="card-overlay">
+                                        <h3>Morex Kargo</h3>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm1.webp"></div>
-                        </a>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm2.webp" alt="TrendX">
+                                    <div class="card-overlay">
+                                        <h3>TrendX</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm3.webp" alt="Assoftware">
+                                    <div class="card-overlay">
+                                        <h3>Assoftware</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm4.webp" alt="Eastern Market">
+                                    <div class="card-overlay">
+                                        <h3>Eastern Market</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm5.webp" alt="Nutriagro">
+                                    <div class="card-overlay">
+                                        <h3>Nutriagro</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm6.webp" alt="Nutriagro">
+                                    <div class="card-overlay">
+                                        <h3>Nutriagro</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm7.webp" alt="Kiko Milano">
+                                    <div class="card-overlay">
+                                        <h3>Kiko Milano</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm8.webp" alt="New Season Styles">
+                                    <div class="card-overlay">
+                                        <h3>New Season Styles</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm9.webp" alt="Wella">
+                                    <div class="card-overlay">
+                                        <h3>Wella</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm10.webp" alt="Red Friday Campaign">
+                                    <div class="card-overlay">
+                                        <h3>Red Friday Campaign</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm11.webp" alt="Fashion Week">
+                                    <div class="card-overlay">
+                                        <h3>Fashion Week</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm12.webp" alt="Kiko Milano">
+                                    <div class="card-overlay">
+                                        <h3>Kiko Milano</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider-card">
+                                <div class="card-image">
+                                    <img src="assets/img/home-01/service/social-media/smm13.webp" alt="Wella">
+                                    <div class="card-overlay">
+                                        <h3>Wella</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>TrendX</h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm2.webp"></div>
-                        </a>
-                    </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Assoftware </h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm3.webp"></div>
-                        </a>
-                    </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Eastern Market</h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm4.webp"></div>
-                        </a>
-                    </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Nutriagro</h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm5.webp"></div>
-                        </a>
-                    </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Nutriagro</h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm6.webp"></div>
-                        </a>
-                    </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Kiko Milano </h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm7.webp"></div>
-                        </a>
-                    </div>
-                    <!-- <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>New Season Styles</h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm8.webp"></div>
-                        </a>
-                    </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Wella</h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm9.webp"></div>
-                        </a>
-                    </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Red Friday Campaign </h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm10.webp"></div>
-                        </a>
-                    </div>
-                   
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Kiko Milano</h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm12.webp"></div>
-                        </a>
-                    </div>
-                    <div class="parallax-item not-hide-cursor" data-cursor="View<br>Demo">
-                        <a class="cursor-hide" href="#">
-                            <div class="parallax-content">
-                                <h4>Wella</h4>
-                            </div>
-                            <div class="parallax-img"
-                                data-src="assets/img/home-01/service/social-media/smm13.webp"></div>
-                        </a>
-                    </div> -->
                 </div>
             </div>
-        </div>
+        </section>
         <!-- project slider area end -->
 
     </main>
@@ -372,6 +510,96 @@
     <script type="module" src="assets/js/skew-slider/index.js"></script>
     <script type="module" src="assets/js/img-revel/index.js"></script>
 
+    <!-- Custom slider functionality -->
+    <script>
+        $(document).ready(function() {
+            // Add cursor functionality to new slider cards
+            $('.slider-card').each(function() {
+                $(this).addClass('not-hide-cursor');
+                $(this).attr('data-cursor', 'View<br>Demo');
+                $(this).find('img').addClass('cursor-hide');
+            });
+            
+            // Initialize horizontal and parallax scroll effect with header protection
+            var scrollTimer;
+            $(window).on('scroll', function() {
+                // Clear previous timer
+                clearTimeout(scrollTimer);
+                
+                // Set new timer to prevent conflicts
+                scrollTimer = setTimeout(function() {
+                    var scrolled = $(window).scrollTop();
+                    var windowHeight = $(window).height();
+                    var documentHeight = $(document).height();
+                    var sliderWidth = $('.slider-track').width();
+                    var containerWidth = $('.slider-container').width();
+                    var maxScroll = sliderWidth - containerWidth;
+                    
+                    // Only apply horizontal slider movement if slider is visible
+                    if (maxScroll > 0 && documentHeight > windowHeight) {
+                        var scrollPercentage = scrolled / (documentHeight - windowHeight);
+                        var horizontalPosition = scrollPercentage * maxScroll;
+                        $('.slider-wrapper').scrollLeft(horizontalPosition);
+                    }
+                    
+                    // Enhanced parallax effect on card images
+                    $('.slider-card').each(function(index) {
+                        var card = $(this);
+                        var cardTop = card.offset().top;
+                        var windowHeight = $(window).height();
+                        var cardCenter = cardTop + (card.height() / 2);
+                        var windowCenter = scrolled + (windowHeight / 2);
+                        var distance = cardCenter - windowCenter;
+                        
+                        // Different movement speeds for different cards
+                        var speed = 0.3 + (index * 0.05);
+                        var yPos = -(distance * speed);
+                        var xPos = -(distance * speed * 0.2); // Slight horizontal movement
+                        var rotation = distance * 0.01; // Subtle rotation
+                        var scale = 1 + (distance * 0.0001); // Slight scale effect
+                        
+                        // Apply combined transformations
+                        card.find('img').css('transform', 
+                            'translateY(' + yPos + 'px) translateX(' + xPos + 'px) rotate(' + rotation + 'deg) scale(' + scale + ')'
+                        );
+                        
+                        // Card container movement (slower than images)
+                        var containerSpeed = 0.1 + (index * 0.02);
+                        var containerYPos = -(distance * containerSpeed);
+                        card.css('transform', 'translateY(' + containerYPos + 'px)');
+                    });
+                    
+                    // Scroll animation for cards
+                    $('.slider-card').each(function(index) {
+                        var cardTop = $(this).offset().top;
+                        var cardBottom = cardTop + $(this).height();
+                        var viewportTop = scrolled;
+                        var viewportBottom = scrolled + windowHeight;
+                        
+                        if (cardBottom > viewportTop && cardTop < viewportBottom) {
+                            $(this).addClass('visible');
+                        }
+                    });
+                }, 50); // Throttle scroll events
+            });
+            
+            // Initial check for visible cards
+            $(window).trigger('scroll');
+            
+            // Add click functionality
+            $('.slider-card').on('click', function() {
+                // Add your click functionality here
+                console.log('Card clicked');
+            });
+            
+            // Mouse wheel horizontal scrolling
+            $('.slider-wrapper').on('wheel', function(e) {
+                e.preventDefault();
+                var delta = e.originalEvent.deltaY;
+                $(this).scrollLeft($(this).scrollLeft() + delta);
+            });
+        });
+    </script>
 
     <!-- JS here -->
     <!-- JS here -->
