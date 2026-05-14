@@ -23,146 +23,7 @@
     <link rel="stylesheet" href="assets/css/atropos.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
     
-    <!-- CSS for new slider design -->
-    <style>
-        body {
-            overflow-x: hidden;
-        }
-        
-        /* Theme-aware header text */
-        .tp-hero-2-subtitle {
-            color: #000 !important;
-        }
-        
-        .agntix-dark .tp-hero-2-subtitle {
-            color: #fff !important;
-        }
-        
-        .social-media-slider {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            margin-top: 50px !important;
-        }
-        
-        .slider-wrapper {
-            width: 100%;
-            overflow-x: scroll;
-            overflow-y: hidden;
-            padding: 20px 0;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
-        }
-        
-        .slider-wrapper::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
-        
-        .slider-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-        
-        .slider-track {
-            display: flex;
-            gap: 30px;
-            padding: 0;
-            width: max-content;
-            align-items: center;
-        }
-        
-        .slider-card {
-            flex-shrink: 0;
-            width: 450px;
-            height: 600px;
-            border-radius: 0px;
-            overflow: hidden;
-            border: none;
-            outline: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .slider-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .slider-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .card-image {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: transform 0.3s ease-out;
-            will-change: transform;
-        }
-        
-        .card-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px 20px 40px 20px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .slider-card:hover .card-overlay {
-            transform: translateY(0);
-        }
-        
-        .card-overlay h3 {
-            color: white;
-            font-size: 38px;
-            font-weight: 800;
-            margin-bottom: 50px !important;
-            text-align: center;
-        }
-        
-     
-        
-        .agntix-dark .card-overlay h3 {
-            color: #fff;
-            font-weight: 800;
-            text-shadow: 1px 1px 2px rgb(0, 0, 0);
-        }
-        
-        /* Scrollbar styling */
-        .slider-wrapper::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .slider-wrapper::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        
-        .slider-wrapper::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-        
-        .slider-wrapper::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-    </style>
-    <!-- CSS here -->
-    <!-- CSS here -->
+   
 
 </head>
 
@@ -512,93 +373,99 @@
 
     <!-- Custom slider functionality -->
     <script>
-        $(document).ready(function() {
-            // Add cursor functionality to new slider cards
-            $('.slider-card').each(function() {
-                $(this).addClass('not-hide-cursor');
-                $(this).attr('data-cursor', 'View<br>Demo');
-                $(this).find('img').addClass('cursor-hide');
-            });
-            
-            // Initialize horizontal and parallax scroll effect with header protection
-            var scrollTimer;
-            $(window).on('scroll', function() {
-                // Clear previous timer
-                clearTimeout(scrollTimer);
-                
-                // Set new timer to prevent conflicts
-                scrollTimer = setTimeout(function() {
-                    var scrolled = $(window).scrollTop();
-                    var windowHeight = $(window).height();
-                    var documentHeight = $(document).height();
-                    var sliderWidth = $('.slider-track').width();
-                    var containerWidth = $('.slider-container').width();
-                    var maxScroll = sliderWidth - containerWidth;
-                    
-                    // Only apply horizontal slider movement if slider is visible
-                    if (maxScroll > 0 && documentHeight > windowHeight) {
-                        var scrollPercentage = scrolled / (documentHeight - windowHeight);
-                        var horizontalPosition = scrollPercentage * maxScroll;
-                        $('.slider-wrapper').scrollLeft(horizontalPosition);
-                    }
-                    
-                    // Enhanced parallax effect on card images
-                    $('.slider-card').each(function(index) {
-                        var card = $(this);
-                        var cardTop = card.offset().top;
-                        var windowHeight = $(window).height();
-                        var cardCenter = cardTop + (card.height() / 2);
-                        var windowCenter = scrolled + (windowHeight / 2);
-                        var distance = cardCenter - windowCenter;
-                        
-                        // Different movement speeds for different cards
-                        var speed = 0.3 + (index * 0.05);
-                        var yPos = -(distance * speed);
-                        var xPos = -(distance * speed * 0.2); // Slight horizontal movement
-                        var rotation = distance * 0.01; // Subtle rotation
-                        var scale = 1 + (distance * 0.0001); // Slight scale effect
-                        
-                        // Apply combined transformations
-                        card.find('img').css('transform', 
-                            'translateY(' + yPos + 'px) translateX(' + xPos + 'px) rotate(' + rotation + 'deg) scale(' + scale + ')'
-                        );
-                        
-                        // Card container movement (slower than images)
-                        var containerSpeed = 0.1 + (index * 0.02);
-                        var containerYPos = -(distance * containerSpeed);
-                        card.css('transform', 'translateY(' + containerYPos + 'px)');
-                    });
-                    
-                    // Scroll animation for cards
-                    $('.slider-card').each(function(index) {
-                        var cardTop = $(this).offset().top;
-                        var cardBottom = cardTop + $(this).height();
-                        var viewportTop = scrolled;
-                        var viewportBottom = scrolled + windowHeight;
-                        
-                        if (cardBottom > viewportTop && cardTop < viewportBottom) {
-                            $(this).addClass('visible');
-                        }
-                    });
-                }, 50); // Throttle scroll events
-            });
-            
-            // Initial check for visible cards
-            $(window).trigger('scroll');
-            
-            // Add click functionality
-            $('.slider-card').on('click', function() {
-                // Add your click functionality here
-                console.log('Card clicked');
-            });
-            
-            // Mouse wheel horizontal scrolling
-            $('.slider-wrapper').on('wheel', function(e) {
-                e.preventDefault();
-                var delta = e.originalEvent.deltaY;
-                $(this).scrollLeft($(this).scrollLeft() + delta);
-            });
+       $(document).ready(function () {
+    // Kart cursor atributları
+    $('.slider-card').each(function () {
+        $(this).addClass('not-hide-cursor');
+        $(this).attr('data-cursor', 'View<br>Demo');
+        $(this).find('img').addClass('cursor-hide');
+    });
+
+    var targetX = 0;
+    var currentX = 0;
+    var rafId = null;
+    var ease = 0.08; // nə qədər kiçik olsa, o qədər yumşaq (0.04–0.12)
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function animateSlider() {
+        currentX = lerp(currentX, targetX, ease);
+        // 0.5px-dən az fərq varsa dayan
+        if (Math.abs(currentX - targetX) < 0.5) {
+            currentX = targetX;
+            rafId = null;
+        } else {
+            rafId = requestAnimationFrame(animateSlider);
+        }
+        $('.slider-track').css('transform', 'translateX(-' + currentX + 'px)');
+    }
+
+    function scheduleAnimation() {
+        if (!rafId) rafId = requestAnimationFrame(animateSlider);
+    }
+
+   function calcTarget() {
+    var scrolled = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var documentHeight = $(document).height();
+    var trackWidth = $('.slider-track').outerWidth(true);
+    var containerWidth = window.innerWidth;   // $('.slider-wrapper').width() əvəzinə
+    var maxScroll = Math.max(0, trackWidth - containerWidth);
+
+    if (maxScroll > 0 && documentHeight > windowHeight) {
+        var pct = scrolled / (documentHeight - windowHeight);
+        targetX = pct * maxScroll;
+        scheduleAnimation();
+    }
+}
+
+    function updateParallax() {
+        var scrolled = $(window).scrollTop();
+        var windowHeight = $(window).height();
+        $('.slider-card').each(function (i) {
+            var card = $(this);
+            var cardCenter = card.offset().top + card.height() / 2;
+            var winCenter = scrolled + windowHeight / 2;
+            var dist = cardCenter - winCenter;
+            var yPos = -(dist * 0.03);
+            card.find('img').css('transform', 'translateY(' + yPos + 'px)');
         });
+    }
+
+    function checkVisible() {
+        var scrolled = $(window).scrollTop();
+        var windowHeight = $(window).height();
+        $('.slider-card').each(function () {
+            var top = $(this).offset().top;
+            if (top < scrolled + windowHeight + 60) {
+                $(this).addClass('visible');
+            }
+        });
+    }
+
+    $('.slider-card').each(function (i) {
+        $(this).css('transition-delay', (i * 0.06) + 's');
+    });
+
+    var scrollTimer;
+    $(window).on('scroll', function () {
+        calcTarget();
+        updateParallax();
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(checkVisible, 30);
+    });
+
+    // İlk yükləmə
+    checkVisible();
+    calcTarget();
+
+    // Wheel → hem horizontal hem vertical scroll
+    $('.slider-wrapper').on('wheel', function (e) {
+        e.preventDefault();
+        var delta = e.originalEvent.deltaY;
+        $(window).scrollTop($(window).scrollTop() + delta);
+    });
+});
     </script>
 
     <!-- JS here -->
