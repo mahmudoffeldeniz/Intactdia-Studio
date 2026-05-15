@@ -22,6 +22,129 @@ images.forEach((img) => {
 
 });
 
+  if (typeof Swiper !== 'undefined') {
+            var heroSwiper = new Swiper('.hero-meta-slider', {
+                loop: true,
+                effect: 'fade',
+                fadeEffect: {
+                    crossFade: true,
+                },
+                speed: 1100,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+                navigation: {
+                    nextEl: '.hero-meta-slider .swiper-button-next',
+                    prevEl: '.hero-meta-slider .swiper-button-prev',
+                },
+                slidesPerView: 1,
+                allowTouchMove: true,
+            });
+
+            $('.hero-meta-content').on('mouseenter', function () {
+                heroSwiper.autoplay.stop();
+            });
+            $('.hero-meta-content').on('mouseleave', function () {
+                heroSwiper.autoplay.start();
+            });
+        }
+
+
+
+		  $(document).ready(function () {
+    $('.slider-card').each(function () {
+        $(this).addClass('not-hide-cursor');
+        $(this).attr('data-cursor', 'View<br>Demo');
+        $(this).find('img').addClass('cursor-hide');
+    });
+
+    var targetX = 0;
+    var currentX = 0;
+    var rafId = null;
+    var ease = 0.08; 
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function animateSlider() {
+        currentX = lerp(currentX, targetX, ease);
+        // 0.5px-dən az fərq varsa dayan
+        if (Math.abs(currentX - targetX) < 0.5) {
+            currentX = targetX;
+            rafId = null;
+        } else {
+            rafId = requestAnimationFrame(animateSlider);
+        }
+        $('.slider-track').css('transform', 'translateX(-' + currentX + 'px)');
+    }
+
+    function scheduleAnimation() {
+        if (!rafId) rafId = requestAnimationFrame(animateSlider);
+    }
+
+   function calcTarget() {
+    var scrolled = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var documentHeight = $(document).height();
+    var trackWidth = $('.slider-track').outerWidth(true);
+    var containerWidth = window.innerWidth;   // $('.slider-wrapper').width() əvəzinə
+    var maxScroll = Math.max(0, trackWidth - containerWidth);
+
+    if (maxScroll > 0 && documentHeight > windowHeight) {
+        var pct = scrolled / (documentHeight - windowHeight);
+        targetX = pct * maxScroll;
+        scheduleAnimation();
+    }
+}
+
+    function updateParallax() {
+        var scrolled = $(window).scrollTop();
+        var windowHeight = $(window).height();
+        $('.slider-card').each(function (i) {
+            var card = $(this);
+            var cardCenter = card.offset().top + card.height() / 2;
+            var winCenter = scrolled + windowHeight / 2;
+            var dist = cardCenter - winCenter;
+            var yPos = -(dist * 0.03);
+            card.find('img').css('transform', 'translateY(' + yPos + 'px)');
+        });
+    }
+
+    function checkVisible() {
+        var scrolled = $(window).scrollTop();
+        var windowHeight = $(window).height();
+        $('.slider-card').each(function () {
+            var top = $(this).offset().top;
+            if (top < scrolled + windowHeight + 60) {
+                $(this).addClass('visible');
+            }
+        });
+    }
+
+    $('.slider-card').each(function (i) {
+        $(this).css('transition-delay', (i * 0.06) + 's');
+    });
+
+    var scrollTimer;
+    $(window).on('scroll', function () {
+        calcTarget();
+        updateParallax();
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(checkVisible, 30);
+    });
+
+    checkVisible();
+    calcTarget();
+
+    // Wheel → hem horizontal hem vertical scroll
+    $('.slider-wrapper').on('wheel', function (e) {
+        e.preventDefault();
+        var delta = e.originalEvent.deltaY;
+        $(window).scrollTop($(window).scrollTop() + delta);
+    });
+});
+
 (function ($) {
 	"use strict";
 
