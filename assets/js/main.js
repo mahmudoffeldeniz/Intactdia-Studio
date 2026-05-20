@@ -30,24 +30,12 @@ images.forEach((img) => {
                     crossFade: true,
                 },
                 speed: 1100,
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true,
-                },
                 navigation: {
                     nextEl: '.hero-meta-slider .swiper-button-next',
                     prevEl: '.hero-meta-slider .swiper-button-prev',
                 },
                 slidesPerView: 1,
                 allowTouchMove: true,
-            });
-
-            $('.hero-meta-content').on('mouseenter', function () {
-                heroSwiper.autoplay.stop();
-            });
-            $('.hero-meta-content').on('mouseleave', function () {
-                heroSwiper.autoplay.start();
             });
         }
 

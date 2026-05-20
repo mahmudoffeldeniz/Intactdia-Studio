@@ -9660,7 +9660,7 @@ html.agntix-dark .header-sticky .theme-switcher-btn {
   display: inline-block;
 }
 .tp-copyright-right .copyright-terms {
-  margin-right: 100px;
+  margin-right: 20px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
   .tp-copyright-right {
@@ -9683,6 +9683,27 @@ html.agntix-dark .header-sticky .theme-switcher-btn {
 @media (max-width: 767px) {
   .tp-copyright-right {
     padding-right: 0;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .tp-copyright-right a {
+    white-space: normal;
+  }
+  .tp-copyright-area .row > .col-md-6 {
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    text-align: center !important;
+  }
+  .tp-copyright-area .tp-copyright-content {
+    margin-bottom: 8px !important;
+  }
+  .tp-copyright-area .row.justify-content-between.align-items-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 .tp-copyright-right a {
@@ -9696,7 +9717,7 @@ html.agntix-dark .header-sticky .theme-switcher-btn {
   color: var(--tp-common-red-3);
 }
 .tp-copyright-right a:not(:first-child) {
-  margin-left: 120px;
+  margin-left: 20px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .tp-copyright-right a:not(:first-child) {
@@ -21781,6 +21802,9 @@ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));  line-height: 0.87;
   background-clip: text;
   color: transparent;
 }
+
+
+
 
 .tp_text_invert_3 > div {
   background-image: linear-gradient(to right, #f9f4e8 50%, #383C3E 50%);
