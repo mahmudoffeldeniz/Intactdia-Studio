@@ -483,40 +483,111 @@ function updateThemeButtonIcon(theme) {
 		})
 	}
 
-	// 18. webgl images hover animation //
-	if ($('.tp--hover-item').length) {
-		let hoverAnimation__do = function (t, n) {
-			let a = new hoverEffect({
-				parent: t.get(0),
-				intensity: t.data("intensity") || void 0,
-				speedIn: t.data("speedin") || void 0,
-				speedOut: t.data("speedout") || void 0,
-				easing: t.data("easing") || void 0,
-				hover: t.data("hover") || void 0,
-				image1: n.eq(0).attr("src"),
-				image2: n.eq(0).attr("src"),
-				displacementImage: t.data("displacement"),
-				imagesRatio: n[0].height / n[0].width,
-				hover: !1
-			});
-			t.closest(".tp--hover-item").on("mouseenter", function () {
-				a.next()
-			}).on("mouseleave", function () {
-				a.previous()
-			})
-		}
-		let hoverAnimation = function () {
-			$(".tp--hover-img").each(function () {
-				let n = $(this);
-				let e = n.find("img");
-				let i = e.eq(0);
-				i[0].complete ? hoverAnimation__do(n, e) : i.on("load", function () {
-					hoverAnimation__do(n, e)
-				})
-			})
-		}
-		hoverAnimation();
-	}
+// 18. webgl images hover animation //
+if ($('.tp--hover-item').length) {
+
+    $('.tp--hover-img').each(function () {
+
+        const hoverBox = $(this);
+        const img = hoverBox.find('img');
+        const parent = hoverBox.closest('.tp--hover-item');
+
+        let effect = null;
+        let loading = false;
+        let active = false;
+
+        function createEffect() {
+
+            if (effect || loading) {
+                return;
+            }
+
+            loading = true;
+
+            const startEffect = function () {
+
+                // Əgər mouse artıq card-dan çıxıbsa,
+                // effect yaratmağa ehtiyac yoxdur.
+                if (!active) {
+                    loading = false;
+                    return;
+                }
+
+                effect = new hoverEffect({
+                    parent: hoverBox.get(0),
+
+                    intensity:
+                        hoverBox.data("intensity") || undefined,
+
+                    speedIn:
+                        hoverBox.data("speedin") || undefined,
+
+                    speedOut:
+                        hoverBox.data("speedout") || undefined,
+
+                    easing:
+                        hoverBox.data("easing") || undefined,
+
+                    image1:
+                        img.eq(0).attr("src"),
+
+                    image2:
+                        img.eq(0).attr("src"),
+
+                    displacementImage:
+                        hoverBox.data("displacement"),
+
+                    imagesRatio:
+                        img[0].height /
+                        img[0].width,
+
+                    hover: true
+                });
+
+                loading = false;
+
+                effect.next();
+            };
+
+
+            if (img[0].complete) {
+                startEffect();
+            } else {
+
+                img.one("load", function () {
+                    startEffect();
+                });
+
+            }
+        }
+
+
+        parent.on("mouseenter", function () {
+
+            active = true;
+
+            createEffect();
+
+            if (effect) {
+                effect.next();
+            }
+
+        });
+
+
+        parent.on("mouseleave", function () {
+
+            active = false;
+
+            if (effect) {
+                effect.previous();
+            }
+
+        });
+
+    });
+
+}
 
 
 	// 19 .service panel animation //

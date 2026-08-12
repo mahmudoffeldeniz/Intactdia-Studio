@@ -35698,11 +35698,27 @@ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));  line-height: 0.87;
   overflow: hidden;
   margin-bottom: 26px;
   border-radius: 20px;
+  width: 100%;
+  height: 510px;
+  max-width: 680px;
+}
+.tp-portfolio-inner-thumb a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.tp-portfolio-inner-thumb .tp--hover-img,
+.tp-portfolio-inner-thumb .tp--hover-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .tp-portfolio-inner-thumb img {
   width: 100%;
   transition: 0.9s;
   border-radius: 20px;
+  height: 100%;
+  object-fit: cover;
 }
 .tp-portfolio-inner-content span {
   font-size: 16px;
@@ -48884,14 +48900,15 @@ body { overflow-x: hidden; }
 }
 
 .slider-wrapper {
-    width: 100vw;           
+    width: 100vw;
     overflow: hidden;
     padding: 20px 0;
     position: fixed;
     top: 50%;
-    left: 0;                
-    transform: translateY(-50%);   
+    left: 0;
+    transform: translateY(-50%);
     z-index: 5;
+}
 
 .slider-container {
     width: 100%;
@@ -48912,8 +48929,12 @@ body { overflow-x: hidden; }
 
 .slider-card {
     flex-shrink: 0;
-    width: 450px;
+    width: 500px;
     height: 600px;
+    min-width: 500px;
+    min-height: 600px;
+    max-width: 500px;
+    max-height: 600px;
     border-radius: 0px;
     overflow: hidden;
     border: none;
@@ -48932,19 +48953,21 @@ body { overflow-x: hidden; }
     transform: translateY(0);
 }
 
-
-
 .card-image {
     width: 100%;
     height: 100%;
     position: relative;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
-    object-fit: contain !important;
+    object-fit: cover !important;
+    display: block;
     will-change: transform;
     /* Parallax üçün yumşaq keçiş */
     transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -48956,6 +48979,7 @@ body { overflow-x: hidden; }
     left: 0;
     right: 0;
     padding: 20px 20px 40px 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.7) 100%);
     transform: translateY(100%);
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
