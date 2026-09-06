@@ -2932,6 +2932,14 @@ input[type=color] {
   width: 100%;
   height: 100%;
   position: relative;
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+.design-service-accordion .accordion-items {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.design-service-accordion .accordion-items:hover,
+.design-service-accordion .accordion-items.active {
+  transform: translateY(-3px);
 }
 .design-service-accordion .accordion-buttons img {
   transition: 0.3s;
@@ -33454,6 +33462,18 @@ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));  line-height: 0.87;
   left: 50%;
   transform: translateX(-50%);
 }
+
+.branding-slider-title {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  z-index: 6;
+  margin: 0;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+
 @media (max-width: 767px) {
   .coverflow-slider-text-wrap {
     bottom: 40px;
@@ -48909,6 +48929,17 @@ body { overflow-x: hidden; }
     transform: translateY(-50%);
     z-index: 5;
 }
+
+  .social-media-title {
+    position: fixed;
+    top: calc(50% + 330px);
+    left: 50%;
+    z-index: 6;
+    margin: 0;
+    transform: translateX(-50%);
+    text-align: center;
+    white-space: nowrap;
+  }
 
 .slider-container {
     width: 100%;

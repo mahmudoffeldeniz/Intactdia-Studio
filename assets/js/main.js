@@ -39,6 +39,74 @@ images.forEach((img) => {
             });
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const serviceAccordion = document.querySelector('.design-service-accordion');
+            if (!serviceAccordion) return;
+
+            const items = serviceAccordion.querySelectorAll('.accordion-items');
+            const panels = serviceAccordion.querySelectorAll('.accordion-collapse');
+            const buttons = serviceAccordion.querySelectorAll('.accordion-buttons');
+
+            function openServiceItem(item) {
+                if (!item) return;
+
+                const panel = item.querySelector('.accordion-collapse');
+                const button = item.querySelector('.accordion-buttons');
+                if (!panel || !button) return;
+
+                items.forEach((card) => {
+                    card.classList.toggle('active', card === item);
+                });
+
+                panels.forEach((collapse) => {
+                    const instance = bootstrap.Collapse.getOrCreateInstance(collapse, { toggle: false });
+                    if (collapse === panel) {
+                        instance.show();
+                    } else {
+                        instance.hide();
+                    }
+                });
+
+                buttons.forEach((btn) => {
+                    const isActive = btn === button;
+                    btn.classList.toggle('collapsed', !isActive);
+                    btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+                });
+            }
+
+            items.forEach((item) => {
+                const button = item.querySelector('.accordion-buttons');
+                if (!button) return;
+
+                item.addEventListener('mouseenter', function () {
+                    openServiceItem(item);
+                });
+
+                item.addEventListener('focusin', function () {
+                    openServiceItem(item);
+                });
+
+                button.addEventListener('click', function (event) {
+                    const link = button.dataset.serviceLink;
+                    if (link) {
+                        openServiceItem(item);
+
+                        const isModifierClick = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+                        if (!isModifierClick) {
+                            setTimeout(function () {
+                                window.location.href = link;
+                            }, 80);
+                        }
+                    }
+                });
+            });
+
+            const firstActive = serviceAccordion.querySelector('.accordion-items .accordion-buttons:not(.collapsed)')?.closest('.accordion-items');
+            if (firstActive) {
+                openServiceItem(firstActive);
+            }
+        });
+
 
 
 		  $(document).ready(function () {
