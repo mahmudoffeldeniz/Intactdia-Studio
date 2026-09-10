@@ -48043,6 +48043,163 @@ html.agntix-dark .tp-offcanvas-2-area.offcanvas-2-white-bg .tp-offcanvas-2-right
   background-color: transparent;
   border-color: rgba(0, 0, 0, 0.2);
 }
+
+/* Home page responsive guardrails for narrow viewports and browser zoom. */
+.home-page {
+  overflow-x: hidden;
+}
+
+.home-page img,
+.home-page video {
+  max-width: 100%;
+}
+
+.home-page .tp-hero-2-area {
+  min-height: 100svh !important;
+}
+
+.home-page .hero-meta-content {
+  max-width: min(90vw, 900px);
+  padding: 20px 56px;
+}
+
+.home-page .hero-meta-content h5 {
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  overflow-wrap: anywhere;
+}
+
+.home-page .hero-meta-slider .swiper-button-next,
+.home-page .hero-meta-slider .swiper-button-prev {
+  width: clamp(36px, 4vw, 50px) !important;
+  height: clamp(36px, 4vw, 50px) !important;
+}
+
+.home-page .tp-hero-2-img-wrap {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.home-page .tp-hero-2-img-wrap img {
+  width: min(100%, 420px);
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+}
+
+.home-page .tp-hero-2-img-3 img {
+  margin-right: clamp(0px, 18vw, 280px);
+}
+
+.home-page .design-testimonial-author {
+  gap: 16px;
+}
+
+.home-page .design-testimonial-author h4,
+.home-page .design-testimonial-author span {
+  overflow-wrap: anywhere;
+}
+
+.home-page .st-cta-wrapper {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.home-page .st-cta-wrapper .tp-section-title-playfair {
+  font-size: clamp(2rem, 5vw, 3.2rem) !important;
+  line-height: 1.1;
+}
+
+.home-page .st-cta-bg-circle {
+  height: clamp(520px, 70vw, 1000px);
+}
+
+.home-page .tp-copyright-right {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px 20px;
+}
+
+@media (max-width: 991px) {
+  .home-page .tp-hero-2-area {
+    min-height: min(100svh, 900px) !important;
+    padding-top: 120px;
+  }
+
+  .home-page .tp-hero-2-img-wrap {
+    margin-top: -420px;
+  }
+
+  .home-page .tp-hero-2-img-box.last-item {
+    margin-bottom: 480px;
+  }
+
+  .home-page .design-testimonial-title-box .tp-section-title-dirtyline {
+    font-size: clamp(3rem, 9vw, 5rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-page .tp-hero-2-area {
+    min-height: 78svh !important;
+    padding-top: 90px;
+  }
+
+  .home-page .hero-meta-content {
+    padding-inline: 48px;
+  }
+
+  .home-page .hero-meta-content h5 {
+    font-size: clamp(1.75rem, 9vw, 2.5rem);
+    margin-bottom: 12px;
+  }
+
+  .home-page .hero-meta-slider .swiper-button-prev {
+    left: 8px !important;
+  }
+
+  .home-page .hero-meta-slider .swiper-button-next {
+    right: 8px !important;
+  }
+
+  .home-page .design-testimonial-item {
+    padding: 30px 20px;
+  }
+
+  .home-page .design-testimonial-author {
+    align-items: flex-start;
+  }
+
+  .home-page .design-testimonial-author span {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .home-page .st-cta-wrapper {
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding-inline: 20px;
+  }
+
+  .home-page .st-cta-wrapper .tp-section-title-playfair br {
+    display: none;
+  }
+
+  .home-page .tp-copyright-right {
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-page .hero-meta-content {
+    padding-inline: 38px;
+  }
+
+  .home-page .hero-meta-content h5 {
+    font-size: 1.6rem;
+  }
+}
 .agntix-light .tp-btn-white-border.tp-btn-transparent:hover {
   color: var(--tp-common-white);
   background-color: var(--tp-common-black);
