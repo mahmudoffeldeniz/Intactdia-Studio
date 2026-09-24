@@ -13494,7 +13494,7 @@ html.agntix-dark .tp-hero-2-subtitle {
 }
 
 .content__img {
-  width: 250px;
+  width: 180px;
   aspect-ratio: 1.1;
   border-radius: 10px;
   position: absolute;
@@ -49110,7 +49110,7 @@ body { overflow-x: hidden; }
     justify-content: center;
     padding: 0;
     margin-top: 50px !important;
-    height: 200vh;
+    height: 150vh;
 }
 
 .slider-wrapper {
@@ -49126,7 +49126,7 @@ body { overflow-x: hidden; }
 
   .social-media-title {
     position: fixed;
-    top: calc(50% + 330px);
+    top: calc(50% + 300px);
     left: 50%;
     z-index: 6;
     margin: 0;
@@ -49148,7 +49148,7 @@ html.agntix-dark .social-media-title {
 
 .slider-track {
     display: flex;
-    gap: 30px;
+    gap: 20px;
     padding: 0;
     width: max-content;
     align-items: center;
@@ -49158,12 +49158,12 @@ html.agntix-dark .social-media-title {
 
 .slider-card {
     flex-shrink: 0;
-    width: 500px;
-    height: 600px;
-    min-width: 500px;
-    min-height: 600px;
-    max-width: 500px;
-    max-height: 600px;
+    width: 420px;
+    height: 500px;
+    min-width: 420px;
+    min-height: 500px;
+    max-width: 420px;
+    max-height: 500px;
     border-radius: 0px;
     overflow: hidden;
     border: none;
