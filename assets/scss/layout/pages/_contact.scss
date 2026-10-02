@@ -22,6 +22,43 @@
                 margin-top: 0px;
             }
         }
+        &-funfact-wrap{
+            & .crp-hero-funfact-bg{
+                background-color: transparent;
+                background-image: none;
+                isolation: isolate;
+                filter: drop-shadow(0 12px 30px rgba(71, 70, 70, 0.3));
+                &::before{
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    z-index: -1;
+                    background-color: #F3FF34;
+                    -webkit-mask: url('../img/home-09/hero/funfact-bg-shape-2.png') center / 100% 100% no-repeat;
+                    mask: url('../img/home-09/hero/funfact-bg-shape-2.png') center / 100% 100% no-repeat;
+                }
+            }
+            & .crp-hero-funfact-line,
+            & .crp-hero-funfact-line::before{
+                background-color: #F3FF34;
+            }
+            & .ar-about-funfact-top-content h4,
+            & .ar-about-funfact-item-content p,
+            & .ar-about-funfact-item-content a,
+            & .ar-about-funfact-item-bottom p,
+            & .ar-about-funfact-item-bottom p span{
+                color: #000;
+            }
+            & .ar-about-funfact-item:not(:last-of-type){
+                border-bottom-color: #474646;
+            }
+            & .ar-about-funfact-item-icon span{
+                border-color: #474646;
+            }
+            & .ar-about-funfact-item-icon svg path{
+                fill: #000;
+            }
+        }
     }
 
     &-map{
@@ -126,8 +163,9 @@
                 border-radius: 30px;
                 padding: 20px 54px;
                 letter-spacing: -0.18px;
-                color: var(--tp-common-white);
-                background-color: var(--tp-common-red-3);
+                color: #000;
+                background-color: #F3FF34;
+                transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
                 & span{
                     position: relative;
                     z-index: 1;
@@ -149,6 +187,10 @@
                     }
                 }
                 &:hover{
+                    color: #fff;
+                    background-color: #474646;
+                    transform: translateY(-4px) scale(1.02);
+                    box-shadow: 0 10px 24px rgba(71, 70, 70, 0.35);
                     & span{
                         & span{
                             &.text-1{
@@ -162,6 +204,9 @@
                             }
                         }
                     }
+                }
+                &:active{
+                    transform: translateY(-1px) scale(0.99);
                 }
             }
         }
@@ -359,6 +404,17 @@
             padding-left: 0;
         }
         &-wrap{
+            @media #{$xxl,$xl}{
+                flex-wrap: wrap;
+                & > .tp-contact-location-right,
+                & > .tp-contact-location-right-info{
+                    flex: 0 0 100%;
+                }
+                & > .tp-contact-location-right-info{
+                    margin-top: 24px;
+                    text-align: left !important;
+                }
+            }
             @media #{$xs}{
                 flex-wrap: wrap;
             }

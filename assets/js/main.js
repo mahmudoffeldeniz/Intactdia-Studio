@@ -551,6 +551,25 @@ function updateThemeButtonIcon(theme) {
 		})
 	}
 
+	const contactLocationItems = gsap.utils.toArray('.tp-contact-location-item');
+	if (contactLocationItems.length) {
+		gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
+			contactLocationItems.forEach((item) => {
+				gsap.fromTo(item, { scale: 1 }, {
+					scale: 0.98,
+					transformOrigin: 'center center',
+					ease: 'none',
+					scrollTrigger: {
+						trigger: item,
+						start: 'top bottom',
+						end: 'bottom top',
+						scrub: 1
+					}
+				});
+			});
+		});
+	}
+
 // 18. webgl images hover animation //
 if ($('.tp--hover-item').length) {
 

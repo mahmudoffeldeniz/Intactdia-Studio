@@ -14134,7 +14134,7 @@ html.agntix-dark .tp-hero-2-subtitle {
   height: 1px;
   width: 80px;
   display: inline-block;
-  background-color: var(--tp-common-yellow-green);
+  background-color: #F3FF34;
 }
 .crp-hero-funfact-line::before {
   content: "";
@@ -35014,6 +35014,41 @@ html.agntix-dark .branding-slider-title {
     margin-top: 0px;
   }
 }
+.tp-contact-main-funfact-wrap .crp-hero-funfact-bg {
+  background-color: transparent;
+  background-image: none;
+  isolation: isolate;
+  filter: drop-shadow(0 12px 30px rgba(71, 70, 70, 0.3));
+}
+.tp-contact-main-funfact-wrap .crp-hero-funfact-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #F3FF34;
+  -webkit-mask: url("../img/home-09/hero/funfact-bg-shape-2.png") center/100% 100% no-repeat;
+  mask: url("../img/home-09/hero/funfact-bg-shape-2.png") center/100% 100% no-repeat;
+}
+.tp-contact-main-funfact-wrap .crp-hero-funfact-line,
+.tp-contact-main-funfact-wrap .crp-hero-funfact-line::before {
+  background-color: #F3FF34;
+}
+.tp-contact-main-funfact-wrap .ar-about-funfact-top-content h4,
+.tp-contact-main-funfact-wrap .ar-about-funfact-item-content p,
+.tp-contact-main-funfact-wrap .ar-about-funfact-item-content a,
+.tp-contact-main-funfact-wrap .ar-about-funfact-item-bottom p,
+.tp-contact-main-funfact-wrap .ar-about-funfact-item-bottom p span {
+  color: #000;
+}
+.tp-contact-main-funfact-wrap .ar-about-funfact-item:not(:last-of-type) {
+  border-bottom-color: #474646;
+}
+.tp-contact-main-funfact-wrap .ar-about-funfact-item-icon span {
+  border-color: #474646;
+}
+.tp-contact-main-funfact-wrap .ar-about-funfact-item-icon svg path {
+  fill: #000;
+}
 .tp-contact-map-ptb {
   margin-top: -200px;
 }
@@ -35118,8 +35153,9 @@ html.agntix-dark .branding-slider-title {
   border-radius: 30px;
   padding: 20px 54px;
   letter-spacing: -0.18px;
-  color: var(--tp-common-white);
-  background-color: var(--tp-common-red-3);
+  color: #000;
+  background-color: #F3FF34;
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .tp-contact-form-btn button span {
   position: relative;
@@ -35143,10 +35179,19 @@ html.agntix-dark .branding-slider-title {
   -webkit-transform: translateY(-150%);
   transform: translateY(-150%);
 }
+.tp-contact-form-btn button:hover {
+  color: #fff;
+  background-color: #474646;
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 24px rgba(71, 70, 70, 0.35);
+}
 .tp-contact-form-btn button:hover span span.text-2 {
   top: 50%;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+.tp-contact-form-btn button:active {
+  transform: translateY(-1px) scale(0.99);
 }
 .tp-contact-category-btn {
   font-size: 18px;
@@ -35354,6 +35399,19 @@ html.agntix-dark .branding-slider-title {
 @media only screen and (min-width: 1200px) and (max-width: 1399px), only screen and (min-width: 992px) and (max-width: 1199px), only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
   .tp-contact-location-right {
     padding-left: 0;
+  }
+}
+@media only screen and (min-width: 1400px) and (max-width: 1599px), only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .tp-contact-location-right-wrap {
+    flex-wrap: wrap;
+  }
+  .tp-contact-location-right-wrap > .tp-contact-location-right,
+  .tp-contact-location-right-wrap > .tp-contact-location-right-info {
+    flex: 0 0 100%;
+  }
+  .tp-contact-location-right-wrap > .tp-contact-location-right-info {
+    margin-top: 24px;
+    text-align: left !important;
   }
 }
 @media (max-width: 767px) {
