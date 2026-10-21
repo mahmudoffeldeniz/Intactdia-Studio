@@ -359,7 +359,13 @@ images.forEach((img) => {
 
 	// 13. Open Handlers //
 	$(".tp-offcanvas-open-btn").on("click", function () {
+		const $homeMenu = $(".tp-offcanvas-2-area");
 		$(".tp-offcanvas-area, .tp-offcanvas-2-area, .body-overlay").addClass("opened");
+		if ($homeMenu.length) {
+			document.documentElement.classList.add("offcanvas-menu-open");
+			const smoother = ScrollSmoother.get();
+			if (smoother) smoother.paused(true);
+		}
 	});
 
 	$(".tp-search-open-btn").on("click", function () {
@@ -516,8 +522,14 @@ function updateThemeButtonIcon(theme) {
 
 	// 14. Close Handlers //
 	$(".tp-offcanvas-close-btn, .tp-offcanvas-2-close-btn, .tp-search-close-btn, .cartmini-close-btn, .body-overlay").on("click", function () {
+		const homeMenuWasOpen = $(".tp-offcanvas-2-area").hasClass("opened");
 		$(".tp-offcanvas-area, .tp-offcanvas-2-area, .tp-search-area, .cartmini__area").removeClass("opened cartmini-opened");
 		$(".body-overlay").removeClass("opened");
+		if (homeMenuWasOpen) {
+			document.documentElement.classList.remove("offcanvas-menu-open");
+			const smoother = ScrollSmoother.get();
+			if (smoother) smoother.paused(false);
+		}
 	});
 
 	// 15. overlay not working js //

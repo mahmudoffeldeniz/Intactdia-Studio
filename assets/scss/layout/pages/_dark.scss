@@ -49,6 +49,19 @@
             }
         }
     }
+    & .tp-offcanvas-2-area.offcanvas-2-white-bg .tp-offcanvas-2-right-social a {
+        color: var(--tp-common-white);
+        border-color: rgba(255, 255, 255, 0.18);
+        background-color: transparent;
+        &:hover {
+            color: var(--tp-common-black);
+            border-color: var(--tp-common-white);
+            background-color: var(--tp-common-white);
+        }
+    }
+    & .tp-offcanvas-2-area .tp-offcanvas-2-visit-link {
+        color: var(--tp-common-white);
+    }
     & .tp-project-title{
         color: var(--tp-common-white);
     }
@@ -1263,7 +1276,8 @@
 	& .studio-about-content.about-us-2 p {
 		color: #bfbfc0;
 	}
-	& .tp-btn-red-border.about-us-2 {
+	& .tp-btn-red-border.about-us-2,
+	& .tp-btn-red-border.about-us-2:hover {
 		color: var(--tp-common-white);
 	}
 	& .studio-service-dark .tp-award-item {

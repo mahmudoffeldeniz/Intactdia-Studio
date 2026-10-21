@@ -879,9 +879,11 @@
 			background-color: var(--tp-common-red);
 		}
 		&.about-us-2{
-			color: var(--tp-common-black-10);
+			color: #000;
 			&:hover{
-				color: var(--tp-common-white);
+				color: #000;
+				background-color: #f3ff34;
+				border-color: #f3ff34;
 			}
 		}
 	}

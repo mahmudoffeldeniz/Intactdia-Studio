@@ -647,6 +647,10 @@
     & .tp-btn-red-border:hover {
         color: var(--tp-common-white);
     }
+    & .tp-btn-red-border.about-us-2,
+    & .tp-btn-red-border.about-us-2:hover {
+        color: #000;
+    }
     & .tp-section-title.fs-54 {
         color: var(--tp-common-black);
     }
