@@ -22,6 +22,71 @@ images.forEach((img) => {
 
 });
 
+
+
+
+
+
+
+
+// web design page
+
+document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
+            const thumb = card.querySelector('.tp-portfolio-inner-thumb');
+            const imageContainer = thumb?.querySelector('.tp--hover-img');
+            const images = imageContainer ? Array.from(imageContainer.querySelectorAll('img')) : [];
+            const title = card.querySelector('.tp-portfolio-inner-title')?.textContent.trim();
+
+            if (images.length === 0 || !thumb || !title) {
+                return;
+            }
+
+            let currentImage = 0;
+
+            const controls = document.createElement('div');
+            controls.className = 'web-design-gallery-controls';
+            controls.setAttribute('role', 'group');
+            controls.setAttribute('aria-label', `${title} image gallery`);
+
+            const previousButton = document.createElement('button');
+            previousButton.type = 'button';
+            previousButton.setAttribute('aria-label', `Previous image for ${title}`);
+            previousButton.textContent = '‹';
+
+            const count = document.createElement('span');
+            count.className = 'web-design-gallery-count';
+            count.setAttribute('aria-live', 'polite');
+            count.setAttribute('aria-atomic', 'true');
+
+            const nextButton = document.createElement('button');
+            nextButton.type = 'button';
+            nextButton.setAttribute('aria-label', `Next image for ${title}`);
+            nextButton.textContent = '›';
+
+            const updateGallery = (step) => {
+                currentImage = (currentImage + step + images.length) % images.length;
+                images.forEach((image, index) => {
+                    image.hidden = index !== currentImage;
+                });
+                count.textContent = `${currentImage + 1} / ${images.length}`;
+                imageContainer.dispatchEvent(new CustomEvent('gallery:imagechange'));
+            };
+
+            images.forEach((image, index) => {
+                image.hidden = index !== currentImage;
+            });
+            previousButton.disabled = images.length < 2;
+            nextButton.disabled = images.length < 2;
+            count.textContent = `1 / ${images.length}`;
+            previousButton.addEventListener('click', () => updateGallery(-1));
+            nextButton.addEventListener('click', () => updateGallery(1));
+
+            controls.append(previousButton, count, nextButton);
+            thumb.append(controls);
+        });
+
+
+
   if (typeof Swiper !== 'undefined') {
             var heroSwiper = new Swiper('.hero-meta-slider', {
                 loop: true,
@@ -590,10 +655,19 @@ if ($('.tp--hover-item').length) {
         const hoverBox = $(this);
         const img = hoverBox.find('img');
         const parent = hoverBox.closest('.tp--hover-item');
+        const isPortfolioGallery =
+            parent.closest('.tp-portfolio-inner-item').length > 0 && img.length > 1;
 
         let effect = null;
         let loading = false;
         let active = false;
+        let effectGeneration = 0;
+
+        function getCurrentImage() {
+            return isPortfolioGallery
+                ? hoverBox.find('img:not([hidden])').first()
+                : img.eq(0);
+        }
 
         function createEffect() {
 
@@ -602,13 +676,25 @@ if ($('.tp--hover-item').length) {
             }
 
             loading = true;
+            const generation = ++effectGeneration;
 
             const startEffect = function () {
+                if (generation !== effectGeneration) {
+                    return;
+                }
 
                 // Əgər mouse artıq card-dan çıxıbsa,
                 // effect yaratmağa ehtiyac yoxdur.
                 if (!active) {
                     loading = false;
+                    return;
+                }
+
+                const currentImage = getCurrentImage();
+                const currentImageElement = currentImage.get(0);
+
+                if (!currentImageElement.complete || !currentImageElement.naturalWidth) {
+                    currentImage.one("load", startEffect);
                     return;
                 }
 
@@ -628,17 +714,17 @@ if ($('.tp--hover-item').length) {
                         hoverBox.data("easing") || undefined,
 
                     image1:
-                        img.eq(0).attr("src"),
+                        currentImage.attr("src"),
 
                     image2:
-                        img.eq(0).attr("src"),
+                        currentImage.attr("src"),
 
                     displacementImage:
                         hoverBox.data("displacement"),
 
                     imagesRatio:
-                        img[0].height /
-                        img[0].width,
+                        currentImageElement.naturalHeight /
+                        currentImageElement.naturalWidth,
 
                     hover: true
                 });
@@ -648,18 +734,40 @@ if ($('.tp--hover-item').length) {
                 effect.next();
             };
 
+            const currentImage = getCurrentImage().get(0);
 
-            if (img[0].complete) {
+            if (currentImage.complete && currentImage.naturalWidth) {
                 startEffect();
             } else {
 
-                img.one("load", function () {
+                $(currentImage).one("load", function () {
                     startEffect();
                 });
 
             }
         }
 
+        if (isPortfolioGallery) {
+            hoverBox.on("gallery:imagechange", function () {
+                effectGeneration++;
+                loading = false;
+
+                if (effect) {
+                    const canvas = hoverBox.children("canvas").get(0);
+                    const context = canvas &&
+                        (canvas.getContext("webgl2") ||
+                            canvas.getContext("webgl") ||
+                            canvas.getContext("experimental-webgl"));
+                    context?.getExtension("WEBGL_lose_context")?.loseContext();
+                    canvas?.remove();
+                    effect = null;
+                }
+
+                if (active) {
+                    createEffect();
+                }
+            });
+        }
 
         parent.on("mouseenter", function () {
 
