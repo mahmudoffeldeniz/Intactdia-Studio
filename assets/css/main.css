@@ -49961,6 +49961,174 @@ html.agntix-dark .social-media-title {
             white-space: nowrap;
         }
 
+
+
+
+
+        .portfolio-review-row {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .portfolio-review-row .tp-portfolio-inner-title {
+            flex: 1 1 auto;
+            margin: 0;
+        }
+
+        .portfolio-review {
+            position: relative;
+            z-index: 1;
+            flex: 0 0 auto;
+        }
+
+        .portfolio-review-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+            border: 0;
+            border-bottom: 1px solid rgba(255, 196, 70, 0.48);
+            border-radius: 0;
+            background: transparent;
+            color: var(--tp-common-white);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            line-height: 1.4;
+            white-space: nowrap;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .portfolio-review-toggle:hover {
+            border-color: var(--tp-common-yellow);
+            color: var(--tp-common-yellow);
+        }
+
+        .portfolio-review-toggle::before {
+            content: "“";
+            color: var(--tp-common-yellow);
+            font-family: Georgia, serif;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 0.7;
+        }
+
+        .portfolio-review-toggle::after {
+            width: 5px;
+            height: 5px;
+            border-right: 1px solid currentColor;
+            border-bottom: 1px solid currentColor;
+            content: "";
+            transform: rotate(45deg) translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+
+        .portfolio-review-toggle[aria-expanded="true"]::after {
+            transform: rotate(225deg) translate(-2px, -1px);
+        }
+
+        .portfolio-review-toggle:focus-visible {
+            outline: 1px solid var(--tp-common-yellow);
+            outline-offset: 4px;
+        }
+
+        .portfolio-review-panel {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            z-index: 20;
+            width: min(300px, calc(100vw - 32px));
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            background: #171717;
+            color: #fff;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+        }
+
+        .portfolio-review-panel[hidden] {
+            display: none;
+        }
+
+        .portfolio-review-panel span {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 11px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .portfolio-review-panel strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .portfolio-review-panel p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .agntix-light .portfolio-review-toggle {
+            border-color: rgba(0, 0, 0, 0.22);
+            color: var(--tp-common-black);
+        }
+
+        .agntix-light .portfolio-review-toggle:hover {
+            border-color: #b88618;
+            color: #8a6412;
+        }
+
+        .agntix-light .portfolio-review-panel {
+            border-color: rgba(0, 0, 0, 0.1);
+            background: #fff;
+            color: var(--tp-common-black);
+        }
+
+        .agntix-light .portfolio-review-panel span {
+            color: rgba(0, 0, 0, 0.55);
+        }
+
+        .agntix-light .portfolio-review-panel strong {
+            color: var(--tp-common-black);
+        }
+
+        .agntix-light .portfolio-review-panel p {
+            color: rgba(0, 0, 0, 0.72);
+        }
+
+        @media (max-width: 575px) {
+            .portfolio-review-row {
+                gap: 10px;
+            }
+
+            .portfolio-review-row .tp-portfolio-inner-title {
+                font-size: 25px;
+            }
+
+            .portfolio-review-toggle {
+                gap: 6px;
+                font-size: 10px;
+            }
+        }
+
+        .web-design-portfolio > .container-1430 {
+            max-width: 1700px;
+        }
+
+        .web-design-portfolio .tp-portfolio-inner-thumb {
+            max-width: none;
+            height: auto;
+            aspect-ratio: 1.6;
+        }
+
 /*# sourceMappingURL=main.css.map */
-
-

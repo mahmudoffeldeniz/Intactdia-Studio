@@ -174,6 +174,89 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 
 
 
+
+
+// web design page portfolio review section
+
+
+
+  const portfolioReviewCards = document.querySelectorAll(".tp-portfolio-inner-content");
+
+        portfolioReviewCards.forEach((card, index) => {
+            const title = card.querySelector(".tp-portfolio-inner-title");
+            if (!title) return;
+
+            card.classList.add("portfolio-review-row");
+
+            const review = document.createElement("div");
+            review.className = "portfolio-review";
+
+            const button = document.createElement("button");
+            button.className = "portfolio-review-toggle";
+            button.type = "button";
+            button.textContent = "View customer review";
+            button.setAttribute("aria-expanded", "false");
+            button.setAttribute("aria-controls", `portfolio-review-panel-${index}`);
+
+            const panel = document.createElement("div");
+            panel.className = "portfolio-review-panel";
+            panel.id = `portfolio-review-panel-${index}`;
+            panel.hidden = true;
+
+            const label = document.createElement("span");
+            label.textContent = "Customer review";
+
+            const name = document.createElement("strong");
+            const text = document.createElement("p");
+            text.textContent = title.dataset.reviewText || "Review details will be added soon.";
+            name.textContent = title.dataset.reviewName || "Customer name";
+
+            panel.append(label, name, text);
+            review.append(button, panel);
+            card.append(review);
+
+            button.addEventListener("click", () => {
+                const isExpanded = button.getAttribute("aria-expanded") === "true";
+
+                document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((openButton) => {
+                    openButton.setAttribute("aria-expanded", "false");
+                    document.getElementById(openButton.getAttribute("aria-controls")).hidden = true;
+                    openButton.closest(".tp-portfolio-inner-item").style.zIndex = "";
+                });
+
+                if (!isExpanded) {
+                    button.setAttribute("aria-expanded", "true");
+                    panel.hidden = false;
+                    card.closest(".tp-portfolio-inner-item").style.zIndex = "10";
+                }
+            });
+        });
+
+        document.addEventListener("click", (event) => {
+            if (event.target.closest(".portfolio-review")) return;
+
+            document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
+                button.setAttribute("aria-expanded", "false");
+                document.getElementById(button.getAttribute("aria-controls")).hidden = true;
+                button.closest(".tp-portfolio-inner-item").style.zIndex = "";
+            });
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") return;
+
+            document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
+                button.setAttribute("aria-expanded", "false");
+                document.getElementById(button.getAttribute("aria-controls")).hidden = true;
+                button.closest(".tp-portfolio-inner-item").style.zIndex = "";
+                button.focus();
+            });
+        });
+
+
+
+
+
 		  $(document).ready(function () {
     $('.slider-card').each(function () {
         $(this).addClass('not-hide-cursor');
@@ -218,6 +301,8 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
         scheduleAnimation();
     }
 }
+
+// window scroll event handler
 
     function updateParallax() {
         var scrolled = $(window).scrollTop();
@@ -662,6 +747,22 @@ if ($('.tp--hover-item').length) {
         let loading = false;
         let active = false;
         let effectGeneration = 0;
+        let cleanupTimer = null;
+
+        function destroyEffect() {
+            if (!effect) {
+                return;
+            }
+
+            const canvas = hoverBox.children("canvas").get(0);
+            const context = canvas &&
+                (canvas.getContext("webgl2") ||
+                    canvas.getContext("webgl") ||
+                    canvas.getContext("experimental-webgl"));
+            context?.getExtension("WEBGL_lose_context")?.loseContext();
+            canvas?.remove();
+            effect = null;
+        }
 
         function getCurrentImage() {
             return isPortfolioGallery
@@ -752,16 +853,12 @@ if ($('.tp--hover-item').length) {
                 effectGeneration++;
                 loading = false;
 
-                if (effect) {
-                    const canvas = hoverBox.children("canvas").get(0);
-                    const context = canvas &&
-                        (canvas.getContext("webgl2") ||
-                            canvas.getContext("webgl") ||
-                            canvas.getContext("experimental-webgl"));
-                    context?.getExtension("WEBGL_lose_context")?.loseContext();
-                    canvas?.remove();
-                    effect = null;
+                if (cleanupTimer) {
+                    clearTimeout(cleanupTimer);
+                    cleanupTimer = null;
                 }
+
+                destroyEffect();
 
                 if (active) {
                     createEffect();
@@ -772,6 +869,10 @@ if ($('.tp--hover-item').length) {
         parent.on("mouseenter", function () {
 
             active = true;
+            if (cleanupTimer) {
+                clearTimeout(cleanupTimer);
+                cleanupTimer = null;
+            }
 
             createEffect();
 
@@ -788,6 +889,14 @@ if ($('.tp--hover-item').length) {
 
             if (effect) {
                 effect.previous();
+
+                const speedOut = Number(hoverBox.data("speedout")) || 1.2;
+                cleanupTimer = window.setTimeout(() => {
+                    if (!active) {
+                        destroyEffect();
+                    }
+                    cleanupTimer = null;
+                }, Math.max(speedOut, 0) * 1000 + 100);
             }
 
         });
