@@ -181,6 +181,35 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 
   const portfolioReviewCards = document.querySelectorAll(".tp-portfolio-inner-content");
 
+        const setReviewPanelExpanded = (button, panel, expanded) => {
+            const currentHeight = panel.hidden ? 0 : panel.getBoundingClientRect().height;
+            const currentOpacity = panel.hidden ? 0 : Number.parseFloat(getComputedStyle(panel).opacity);
+
+            panel.getAnimations().forEach((animation) => animation.cancel());
+            panel.hidden = false;
+            panel.style.height = "auto";
+            const expandedHeight = panel.getBoundingClientRect().height;
+            panel.style.height = `${currentHeight}px`;
+            panel.style.opacity = `${currentOpacity}`;
+            panel.style.overflow = "hidden";
+            button.setAttribute("aria-expanded", `${expanded}`);
+
+            const targetHeight = expanded ? expandedHeight : 0;
+            const animation = panel.animate(
+                [
+                    { height: `${currentHeight}px`, opacity: currentOpacity },
+                    { height: `${targetHeight}px`, opacity: expanded ? 1 : 0 }
+                ],
+                { duration: 650, easing: "cubic-bezier(0.4, 0, 0.9, 0.4)" }
+            );
+
+            animation.onfinish = () => {
+                panel.style.height = expanded ? "auto" : "0px";
+                panel.style.opacity = expanded ? "1" : "0";
+                if (!expanded) panel.hidden = true;
+            };
+        };
+
         portfolioReviewCards.forEach((card, index) => {
             const title = card.querySelector(".tp-portfolio-inner-title");
             if (!title) return;
@@ -202,46 +231,48 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             panel.id = `portfolio-review-panel-${index}`;
             panel.hidden = true;
 
-            const label = document.createElement("span");
-            label.textContent = "Customer review";
+            let reviewContent = card.querySelector(".portfolio-review-content");
+            if (reviewContent) {
+                reviewContent.hidden = false;
+            } else {
+                reviewContent = document.createElement("div");
+                reviewContent.className = "portfolio-review-content";
 
-            const details = document.createElement("div");
-            details.className = "portfolio-review-details";
+                const heading = document.createElement("h5");
+                heading.className = "portfolio-review-heading";
+                heading.textContent = "Client Feedback";
 
-            const createDetail = (labelText, value, className) => {
-                const field = document.createElement("div");
-                field.className = `portfolio-review-field ${className}`;
+                const text = document.createElement("p");
+                text.className = "portfolio-review-quote";
+                text.textContent = title.dataset.reviewText || "Add the customer review here.";
+                reviewContent.append(heading, text);
 
-                const fieldLabel = document.createElement("span");
-                fieldLabel.textContent = labelText;
-
-                const fieldValue = document.createElement("strong");
-                fieldValue.textContent = value;
-
-                field.append(fieldLabel, fieldValue);
-                return field;
-            };
-
-            const name = title.dataset.reviewName || "";
-            const role = title.dataset.reviewRole || "";
-            const platform = title.dataset.reviewPlatform || "";
-            const reviewText = document.createElement("div");
-            reviewText.className = "portfolio-review-field portfolio-review-field-review";
-
-            const reviewLabel = document.createElement("span");
-            reviewLabel.textContent = "Review";
-
-            const text = document.createElement("p");
-            text.textContent = title.dataset.reviewText || "Add the customer review here.";
-
-            details.append(
-                createDetail("Client name", name || "Add client name", "portfolio-review-field-name"),
-                createDetail("Position", role || "Add position", "portfolio-review-field-role"),
-                createDetail("Review platform", platform || "Add platform (e.g. Clutch)", "portfolio-review-field-platform")
-            );
-            reviewText.append(reviewLabel, text);
-            details.append(reviewText);
-            panel.append(label, details);
+                const authorName = title.dataset.reviewName;
+                const authorRole = title.dataset.reviewRole;
+                const platform = title.dataset.reviewPlatform;
+                if (authorName || authorRole || platform) {
+                    const author = document.createElement("div");
+                    author.className = "portfolio-review-author";
+                    if (authorName) {
+                        const name = document.createElement("strong");
+                        name.textContent = authorName;
+                        author.append(name);
+                    }
+                    if (authorRole) {
+                        const role = document.createElement("span");
+                        role.textContent = authorRole;
+                        author.append(role);
+                    }
+                    if (platform) {
+                        const verification = document.createElement("span");
+                        verification.className = "portfolio-review-platform";
+                        verification.textContent = platform;
+                        author.append(verification);
+                    }
+                    reviewContent.append(author);
+                }
+            }
+            panel.append(reviewContent);
             review.append(button);
             card.append(review, panel);
 
@@ -249,15 +280,15 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
                 const isExpanded = button.getAttribute("aria-expanded") === "true";
 
                 document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((openButton) => {
-                    openButton.setAttribute("aria-expanded", "false");
-                    document.getElementById(openButton.getAttribute("aria-controls")).hidden = true;
-                    openButton.closest(".tp-portfolio-inner-item").style.zIndex = "";
+                    setReviewPanelExpanded(
+                        openButton,
+                        document.getElementById(openButton.getAttribute("aria-controls")),
+                        false
+                    );
                 });
 
                 if (!isExpanded) {
-                    button.setAttribute("aria-expanded", "true");
-                    panel.hidden = false;
-                    card.closest(".tp-portfolio-inner-item").style.zIndex = "10";
+                    setReviewPanelExpanded(button, panel, true);
                 }
             });
         });
@@ -266,9 +297,11 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             if (event.target.closest(".portfolio-review-toggle, .portfolio-review-panel")) return;
 
             document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
-                button.setAttribute("aria-expanded", "false");
-                document.getElementById(button.getAttribute("aria-controls")).hidden = true;
-                button.closest(".tp-portfolio-inner-item").style.zIndex = "";
+                setReviewPanelExpanded(
+                    button,
+                    document.getElementById(button.getAttribute("aria-controls")),
+                    false
+                );
             });
         });
 
@@ -276,9 +309,11 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             if (event.key !== "Escape") return;
 
             document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
-                button.setAttribute("aria-expanded", "false");
-                document.getElementById(button.getAttribute("aria-controls")).hidden = true;
-                button.closest(".tp-portfolio-inner-item").style.zIndex = "";
+                setReviewPanelExpanded(
+                    button,
+                    document.getElementById(button.getAttribute("aria-controls")),
+                    false
+                );
                 button.focus();
             });
         });
