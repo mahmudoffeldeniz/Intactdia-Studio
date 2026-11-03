@@ -223,31 +223,53 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 
         const setReviewPanelExpanded = (button, panel, expanded) => {
             const wasHidden = panel.hidden;
-            const currentHeight = wasHidden ? 0 : panel.getBoundingClientRect().height;
-            const currentOpacity = wasHidden ? 0 : Number.parseFloat(getComputedStyle(panel).opacity);
+            panel.hidden = false;
+            const computedStyle = getComputedStyle(panel);
+            const fullHeight = panel.getBoundingClientRect().height;
+            const properties = [
+                "height",
+                "marginTop",
+                "paddingTop",
+                "paddingRight",
+                "paddingBottom",
+                "paddingLeft",
+                "borderTopWidth",
+                "borderRightWidth",
+                "borderBottomWidth",
+                "borderLeftWidth",
+                "opacity"
+            ];
+            const from = Object.fromEntries(properties.map((property) => [
+                property,
+                wasHidden
+                    ? (property === "opacity" ? "0" : "0px")
+                    : computedStyle[property]
+            ]));
+            const to = Object.fromEntries(properties.map((property) => [
+                property,
+                expanded
+                    ? (property === "height" ? `${fullHeight}px` : computedStyle[property])
+                    : (property === "opacity" ? "0" : "0px")
+            ]));
 
             panel.getAnimations().forEach((animation) => animation.cancel());
-            panel.hidden = false;
-            panel.style.height = "auto";
-            const expandedHeight = panel.getBoundingClientRect().height;
-            panel.style.height = `${currentHeight}px`;
-            panel.style.opacity = `${currentOpacity}`;
+            properties.forEach((property) => {
+                panel.style[property] = from[property];
+            });
             panel.style.overflow = "hidden";
             button.setAttribute("aria-expanded", `${expanded}`);
 
-            const targetHeight = expanded ? expandedHeight : 0;
             const animation = panel.animate(
-                [
-                    { height: `${currentHeight}px`, opacity: currentOpacity },
-                    { height: `${targetHeight}px`, opacity: expanded ? 1 : 0 }
-                ],
-                { duration: 380, easing: "ease-in-out" }
+                [from, to],
+                { duration: 420, easing: "ease-in-out" }
             );
 
             animation.onfinish = () => {
                 if (button.getAttribute("aria-expanded") !== `${expanded}`) return;
-                panel.style.height = expanded ? "auto" : "0px";
-                panel.style.opacity = expanded ? "1" : "0";
+                properties.forEach((property) => panel.style.removeProperty(
+                    property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+                ));
+                panel.style.removeProperty("overflow");
                 if (!expanded) panel.hidden = true;
             };
         };
