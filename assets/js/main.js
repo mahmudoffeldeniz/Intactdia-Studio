@@ -180,10 +180,51 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 
 
   const portfolioReviewCards = document.querySelectorAll(".tp-portfolio-inner-content");
+        let pendingReviewRequest = 0;
+
+        const scrollReviewButtonToCenter = (button) => {
+            const buttonRect = button.getBoundingClientRect();
+            const scrollOffset = buttonRect.top + buttonRect.height / 2 - window.innerHeight / 2;
+            if (Math.abs(scrollOffset) < 4) return Promise.resolve();
+
+            return new Promise((resolve) => {
+                let settledFrames = 0;
+                let previousScrollY = window.scrollY;
+                let timeoutId;
+                let frameId;
+
+                const finish = () => {
+                    clearTimeout(timeoutId);
+                    cancelAnimationFrame(frameId);
+                    document.removeEventListener("scrollend", finish);
+                    resolve();
+                };
+
+                const checkScroll = () => {
+                    if (Math.abs(window.scrollY - previousScrollY) < 1) {
+                        settledFrames += 1;
+                        if (settledFrames >= 4) {
+                            finish();
+                            return;
+                        }
+                    } else {
+                        settledFrames = 0;
+                        previousScrollY = window.scrollY;
+                    }
+                    frameId = requestAnimationFrame(checkScroll);
+                };
+
+                document.addEventListener("scrollend", finish, { once: true });
+                timeoutId = setTimeout(finish, 1200);
+                frameId = requestAnimationFrame(checkScroll);
+                window.scrollBy({ top: scrollOffset, behavior: "smooth" });
+            });
+        };
 
         const setReviewPanelExpanded = (button, panel, expanded) => {
-            const currentHeight = panel.hidden ? 0 : panel.getBoundingClientRect().height;
-            const currentOpacity = panel.hidden ? 0 : Number.parseFloat(getComputedStyle(panel).opacity);
+            const wasHidden = panel.hidden;
+            const currentHeight = wasHidden ? 0 : panel.getBoundingClientRect().height;
+            const currentOpacity = wasHidden ? 0 : Number.parseFloat(getComputedStyle(panel).opacity);
 
             panel.getAnimations().forEach((animation) => animation.cancel());
             panel.hidden = false;
@@ -200,10 +241,11 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
                     { height: `${currentHeight}px`, opacity: currentOpacity },
                     { height: `${targetHeight}px`, opacity: expanded ? 1 : 0 }
                 ],
-                { duration: 650, easing: "cubic-bezier(0.4, 0, 0.9, 0.4)" }
+                { duration: 380, easing: "ease-in-out" }
             );
 
             animation.onfinish = () => {
+                if (button.getAttribute("aria-expanded") !== `${expanded}`) return;
                 panel.style.height = expanded ? "auto" : "0px";
                 panel.style.opacity = expanded ? "1" : "0";
                 if (!expanded) panel.hidden = true;
@@ -276,8 +318,9 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             review.append(button);
             card.append(review, panel);
 
-            button.addEventListener("click", () => {
+            button.addEventListener("click", async () => {
                 const isExpanded = button.getAttribute("aria-expanded") === "true";
+                const requestId = ++pendingReviewRequest;
 
                 document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((openButton) => {
                     setReviewPanelExpanded(
@@ -288,6 +331,8 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
                 });
 
                 if (!isExpanded) {
+                    await scrollReviewButtonToCenter(button);
+                    if (requestId !== pendingReviewRequest) return;
                     setReviewPanelExpanded(button, panel, true);
                 }
             });
@@ -295,6 +340,7 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 
         document.addEventListener("click", (event) => {
             if (event.target.closest(".portfolio-review-toggle, .portfolio-review-panel")) return;
+            pendingReviewRequest += 1;
 
             document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
                 setReviewPanelExpanded(
@@ -307,6 +353,7 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 
         document.addEventListener("keydown", (event) => {
             if (event.key !== "Escape") return;
+            pendingReviewRequest += 1;
 
             document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
                 setReviewPanelExpanded(

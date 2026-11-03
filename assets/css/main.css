@@ -50218,7 +50218,7 @@ html.agntix-dark .social-media-title {
         .web-design-portfolio .portfolio-review-author span {
             display: block;
             margin: 0;
-            color: var(--review-panel-muted);
+            color: var(--review-panel-text);
             font-size: 12px;
             letter-spacing: normal;
             line-height: 1.5;
