@@ -179,31 +179,6 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 // web design page portfolio review section
 
 
-        const positionReviewPanel = (review, panel) => {
-            if (panel.hidden) return;
-
-            panel.style.removeProperty("width");
-
-            const container = review.closest(".web-design-portfolio > .container-1430")
-                || review.closest(".tp-portfolio-tab-content-wrap")
-                || document.documentElement;
-            const containerRect = container.getBoundingClientRect();
-            const reviewRect = review.getBoundingClientRect();
-            const panelWidth = panel.getBoundingClientRect().width;
-            const boundaryLeft = Math.max(containerRect.left, 16);
-            const boundaryRight = Math.min(containerRect.right, window.innerWidth - 16);
-            const gap = 12;
-            const spaceRight = Math.max(0, boundaryRight - reviewRect.right - gap);
-            const spaceLeft = Math.max(0, reviewRect.left - boundaryLeft - gap);
-            const minFitWidth = Math.min(280, panelWidth);
-            const side = spaceRight >= minFitWidth || spaceRight >= spaceLeft ? "right" : "left";
-            const availableSpace = side === "right" ? spaceRight : spaceLeft;
-
-            panel.classList.toggle("opens-right", side === "right");
-            panel.classList.toggle("opens-left", side === "left");
-            panel.style.width = `${Math.min(panelWidth, availableSpace)}px`;
-        };
-
   const portfolioReviewCards = document.querySelectorAll(".tp-portfolio-inner-content");
 
         portfolioReviewCards.forEach((card, index) => {
@@ -267,8 +242,8 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             reviewText.append(reviewLabel, text);
             details.append(reviewText);
             panel.append(label, details);
-            review.append(button, panel);
-            card.append(review);
+            review.append(button);
+            card.append(review, panel);
 
             button.addEventListener("click", () => {
                 const isExpanded = button.getAttribute("aria-expanded") === "true";
@@ -283,13 +258,12 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
                     button.setAttribute("aria-expanded", "true");
                     panel.hidden = false;
                     card.closest(".tp-portfolio-inner-item").style.zIndex = "10";
-                    positionReviewPanel(review, panel);
                 }
             });
         });
 
         document.addEventListener("click", (event) => {
-            if (event.target.closest(".portfolio-review")) return;
+            if (event.target.closest(".portfolio-review-toggle, .portfolio-review-panel")) return;
 
             document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
                 button.setAttribute("aria-expanded", "false");
@@ -308,16 +282,6 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
                 button.focus();
             });
         });
-
-        window.addEventListener("resize", () => {
-            document.querySelectorAll(".portfolio-review-panel:not([hidden])").forEach((panel) => {
-                positionReviewPanel(panel.closest(".portfolio-review"), panel);
-            });
-        });
-
-
-
-
 
 		  $(document).ready(function () {
     $('.slider-card').each(function () {
