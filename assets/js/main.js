@@ -179,6 +179,30 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 // web design page portfolio review section
 
 
+        const positionReviewPanel = (review, panel) => {
+            if (panel.hidden) return;
+
+            panel.style.removeProperty("width");
+
+            const container = review.closest(".web-design-portfolio > .container-1430")
+                || review.closest(".tp-portfolio-tab-content-wrap")
+                || document.documentElement;
+            const containerRect = container.getBoundingClientRect();
+            const reviewRect = review.getBoundingClientRect();
+            const panelWidth = panel.getBoundingClientRect().width;
+            const boundaryLeft = Math.max(containerRect.left, 16);
+            const boundaryRight = Math.min(containerRect.right, window.innerWidth - 16);
+            const gap = 12;
+            const spaceRight = Math.max(0, boundaryRight - reviewRect.right - gap);
+            const spaceLeft = Math.max(0, reviewRect.left - boundaryLeft - gap);
+            const minFitWidth = Math.min(280, panelWidth);
+            const side = spaceRight >= minFitWidth || spaceRight >= spaceLeft ? "right" : "left";
+            const availableSpace = side === "right" ? spaceRight : spaceLeft;
+
+            panel.classList.toggle("opens-right", side === "right");
+            panel.classList.toggle("opens-left", side === "left");
+            panel.style.width = `${Math.min(panelWidth, availableSpace)}px`;
+        };
 
   const portfolioReviewCards = document.querySelectorAll(".tp-portfolio-inner-content");
 
@@ -206,12 +230,43 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             const label = document.createElement("span");
             label.textContent = "Customer review";
 
-            const name = document.createElement("strong");
-            const text = document.createElement("p");
-            text.textContent = title.dataset.reviewText || "Review details will be added soon.";
-            name.textContent = title.dataset.reviewName || "Customer name";
+            const details = document.createElement("div");
+            details.className = "portfolio-review-details";
 
-            panel.append(label, name, text);
+            const createDetail = (labelText, value, className) => {
+                const field = document.createElement("div");
+                field.className = `portfolio-review-field ${className}`;
+
+                const fieldLabel = document.createElement("span");
+                fieldLabel.textContent = labelText;
+
+                const fieldValue = document.createElement("strong");
+                fieldValue.textContent = value;
+
+                field.append(fieldLabel, fieldValue);
+                return field;
+            };
+
+            const name = title.dataset.reviewName || "";
+            const role = title.dataset.reviewRole || "";
+            const platform = title.dataset.reviewPlatform || "";
+            const reviewText = document.createElement("div");
+            reviewText.className = "portfolio-review-field portfolio-review-field-review";
+
+            const reviewLabel = document.createElement("span");
+            reviewLabel.textContent = "Review";
+
+            const text = document.createElement("p");
+            text.textContent = title.dataset.reviewText || "Add the customer review here.";
+
+            details.append(
+                createDetail("Client name", name || "Add client name", "portfolio-review-field-name"),
+                createDetail("Position", role || "Add position", "portfolio-review-field-role"),
+                createDetail("Review platform", platform || "Add platform (e.g. Clutch)", "portfolio-review-field-platform")
+            );
+            reviewText.append(reviewLabel, text);
+            details.append(reviewText);
+            panel.append(label, details);
             review.append(button, panel);
             card.append(review);
 
@@ -228,6 +283,7 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
                     button.setAttribute("aria-expanded", "true");
                     panel.hidden = false;
                     card.closest(".tp-portfolio-inner-item").style.zIndex = "10";
+                    positionReviewPanel(review, panel);
                 }
             });
         });
@@ -250,6 +306,12 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
                 document.getElementById(button.getAttribute("aria-controls")).hidden = true;
                 button.closest(".tp-portfolio-inner-item").style.zIndex = "";
                 button.focus();
+            });
+        });
+
+        window.addEventListener("resize", () => {
+            document.querySelectorAll(".portfolio-review-panel:not([hidden])").forEach((panel) => {
+                positionReviewPanel(panel.closest(".portfolio-review"), panel);
             });
         });
 
