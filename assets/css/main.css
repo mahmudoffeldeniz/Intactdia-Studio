@@ -50131,4 +50131,8 @@ html.agntix-dark .social-media-title {
             aspect-ratio: 1.6;
         }
 
+        .web-design-portfolio .tp-portfolio-inner-item:hover .tp-portfolio-inner-thumb img {
+            transform: none;
+        }
+
 /*# sourceMappingURL=main.css.map */
