@@ -37,7 +37,7 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             const images = imageContainer ? Array.from(imageContainer.querySelectorAll('img')) : [];
             const title = card.querySelector('.tp-portfolio-inner-title')?.textContent.trim();
 
-            if (images.length === 0 || !thumb || !title) {
+            if (images.length < 2 || !thumb || !title) {
                 return;
             }
 
@@ -53,11 +53,6 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             previousButton.setAttribute('aria-label', `Previous image for ${title}`);
             previousButton.textContent = '‹';
 
-            const count = document.createElement('span');
-            count.className = 'web-design-gallery-count';
-            count.setAttribute('aria-live', 'polite');
-            count.setAttribute('aria-atomic', 'true');
-
             const nextButton = document.createElement('button');
             nextButton.type = 'button';
             nextButton.setAttribute('aria-label', `Next image for ${title}`);
@@ -68,20 +63,16 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
                 images.forEach((image, index) => {
                     image.hidden = index !== currentImage;
                 });
-                count.textContent = `${currentImage + 1} / ${images.length}`;
                 imageContainer.dispatchEvent(new CustomEvent('gallery:imagechange'));
             };
 
             images.forEach((image, index) => {
                 image.hidden = index !== currentImage;
             });
-            previousButton.disabled = images.length < 2;
-            nextButton.disabled = images.length < 2;
-            count.textContent = `1 / ${images.length}`;
             previousButton.addEventListener('click', () => updateGallery(-1));
             nextButton.addEventListener('click', () => updateGallery(1));
 
-            controls.append(previousButton, count, nextButton);
+            controls.append(previousButton, nextButton);
             thumb.append(controls);
         });
 
@@ -286,7 +277,7 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
             const button = document.createElement("button");
             button.className = "portfolio-review-toggle";
             button.type = "button";
-            button.textContent = "View customer review";
+            button.textContent = "View Client Perspective";
             button.setAttribute("aria-expanded", "false");
             button.setAttribute("aria-controls", `portfolio-review-panel-${index}`);
 
@@ -304,11 +295,11 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 
                 const heading = document.createElement("h5");
                 heading.className = "portfolio-review-heading";
-                heading.textContent = "Client Feedback";
+                heading.textContent = "Client Perspective";
 
                 const text = document.createElement("p");
                 text.className = "portfolio-review-quote";
-                text.textContent = title.dataset.reviewText || "Add the customer review here.";
+                text.textContent = title.dataset.reviewText || "We don’t have published client feedback for this project yet.";
                 reviewContent.append(heading, text);
 
                 const authorName = title.dataset.reviewName;

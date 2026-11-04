@@ -48241,6 +48241,28 @@ html.agntix-dark .tp-offcanvas-2-area .tp-offcanvas-2-visit-link {
   overflow-wrap: anywhere;
 }
 
+.st-cta-wrapper.st-cta-shared {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  margin: 60px 50px 0 auto;
+  text-align: left;
+}
+
+.st-cta-wrapper.st-cta-shared .tp-section-title-playfair {
+  margin-bottom: 0;
+  font-size: clamp(2rem, 5vw, 3.2rem) !important;
+  line-height: 1.1;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+}
+
+.st-cta-wrapper.st-cta-shared .tp-btn-border-2.st {
+  margin-left: 12px;
+  vertical-align: middle;
+}
+
 .home-page .st-cta-wrapper {
   box-sizing: border-box;
   max-width: 100%;
@@ -48317,9 +48339,21 @@ html.agntix-dark .tp-offcanvas-2-area .tp-offcanvas-2-visit-link {
     line-height: 1.4;
   }
 
+  .st-cta-wrapper.st-cta-shared {
+    width: 100%;
+    margin: 60px 0 0;
+    padding-inline: 20px;
+    box-sizing: border-box;
+  }
+
+  .st-cta-wrapper.st-cta-shared .tp-section-title-playfair br {
+    display: none;
+  }
+
   .home-page .st-cta-wrapper {
     width: 100% !important;
     margin-left: 0 !important;
+    margin-right: 0 !important;
     padding-inline: 20px;
   }
 
@@ -49954,16 +49988,38 @@ html.agntix-dark .social-media-title {
             display: none !important;
         }
 
-        .web-design-gallery-count {
-            min-width: 34px;
-            font-size: 12px;
-            text-align: center;
-            white-space: nowrap;
+        .web-projects-heading {
+            flex: 1 1 auto;
+            min-width: 0;
         }
 
+        .web-projects-tagline {
+            margin: 16px 0 0;
+            font-size: clamp(18px, 2vw, 26px);
+            font-weight: 600;
+            letter-spacing: 0;
+            line-height: 1.4;
+        }
 
+        html.agntix-dark .web-projects-tagline {
+            color: var(--tp-common-white);
+        }
 
+        html.agntix-light .portfolio-kicker::before {
+            background-color: var(--tp-common-black);
+        }
 
+        html.agntix-light .portfolio-kicker svg path {
+            stroke: var(--tp-common-black);
+        }
+
+        html.agntix-dark .portfolio-kicker::before {
+            background-color: var(--tp-common-white);
+        }
+
+        html.agntix-dark .portfolio-kicker svg path {
+            stroke: var(--tp-common-white);
+        }
 
         .portfolio-review-row {
             position: relative;
@@ -50011,11 +50067,15 @@ html.agntix-dark .social-media-title {
 
         .portfolio-review-toggle::before {
             content: "“";
-            color: var(--tp-common-yellow);
+            color: var(--tp-common-white);
             font-family: Georgia, serif;
             font-size: 24px;
             font-weight: 600;
             line-height: 0.7;
+        }
+
+        .agntix-light .portfolio-review-toggle::before {
+            color: var(--tp-common-black);
         }
 
         .portfolio-review-toggle::after {
