@@ -5,163 +5,157 @@ const images = document.querySelectorAll('.content__img');
 
 images.forEach((img) => {
 
-  const observer = new MutationObserver(() => {
+	const observer = new MutationObserver(() => {
 
-    if (img.style.opacity == "1" && !img.dataset.counted) {
-      img.dataset.counted = "true";
-      count++;
+		if (img.style.opacity == "1" && !img.dataset.counted) {
+			img.dataset.counted = "true";
+			count++;
 
-      if (count >= max) {
-        document.body.classList.add('stop-images');
-      }
-    }
+			if (count >= max) {
+				document.body.classList.add('stop-images');
+			}
+		}
 
-  });
+	});
 
-  observer.observe(img, { attributes: true, attributeFilter: ['style'] });
+	observer.observe(img, { attributes: true, attributeFilter: ['style'] });
 
 });
-
-
-
-
-
-
 
 
 // web design page
 
 document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
-            const thumb = card.querySelector('.tp-portfolio-inner-thumb');
-            const imageContainer = thumb?.querySelector('.tp--hover-img');
-            const images = imageContainer ? Array.from(imageContainer.querySelectorAll('img')) : [];
-            const title = card.querySelector('.tp-portfolio-inner-title')?.textContent.trim();
+	const thumb = card.querySelector('.tp-portfolio-inner-thumb');
+	const imageContainer = thumb?.querySelector('.tp--hover-img');
+	const images = imageContainer ? Array.from(imageContainer.querySelectorAll('img')) : [];
+	const title = card.querySelector('.tp-portfolio-inner-title')?.textContent.trim();
 
-            if (images.length < 2 || !thumb || !title) {
-                return;
-            }
+	if (images.length < 2 || !thumb || !title) {
+		return;
+	}
 
-            let currentImage = 0;
+	let currentImage = 0;
 
-            const controls = document.createElement('div');
-            controls.className = 'web-design-gallery-controls';
-            controls.setAttribute('role', 'group');
-            controls.setAttribute('aria-label', `${title} image gallery`);
+	const controls = document.createElement('div');
+	controls.className = 'web-design-gallery-controls';
+	controls.setAttribute('role', 'group');
+	controls.setAttribute('aria-label', `${title} image gallery`);
 
-            const previousButton = document.createElement('button');
-            previousButton.type = 'button';
-            previousButton.setAttribute('aria-label', `Previous image for ${title}`);
-            previousButton.textContent = '‹';
+	const previousButton = document.createElement('button');
+	previousButton.type = 'button';
+	previousButton.setAttribute('aria-label', `Previous image for ${title}`);
+	previousButton.textContent = '‹';
 
-            const nextButton = document.createElement('button');
-            nextButton.type = 'button';
-            nextButton.setAttribute('aria-label', `Next image for ${title}`);
-            nextButton.textContent = '›';
+	const nextButton = document.createElement('button');
+	nextButton.type = 'button';
+	nextButton.setAttribute('aria-label', `Next image for ${title}`);
+	nextButton.textContent = '›';
 
-            const updateGallery = (step) => {
-                currentImage = (currentImage + step + images.length) % images.length;
-                images.forEach((image, index) => {
-                    image.hidden = index !== currentImage;
-                });
-                imageContainer.dispatchEvent(new CustomEvent('gallery:imagechange'));
-            };
+	const updateGallery = (step) => {
+		currentImage = (currentImage + step + images.length) % images.length;
+		images.forEach((image, index) => {
+			image.hidden = index !== currentImage;
+		});
+		imageContainer.dispatchEvent(new CustomEvent('gallery:imagechange'));
+	};
 
-            images.forEach((image, index) => {
-                image.hidden = index !== currentImage;
-            });
-            previousButton.addEventListener('click', () => updateGallery(-1));
-            nextButton.addEventListener('click', () => updateGallery(1));
+	images.forEach((image, index) => {
+		image.hidden = index !== currentImage;
+	});
+	previousButton.addEventListener('click', () => updateGallery(-1));
+	nextButton.addEventListener('click', () => updateGallery(1));
 
-            controls.append(previousButton, nextButton);
-            thumb.append(controls);
-        });
+	controls.append(previousButton, nextButton);
+	thumb.append(controls);
+});
 
 
 
-  if (typeof Swiper !== 'undefined') {
-            var heroSwiper = new Swiper('.hero-meta-slider', {
-                loop: true,
-                effect: 'fade',
-                fadeEffect: {
-                    crossFade: true,
-                },
-                speed: 1100,
-                navigation: {
-                    nextEl: '.hero-meta-slider .swiper-button-next',
-                    prevEl: '.hero-meta-slider .swiper-button-prev',
-                },
-                slidesPerView: 1,
-                allowTouchMove: true,
-            });
-        }
+if (typeof Swiper !== 'undefined') {
+	var heroSwiper = new Swiper('.hero-meta-slider', {
+		loop: true,
+		effect: 'fade',
+		fadeEffect: {
+			crossFade: true,
+		},
+		speed: 1100,
+		navigation: {
+			nextEl: '.hero-meta-slider .swiper-button-next',
+			prevEl: '.hero-meta-slider .swiper-button-prev',
+		},
+		slidesPerView: 1,
+		allowTouchMove: true,
+	});
+}
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const serviceAccordion = document.querySelector('.design-service-accordion');
-            if (!serviceAccordion) return;
+document.addEventListener('DOMContentLoaded', function () {
+	const serviceAccordion = document.querySelector('.design-service-accordion');
+	if (!serviceAccordion) return;
 
-            const items = serviceAccordion.querySelectorAll('.accordion-items');
-            const panels = serviceAccordion.querySelectorAll('.accordion-collapse');
-            const buttons = serviceAccordion.querySelectorAll('.accordion-buttons');
+	const items = serviceAccordion.querySelectorAll('.accordion-items');
+	const panels = serviceAccordion.querySelectorAll('.accordion-collapse');
+	const buttons = serviceAccordion.querySelectorAll('.accordion-buttons');
 
-            function openServiceItem(item) {
-                if (!item) return;
+	function openServiceItem(item) {
+		if (!item) return;
 
-                const panel = item.querySelector('.accordion-collapse');
-                const button = item.querySelector('.accordion-buttons');
-                if (!panel || !button) return;
+		const panel = item.querySelector('.accordion-collapse');
+		const button = item.querySelector('.accordion-buttons');
+		if (!panel || !button) return;
 
-                items.forEach((card) => {
-                    card.classList.toggle('active', card === item);
-                });
+		items.forEach((card) => {
+			card.classList.toggle('active', card === item);
+		});
 
-                panels.forEach((collapse) => {
-                    const instance = bootstrap.Collapse.getOrCreateInstance(collapse, { toggle: false });
-                    if (collapse === panel) {
-                        instance.show();
-                    } else {
-                        instance.hide();
-                    }
-                });
+		panels.forEach((collapse) => {
+			const instance = bootstrap.Collapse.getOrCreateInstance(collapse, { toggle: false });
+			if (collapse === panel) {
+				instance.show();
+			} else {
+				instance.hide();
+			}
+		});
 
-                buttons.forEach((btn) => {
-                    const isActive = btn === button;
-                    btn.classList.toggle('collapsed', !isActive);
-                    btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
-                });
-            }
+		buttons.forEach((btn) => {
+			const isActive = btn === button;
+			btn.classList.toggle('collapsed', !isActive);
+			btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+		});
+	}
 
-            items.forEach((item) => {
-                const button = item.querySelector('.accordion-buttons');
-                if (!button) return;
+	items.forEach((item) => {
+		const button = item.querySelector('.accordion-buttons');
+		if (!button) return;
 
-                item.addEventListener('mouseenter', function () {
-                    openServiceItem(item);
-                });
+		item.addEventListener('mouseenter', function () {
+			openServiceItem(item);
+		});
 
-                item.addEventListener('focusin', function () {
-                    openServiceItem(item);
-                });
+		item.addEventListener('focusin', function () {
+			openServiceItem(item);
+		});
 
-                button.addEventListener('click', function (event) {
-                    const link = button.dataset.serviceLink;
-                    if (link) {
-                        openServiceItem(item);
+		button.addEventListener('click', function (event) {
+			const link = button.dataset.serviceLink;
+			if (link) {
+				openServiceItem(item);
 
-                        const isModifierClick = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
-                        if (!isModifierClick) {
-                            setTimeout(function () {
-                                window.location.href = link;
-                            }, 80);
-                        }
-                    }
-                });
-            });
+				const isModifierClick = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+				if (!isModifierClick) {
+					setTimeout(function () {
+						window.location.href = link;
+					}, 80);
+				}
+			}
+		});
+	});
 
-            const firstActive = serviceAccordion.querySelector('.accordion-items .accordion-buttons:not(.collapsed)')?.closest('.accordion-items');
-            if (firstActive) {
-                openServiceItem(firstActive);
-            }
-        });
+	const firstActive = serviceAccordion.querySelector('.accordion-items .accordion-buttons:not(.collapsed)')?.closest('.accordion-items');
+	if (firstActive) {
+		openServiceItem(firstActive);
+	}
+});
 
 
 
@@ -170,306 +164,306 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 // web design page portfolio review section
 
 
-  const portfolioReviewCards = document.querySelectorAll(".tp-portfolio-inner-content");
-        let pendingReviewRequest = 0;
+const portfolioReviewCards = document.querySelectorAll(".tp-portfolio-inner-content");
+let pendingReviewRequest = 0;
 
-        const scrollReviewButtonToCenter = (button) => {
-            const buttonRect = button.getBoundingClientRect();
-            const scrollOffset = buttonRect.top + buttonRect.height / 2 - window.innerHeight / 2;
-            if (Math.abs(scrollOffset) < 4) return Promise.resolve();
+const scrollReviewButtonToCenter = (button) => {
+	const buttonRect = button.getBoundingClientRect();
+	const scrollOffset = buttonRect.top + buttonRect.height / 2 - window.innerHeight / 2;
+	if (Math.abs(scrollOffset) < 4) return Promise.resolve();
 
-            return new Promise((resolve) => {
-                let settledFrames = 0;
-                let previousScrollY = window.scrollY;
-                let timeoutId;
-                let frameId;
+	return new Promise((resolve) => {
+		let settledFrames = 0;
+		let previousScrollY = window.scrollY;
+		let timeoutId;
+		let frameId;
 
-                const finish = () => {
-                    clearTimeout(timeoutId);
-                    cancelAnimationFrame(frameId);
-                    document.removeEventListener("scrollend", finish);
-                    resolve();
-                };
+		const finish = () => {
+			clearTimeout(timeoutId);
+			cancelAnimationFrame(frameId);
+			document.removeEventListener("scrollend", finish);
+			resolve();
+		};
 
-                const checkScroll = () => {
-                    if (Math.abs(window.scrollY - previousScrollY) < 1) {
-                        settledFrames += 1;
-                        if (settledFrames >= 4) {
-                            finish();
-                            return;
-                        }
-                    } else {
-                        settledFrames = 0;
-                        previousScrollY = window.scrollY;
-                    }
-                    frameId = requestAnimationFrame(checkScroll);
-                };
+		const checkScroll = () => {
+			if (Math.abs(window.scrollY - previousScrollY) < 1) {
+				settledFrames += 1;
+				if (settledFrames >= 4) {
+					finish();
+					return;
+				}
+			} else {
+				settledFrames = 0;
+				previousScrollY = window.scrollY;
+			}
+			frameId = requestAnimationFrame(checkScroll);
+		};
 
-                document.addEventListener("scrollend", finish, { once: true });
-                timeoutId = setTimeout(finish, 1200);
-                frameId = requestAnimationFrame(checkScroll);
-                window.scrollBy({ top: scrollOffset, behavior: "smooth" });
-            });
-        };
+		document.addEventListener("scrollend", finish, { once: true });
+		timeoutId = setTimeout(finish, 1200);
+		frameId = requestAnimationFrame(checkScroll);
+		window.scrollBy({ top: scrollOffset, behavior: "smooth" });
+	});
+};
 
-        const setReviewPanelExpanded = (button, panel, expanded) => {
-            const wasHidden = panel.hidden;
-            panel.hidden = false;
-            const computedStyle = getComputedStyle(panel);
-            const fullHeight = panel.getBoundingClientRect().height;
-            const properties = [
-                "height",
-                "marginTop",
-                "paddingTop",
-                "paddingRight",
-                "paddingBottom",
-                "paddingLeft",
-                "borderTopWidth",
-                "borderRightWidth",
-                "borderBottomWidth",
-                "borderLeftWidth",
-                "opacity"
-            ];
-            const from = Object.fromEntries(properties.map((property) => [
-                property,
-                wasHidden
-                    ? (property === "opacity" ? "0" : "0px")
-                    : computedStyle[property]
-            ]));
-            const to = Object.fromEntries(properties.map((property) => [
-                property,
-                expanded
-                    ? (property === "height" ? `${fullHeight}px` : computedStyle[property])
-                    : (property === "opacity" ? "0" : "0px")
-            ]));
+const setReviewPanelExpanded = (button, panel, expanded) => {
+	const wasHidden = panel.hidden;
+	panel.hidden = false;
+	const computedStyle = getComputedStyle(panel);
+	const fullHeight = panel.getBoundingClientRect().height;
+	const properties = [
+		"height",
+		"marginTop",
+		"paddingTop",
+		"paddingRight",
+		"paddingBottom",
+		"paddingLeft",
+		"borderTopWidth",
+		"borderRightWidth",
+		"borderBottomWidth",
+		"borderLeftWidth",
+		"opacity"
+	];
+	const from = Object.fromEntries(properties.map((property) => [
+		property,
+		wasHidden
+			? (property === "opacity" ? "0" : "0px")
+			: computedStyle[property]
+	]));
+	const to = Object.fromEntries(properties.map((property) => [
+		property,
+		expanded
+			? (property === "height" ? `${fullHeight}px` : computedStyle[property])
+			: (property === "opacity" ? "0" : "0px")
+	]));
 
-            panel.getAnimations().forEach((animation) => animation.cancel());
-            properties.forEach((property) => {
-                panel.style[property] = from[property];
-            });
-            panel.style.overflow = "hidden";
-            button.setAttribute("aria-expanded", `${expanded}`);
+	panel.getAnimations().forEach((animation) => animation.cancel());
+	properties.forEach((property) => {
+		panel.style[property] = from[property];
+	});
+	panel.style.overflow = "hidden";
+	button.setAttribute("aria-expanded", `${expanded}`);
 
-            const animation = panel.animate(
-                [from, to],
-                { duration: 420, easing: "ease-in-out" }
-            );
+	const animation = panel.animate(
+		[from, to],
+		{ duration: 420, easing: "ease-in-out" }
+	);
 
-            animation.onfinish = () => {
-                if (button.getAttribute("aria-expanded") !== `${expanded}`) return;
-                properties.forEach((property) => panel.style.removeProperty(
-                    property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
-                ));
-                panel.style.removeProperty("overflow");
-                if (!expanded) panel.hidden = true;
-            };
-        };
+	animation.onfinish = () => {
+		if (button.getAttribute("aria-expanded") !== `${expanded}`) return;
+		properties.forEach((property) => panel.style.removeProperty(
+			property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+		));
+		panel.style.removeProperty("overflow");
+		if (!expanded) panel.hidden = true;
+	};
+};
 
-        portfolioReviewCards.forEach((card, index) => {
-            const title = card.querySelector(".tp-portfolio-inner-title");
-            if (!title) return;
+portfolioReviewCards.forEach((card, index) => {
+	const title = card.querySelector(".tp-portfolio-inner-title");
+	if (!title) return;
 
-            card.classList.add("portfolio-review-row");
+	card.classList.add("portfolio-review-row");
 
-            const review = document.createElement("div");
-            review.className = "portfolio-review";
+	const review = document.createElement("div");
+	review.className = "portfolio-review";
 
-            const button = document.createElement("button");
-            button.className = "portfolio-review-toggle";
-            button.type = "button";
-            button.textContent = "View Client Perspective";
-            button.setAttribute("aria-expanded", "false");
-            button.setAttribute("aria-controls", `portfolio-review-panel-${index}`);
+	const button = document.createElement("button");
+	button.className = "portfolio-review-toggle";
+	button.type = "button";
+	button.textContent = "View Client Feedback";
+	button.setAttribute("aria-expanded", "false");
+	button.setAttribute("aria-controls", `portfolio-review-panel-${index}`);
 
-            const panel = document.createElement("div");
-            panel.className = "portfolio-review-panel";
-            panel.id = `portfolio-review-panel-${index}`;
-            panel.hidden = true;
+	const panel = document.createElement("div");
+	panel.className = "portfolio-review-panel";
+	panel.id = `portfolio-review-panel-${index}`;
+	panel.hidden = true;
 
-            let reviewContent = card.querySelector(".portfolio-review-content");
-            if (reviewContent) {
-                reviewContent.hidden = false;
-            } else {
-                reviewContent = document.createElement("div");
-                reviewContent.className = "portfolio-review-content";
+	let reviewContent = card.querySelector(".portfolio-review-content");
+	if (reviewContent) {
+		reviewContent.hidden = false;
+	} else {
+		reviewContent = document.createElement("div");
+		reviewContent.className = "portfolio-review-content";
 
-                const heading = document.createElement("h5");
-                heading.className = "portfolio-review-heading";
-                heading.textContent = "Client Perspective";
+		const heading = document.createElement("h5");
+		heading.className = "portfolio-review-heading";
+		heading.textContent = "Client Perspective";
 
-                const text = document.createElement("p");
-                text.className = "portfolio-review-quote";
-                text.textContent = title.dataset.reviewText || "We don’t have published client feedback for this project yet.";
-                reviewContent.append(heading, text);
+		const text = document.createElement("p");
+		text.className = "portfolio-review-quote";
+		text.textContent = title.dataset.reviewText || "We don’t have published client feedback for this project yet.";
+		reviewContent.append(heading, text);
 
-                const authorName = title.dataset.reviewName;
-                const authorRole = title.dataset.reviewRole;
-                const platform = title.dataset.reviewPlatform;
-                if (authorName || authorRole || platform) {
-                    const author = document.createElement("div");
-                    author.className = "portfolio-review-author";
-                    if (authorName) {
-                        const name = document.createElement("strong");
-                        name.textContent = authorName;
-                        author.append(name);
-                    }
-                    if (authorRole) {
-                        const role = document.createElement("span");
-                        role.textContent = authorRole;
-                        author.append(role);
-                    }
-                    if (platform) {
-                        const verification = document.createElement("span");
-                        verification.className = "portfolio-review-platform";
-                        verification.textContent = platform;
-                        author.append(verification);
-                    }
-                    reviewContent.append(author);
-                }
-            }
-            panel.append(reviewContent);
-            review.append(button);
-            card.append(review, panel);
+		const authorName = title.dataset.reviewName;
+		const authorRole = title.dataset.reviewRole;
+		const platform = title.dataset.reviewPlatform;
+		if (authorName || authorRole || platform) {
+			const author = document.createElement("div");
+			author.className = "portfolio-review-author";
+			if (authorName) {
+				const name = document.createElement("strong");
+				name.textContent = authorName;
+				author.append(name);
+			}
+			if (authorRole) {
+				const role = document.createElement("span");
+				role.textContent = authorRole;
+				author.append(role);
+			}
+			if (platform) {
+				const verification = document.createElement("span");
+				verification.className = "portfolio-review-platform";
+				verification.textContent = platform;
+				author.append(verification);
+			}
+			reviewContent.append(author);
+		}
+	}
+	panel.append(reviewContent);
+	review.append(button);
+	card.append(review, panel);
 
-            button.addEventListener("click", async () => {
-                const isExpanded = button.getAttribute("aria-expanded") === "true";
-                const requestId = ++pendingReviewRequest;
+	button.addEventListener("click", async () => {
+		const isExpanded = button.getAttribute("aria-expanded") === "true";
+		const requestId = ++pendingReviewRequest;
 
-                document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((openButton) => {
-                    setReviewPanelExpanded(
-                        openButton,
-                        document.getElementById(openButton.getAttribute("aria-controls")),
-                        false
-                    );
-                });
+		document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((openButton) => {
+			setReviewPanelExpanded(
+				openButton,
+				document.getElementById(openButton.getAttribute("aria-controls")),
+				false
+			);
+		});
 
-                if (!isExpanded) {
-                    await scrollReviewButtonToCenter(button);
-                    if (requestId !== pendingReviewRequest) return;
-                    setReviewPanelExpanded(button, panel, true);
-                }
-            });
-        });
+		if (!isExpanded) {
+			await scrollReviewButtonToCenter(button);
+			if (requestId !== pendingReviewRequest) return;
+			setReviewPanelExpanded(button, panel, true);
+		}
+	});
+});
 
-        document.addEventListener("click", (event) => {
-            if (event.target.closest(".portfolio-review-toggle, .portfolio-review-panel")) return;
-            pendingReviewRequest += 1;
+document.addEventListener("click", (event) => {
+	if (event.target.closest(".portfolio-review-toggle, .portfolio-review-panel")) return;
+	pendingReviewRequest += 1;
 
-            document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
-                setReviewPanelExpanded(
-                    button,
-                    document.getElementById(button.getAttribute("aria-controls")),
-                    false
-                );
-            });
-        });
+	document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
+		setReviewPanelExpanded(
+			button,
+			document.getElementById(button.getAttribute("aria-controls")),
+			false
+		);
+	});
+});
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key !== "Escape") return;
-            pendingReviewRequest += 1;
+document.addEventListener("keydown", (event) => {
+	if (event.key !== "Escape") return;
+	pendingReviewRequest += 1;
 
-            document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
-                setReviewPanelExpanded(
-                    button,
-                    document.getElementById(button.getAttribute("aria-controls")),
-                    false
-                );
-                button.focus();
-            });
-        });
+	document.querySelectorAll(".portfolio-review-toggle[aria-expanded='true']").forEach((button) => {
+		setReviewPanelExpanded(
+			button,
+			document.getElementById(button.getAttribute("aria-controls")),
+			false
+		);
+		button.focus();
+	});
+});
 
-		  $(document).ready(function () {
-    $('.slider-card').each(function () {
-        $(this).addClass('not-hide-cursor');
-        $(this).attr('data-cursor', 'View<br>Demo');
-        $(this).find('img').addClass('cursor-hide');
-    });
+$(document).ready(function () {
+	$('.slider-card').each(function () {
+		$(this).addClass('not-hide-cursor');
+		$(this).attr('data-cursor', 'View<br>Demo');
+		$(this).find('img').addClass('cursor-hide');
+	});
 
-    var targetX = 0;
-    var currentX = 0;
-    var rafId = null;
-    var ease = 0.08; 
+	var targetX = 0;
+	var currentX = 0;
+	var rafId = null;
+	var ease = 0.08;
 
-    function lerp(a, b, t) { return a + (b - a) * t; }
+	function lerp(a, b, t) { return a + (b - a) * t; }
 
-    function animateSlider() {
-        currentX = lerp(currentX, targetX, ease);
-        // 0.5px-dən az fərq varsa dayan
-        if (Math.abs(currentX - targetX) < 0.5) {
-            currentX = targetX;
-            rafId = null;
-        } else {
-            rafId = requestAnimationFrame(animateSlider);
-        }
-        $('.slider-track').css('transform', 'translateX(-' + currentX + 'px)');
-    }
+	function animateSlider() {
+		currentX = lerp(currentX, targetX, ease);
+		// 0.5px-dən az fərq varsa dayan
+		if (Math.abs(currentX - targetX) < 0.5) {
+			currentX = targetX;
+			rafId = null;
+		} else {
+			rafId = requestAnimationFrame(animateSlider);
+		}
+		$('.slider-track').css('transform', 'translateX(-' + currentX + 'px)');
+	}
 
-    function scheduleAnimation() {
-        if (!rafId) rafId = requestAnimationFrame(animateSlider);
-    }
+	function scheduleAnimation() {
+		if (!rafId) rafId = requestAnimationFrame(animateSlider);
+	}
 
-   function calcTarget() {
-    var scrolled = $(window).scrollTop();
-    var windowHeight = $(window).height();
-    var documentHeight = $(document).height();
-    var trackWidth = $('.slider-track').outerWidth(true);
-    var containerWidth = window.innerWidth;   // $('.slider-wrapper').width() əvəzinə
-    var maxScroll = Math.max(0, trackWidth - containerWidth);
+	function calcTarget() {
+		var scrolled = $(window).scrollTop();
+		var windowHeight = $(window).height();
+		var documentHeight = $(document).height();
+		var trackWidth = $('.slider-track').outerWidth(true);
+		var containerWidth = window.innerWidth;   // $('.slider-wrapper').width() əvəzinə
+		var maxScroll = Math.max(0, trackWidth - containerWidth);
 
-    if (maxScroll > 0 && documentHeight > windowHeight) {
-        var pct = scrolled / (documentHeight - windowHeight);
-        targetX = pct * maxScroll;
-        scheduleAnimation();
-    }
-}
+		if (maxScroll > 0 && documentHeight > windowHeight) {
+			var pct = scrolled / (documentHeight - windowHeight);
+			targetX = pct * maxScroll;
+			scheduleAnimation();
+		}
+	}
 
-// window scroll event handler
+	// window scroll event handler
 
-    function updateParallax() {
-        var scrolled = $(window).scrollTop();
-        var windowHeight = $(window).height();
-        $('.slider-card').each(function (i) {
-            var card = $(this);
-            var cardCenter = card.offset().top + card.height() / 2;
-            var winCenter = scrolled + windowHeight / 2;
-            var dist = cardCenter - winCenter;
-            var yPos = -(dist * 0.03);
-            card.find('img').css('transform', 'translateY(' + yPos + 'px)');
-        });
-    }
+	function updateParallax() {
+		var scrolled = $(window).scrollTop();
+		var windowHeight = $(window).height();
+		$('.slider-card').each(function (i) {
+			var card = $(this);
+			var cardCenter = card.offset().top + card.height() / 2;
+			var winCenter = scrolled + windowHeight / 2;
+			var dist = cardCenter - winCenter;
+			var yPos = -(dist * 0.03);
+			card.find('img').css('transform', 'translateY(' + yPos + 'px)');
+		});
+	}
 
-    function checkVisible() {
-        var scrolled = $(window).scrollTop();
-        var windowHeight = $(window).height();
-        $('.slider-card').each(function () {
-            var top = $(this).offset().top;
-            if (top < scrolled + windowHeight + 60) {
-                $(this).addClass('visible');
-            }
-        });
-    }
+	function checkVisible() {
+		var scrolled = $(window).scrollTop();
+		var windowHeight = $(window).height();
+		$('.slider-card').each(function () {
+			var top = $(this).offset().top;
+			if (top < scrolled + windowHeight + 60) {
+				$(this).addClass('visible');
+			}
+		});
+	}
 
-    $('.slider-card').each(function (i) {
-        $(this).css('transition-delay', (i * 0.06) + 's');
-    });
+	$('.slider-card').each(function (i) {
+		$(this).css('transition-delay', (i * 0.06) + 's');
+	});
 
-    var scrollTimer;
-    $(window).on('scroll', function () {
-        calcTarget();
-        updateParallax();
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(checkVisible, 30);
-    });
+	var scrollTimer;
+	$(window).on('scroll', function () {
+		calcTarget();
+		updateParallax();
+		clearTimeout(scrollTimer);
+		scrollTimer = setTimeout(checkVisible, 30);
+	});
 
-    checkVisible();
-    calcTarget();
+	checkVisible();
+	calcTarget();
 
-    // Wheel → hem horizontal hem vertical scroll
-    $('.slider-wrapper').on('wheel', function (e) {
-        e.preventDefault();
-        var delta = e.originalEvent.deltaY;
-        $(window).scrollTop($(window).scrollTop() + delta);
-    });
+	// Wheel → hem horizontal hem vertical scroll
+	$('.slider-wrapper').on('wheel', function (e) {
+		e.preventDefault();
+		var delta = e.originalEvent.deltaY;
+		$(window).scrollTop($(window).scrollTop() + delta);
+	});
 });
 
 (function ($) {
@@ -648,13 +642,13 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 		$(".body-overlay").addClass("opened");
 	});
 
-function updateThemeButtonIcon(theme) {
-    let $btn = $("#theme-toggle, #theme-toggle-sticky");
-    if (!$btn.length) return;
+	function updateThemeButtonIcon(theme) {
+		let $btn = $("#theme-toggle, #theme-toggle-sticky");
+		if (!$btn.length) return;
 
-    if (theme === "dark") {
-        // ☀️ SUN (icon for light mode)
-        $btn.html(`
+		if (theme === "dark") {
+			// ☀️ SUN (icon for light mode)
+			$btn.html(`
 		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 		<g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 			<path fill="currentColor" d="M12 6c3.31 0 6 2.69 6 6c0 3.31 -2.69 6 -6 6c-3.31 0 -6 -2.69 -6 -6c0 -3.31 2.69 -6 6 -6Z">
@@ -674,7 +668,7 @@ function updateThemeButtonIcon(theme) {
 		</g>
 		</svg>
 		`);
-    } 
+		}
 		else {
 			$btn.html(`
 		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -702,7 +696,7 @@ function updateThemeButtonIcon(theme) {
 		</svg>
 		`);
 		}
-		}
+	}
 
 	function applyTheme(theme) {
 		let $html = $("html");
@@ -853,178 +847,178 @@ function updateThemeButtonIcon(theme) {
 		});
 	}
 
-// 18. webgl images hover animation //
-if ($('.tp--hover-item').length) {
+	// 18. webgl images hover animation //
+	if ($('.tp--hover-item').length) {
 
-    $('.tp--hover-img').each(function () {
+		$('.tp--hover-img').each(function () {
 
-        const hoverBox = $(this);
-        const img = hoverBox.find('img');
-        const parent = hoverBox.closest('.tp--hover-item');
-        const isPortfolioGallery =
-            parent.closest('.tp-portfolio-inner-item').length > 0 && img.length > 1;
+			const hoverBox = $(this);
+			const img = hoverBox.find('img');
+			const parent = hoverBox.closest('.tp--hover-item');
+			const isPortfolioGallery =
+				parent.closest('.tp-portfolio-inner-item').length > 0 && img.length > 1;
 
-        let effect = null;
-        let loading = false;
-        let active = false;
-        let effectGeneration = 0;
-        let cleanupTimer = null;
+			let effect = null;
+			let loading = false;
+			let active = false;
+			let effectGeneration = 0;
+			let cleanupTimer = null;
 
-        function destroyEffect() {
-            if (!effect) {
-                return;
-            }
+			function destroyEffect() {
+				if (!effect) {
+					return;
+				}
 
-            const canvas = hoverBox.children("canvas").get(0);
-            const context = canvas &&
-                (canvas.getContext("webgl2") ||
-                    canvas.getContext("webgl") ||
-                    canvas.getContext("experimental-webgl"));
-            context?.getExtension("WEBGL_lose_context")?.loseContext();
-            canvas?.remove();
-            effect = null;
-        }
+				const canvas = hoverBox.children("canvas").get(0);
+				const context = canvas &&
+					(canvas.getContext("webgl2") ||
+						canvas.getContext("webgl") ||
+						canvas.getContext("experimental-webgl"));
+				context?.getExtension("WEBGL_lose_context")?.loseContext();
+				canvas?.remove();
+				effect = null;
+			}
 
-        function getCurrentImage() {
-            return isPortfolioGallery
-                ? hoverBox.find('img:not([hidden])').first()
-                : img.eq(0);
-        }
+			function getCurrentImage() {
+				return isPortfolioGallery
+					? hoverBox.find('img:not([hidden])').first()
+					: img.eq(0);
+			}
 
-        function createEffect() {
+			function createEffect() {
 
-            if (effect || loading) {
-                return;
-            }
+				if (effect || loading) {
+					return;
+				}
 
-            loading = true;
-            const generation = ++effectGeneration;
+				loading = true;
+				const generation = ++effectGeneration;
 
-            const startEffect = function () {
-                if (generation !== effectGeneration) {
-                    return;
-                }
+				const startEffect = function () {
+					if (generation !== effectGeneration) {
+						return;
+					}
 
-                // Əgər mouse artıq card-dan çıxıbsa,
-                // effect yaratmağa ehtiyac yoxdur.
-                if (!active) {
-                    loading = false;
-                    return;
-                }
+					// Əgər mouse artıq card-dan çıxıbsa,
+					// effect yaratmağa ehtiyac yoxdur.
+					if (!active) {
+						loading = false;
+						return;
+					}
 
-                const currentImage = getCurrentImage();
-                const currentImageElement = currentImage.get(0);
+					const currentImage = getCurrentImage();
+					const currentImageElement = currentImage.get(0);
 
-                if (!currentImageElement.complete || !currentImageElement.naturalWidth) {
-                    currentImage.one("load", startEffect);
-                    return;
-                }
+					if (!currentImageElement.complete || !currentImageElement.naturalWidth) {
+						currentImage.one("load", startEffect);
+						return;
+					}
 
-                effect = new hoverEffect({
-                    parent: hoverBox.get(0),
+					effect = new hoverEffect({
+						parent: hoverBox.get(0),
 
-                    intensity:
-                        hoverBox.data("intensity") || undefined,
+						intensity:
+							hoverBox.data("intensity") || undefined,
 
-                    speedIn:
-                        hoverBox.data("speedin") || undefined,
+						speedIn:
+							hoverBox.data("speedin") || undefined,
 
-                    speedOut:
-                        hoverBox.data("speedout") || undefined,
+						speedOut:
+							hoverBox.data("speedout") || undefined,
 
-                    easing:
-                        hoverBox.data("easing") || undefined,
+						easing:
+							hoverBox.data("easing") || undefined,
 
-                    image1:
-                        currentImage.attr("src"),
+						image1:
+							currentImage.attr("src"),
 
-                    image2:
-                        currentImage.attr("src"),
+						image2:
+							currentImage.attr("src"),
 
-                    displacementImage:
-                        hoverBox.data("displacement"),
+						displacementImage:
+							hoverBox.data("displacement"),
 
-                    imagesRatio:
-                        currentImageElement.naturalHeight /
-                        currentImageElement.naturalWidth,
+						imagesRatio:
+							currentImageElement.naturalHeight /
+							currentImageElement.naturalWidth,
 
-                    hover: true
-                });
+						hover: true
+					});
 
-                loading = false;
+					loading = false;
 
-                effect.next();
-            };
+					effect.next();
+				};
 
-            const currentImage = getCurrentImage().get(0);
+				const currentImage = getCurrentImage().get(0);
 
-            if (currentImage.complete && currentImage.naturalWidth) {
-                startEffect();
-            } else {
+				if (currentImage.complete && currentImage.naturalWidth) {
+					startEffect();
+				} else {
 
-                $(currentImage).one("load", function () {
-                    startEffect();
-                });
+					$(currentImage).one("load", function () {
+						startEffect();
+					});
 
-            }
-        }
+				}
+			}
 
-        if (isPortfolioGallery) {
-            hoverBox.on("gallery:imagechange", function () {
-                effectGeneration++;
-                loading = false;
+			if (isPortfolioGallery) {
+				hoverBox.on("gallery:imagechange", function () {
+					effectGeneration++;
+					loading = false;
 
-                if (cleanupTimer) {
-                    clearTimeout(cleanupTimer);
-                    cleanupTimer = null;
-                }
+					if (cleanupTimer) {
+						clearTimeout(cleanupTimer);
+						cleanupTimer = null;
+					}
 
-                destroyEffect();
+					destroyEffect();
 
-                if (active) {
-                    createEffect();
-                }
-            });
-        }
+					if (active) {
+						createEffect();
+					}
+				});
+			}
 
-        parent.on("mouseenter", function () {
+			parent.on("mouseenter", function () {
 
-            active = true;
-            if (cleanupTimer) {
-                clearTimeout(cleanupTimer);
-                cleanupTimer = null;
-            }
+				active = true;
+				if (cleanupTimer) {
+					clearTimeout(cleanupTimer);
+					cleanupTimer = null;
+				}
 
-            createEffect();
+				createEffect();
 
-            if (effect) {
-                effect.next();
-            }
+				if (effect) {
+					effect.next();
+				}
 
-        });
+			});
 
 
-        parent.on("mouseleave", function () {
+			parent.on("mouseleave", function () {
 
-            active = false;
+				active = false;
 
-            if (effect) {
-                effect.previous();
+				if (effect) {
+					effect.previous();
 
-                const speedOut = Number(hoverBox.data("speedout")) || 1.2;
-                cleanupTimer = window.setTimeout(() => {
-                    if (!active) {
-                        destroyEffect();
-                    }
-                    cleanupTimer = null;
-                }, Math.max(speedOut, 0) * 1000 + 100);
-            }
+					const speedOut = Number(hoverBox.data("speedout")) || 1.2;
+					cleanupTimer = window.setTimeout(() => {
+						if (!active) {
+							destroyEffect();
+						}
+						cleanupTimer = null;
+					}, Math.max(speedOut, 0) * 1000 + 100);
+				}
 
-        });
+			});
 
-    });
+		});
 
-}
+	}
 
 
 	// 19 .service panel animation //
