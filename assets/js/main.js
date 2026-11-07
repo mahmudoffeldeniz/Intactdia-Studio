@@ -262,6 +262,9 @@ const setReviewPanelExpanded = (button, panel, expanded) => {
 portfolioReviewCards.forEach((card, index) => {
 	const title = card.querySelector(".tp-portfolio-inner-title");
 	if (!title) return;
+	if (!title.title) {
+		title.title = title.textContent.trim();
+	}
 
 	card.classList.add("portfolio-review-row");
 
