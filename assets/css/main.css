@@ -15198,18 +15198,24 @@ html.agntix-dark .tp-hero-2-subtitle {
 
 .hero-meta-content h5 {
   font-size: 72px;
-  line-height: 1.1;
-  margin-bottom: 30px;
+  line-height: 1.15;
+  margin-bottom: 20px;
   font-weight: 700;
   color: #ffffff !important;
 }
 
+.hero-meta-content h5 .hero-dot {
+  color: #ecc91d;
+}
+
 .hero-meta-content p {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.5;
   opacity: 0.9;
   font-weight: 400;
   color: #ffffff !important;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .hero-meta-slider .swiper-button-next,
@@ -58643,6 +58649,11 @@ html.agntix-dark .tp-offcanvas-2-area .tp-offcanvas-2-visit-link {
   .home-page .hero-meta-content h5 {
     font-size: clamp(1.75rem, 9vw, 2.5rem);
     margin-bottom: 12px;
+  }
+
+  .home-page .hero-meta-content p {
+    font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+    line-height: 1.45;
   }
 
   .home-page .hero-meta-slider .swiper-button-prev {
