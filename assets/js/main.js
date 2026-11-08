@@ -37,6 +37,10 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 
 	let currentImage = 0;
 
+	const blurBackdrop = document.createElement('div');
+	blurBackdrop.className = 'gallery-blur-backdrop';
+	imageContainer.prepend(blurBackdrop);
+
 	const controls = document.createElement('div');
 	controls.className = 'web-design-gallery-controls';
 	controls.setAttribute('role', 'group');
@@ -52,17 +56,32 @@ document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
 	nextButton.setAttribute('aria-label', `Next image for ${title}`);
 	nextButton.textContent = '›';
 
+	const applySlidePresentation = (index) => {
+		if (index > 0 && images[index]) {
+			blurBackdrop.style.backgroundImage = `url("${images[index].src}")`;
+			blurBackdrop.classList.add('active');
+			imageContainer.classList.add('is-slide-view');
+		} else {
+			blurBackdrop.classList.remove('active');
+			blurBackdrop.style.backgroundImage = 'none';
+			imageContainer.classList.remove('is-slide-view');
+		}
+	};
+
 	const updateGallery = (step) => {
 		currentImage = (currentImage + step + images.length) % images.length;
 		images.forEach((image, index) => {
 			image.hidden = index !== currentImage;
 		});
+		applySlidePresentation(currentImage);
 		imageContainer.dispatchEvent(new CustomEvent('gallery:imagechange'));
 	};
 
 	images.forEach((image, index) => {
 		image.hidden = index !== currentImage;
 	});
+	applySlidePresentation(currentImage);
+
 	previousButton.addEventListener('click', () => updateGallery(-1));
 	nextButton.addEventListener('click', () => updateGallery(1));
 
@@ -894,6 +913,10 @@ $(document).ready(function () {
 					return;
 				}
 
+				if (isPortfolioGallery && hoverBox.hasClass('is-slide-view')) {
+					return;
+				}
+
 				loading = true;
 				const generation = ++effectGeneration;
 
@@ -978,7 +1001,7 @@ $(document).ready(function () {
 
 					destroyEffect();
 
-					if (active) {
+					if (active && !hoverBox.hasClass('is-slide-view')) {
 						createEffect();
 					}
 				});
@@ -992,7 +1015,9 @@ $(document).ready(function () {
 					cleanupTimer = null;
 				}
 
-				createEffect();
+				if (!hoverBox.hasClass('is-slide-view')) {
+					createEffect();
+				}
 
 				if (effect) {
 					effect.next();

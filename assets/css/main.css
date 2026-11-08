@@ -60603,6 +60603,51 @@ html.agntix-dark .terms-contact {
   display: none !important;
 }
 
+/* Gallery blur backdrop & slide presentation */
+.tp-portfolio-inner-thumb .tp--hover-img {
+  position: relative;
+  overflow: hidden;
+  background-color: #0d0d0f;
+}
+
+.gallery-blur-backdrop {
+  position: absolute;
+  top: -25px;
+  left: -25px;
+  right: -25px;
+  bottom: -25px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(28px) brightness(0.65) saturate(1.25);
+  transform: scale(1.15);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease, background-image 0.25s ease;
+}
+
+.gallery-blur-backdrop.active {
+  opacity: 1;
+}
+
+/* Secondary images (screenshots) in gallery slider */
+.tp--hover-img.is-slide-view img:not([hidden]) {
+  position: relative;
+  z-index: 2;
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+/* Prevent hover zoom from cropping slide screenshots */
+.tp-portfolio-inner-item:hover .tp-portfolio-inner-thumb .tp--hover-img.is-slide-view img:not([hidden]) {
+  transform: none !important;
+}
+
 .web-projects-heading {
   flex: 1 1 auto;
   min-width: 0;
