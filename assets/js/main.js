@@ -25,69 +25,350 @@ images.forEach((img) => {
 
 // web design page
 
-document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
-	const thumb = card.querySelector('.tp-portfolio-inner-thumb');
-	const imageContainer = thumb?.querySelector('.tp--hover-img');
-	const images = imageContainer ? Array.from(imageContainer.querySelectorAll('img')) : [];
-	const title = card.querySelector('.tp-portfolio-inner-title')?.textContent.trim();
+(function () {
+	let sharedDisplacementTexture = null;
 
-	if (images.length < 2 || !thumb || !title) {
-		return;
+	const getDisplacementTexture = (url) => {
+		if (sharedDisplacementTexture) return sharedDisplacementTexture;
+		if (typeof THREE === 'undefined') return null;
+		const loader = new THREE.TextureLoader();
+		sharedDisplacementTexture = loader.load(url);
+		sharedDisplacementTexture.magFilter = THREE.LinearFilter;
+		sharedDisplacementTexture.minFilter = THREE.LinearFilter;
+		sharedDisplacementTexture.wrapS = THREE.RepeatWrapping;
+		sharedDisplacementTexture.wrapT = THREE.RepeatWrapping;
+		return sharedDisplacementTexture;
+	};
+
+	if (typeof THREE !== 'undefined') {
+		getDisplacementTexture('assets/img/webgl/1.jpg');
 	}
 
-	let currentImage = 0;
+	const ensureImageLoaded = (imgElement) => {
+		if (!imgElement) return Promise.resolve();
+		if (imgElement.complete && imgElement.naturalWidth) {
+			return Promise.resolve(imgElement);
+		}
+		return new Promise((resolve) => {
+			const done = () => {
+				imgElement.removeEventListener('load', done);
+				imgElement.removeEventListener('error', done);
+				resolve(imgElement);
+			};
+			imgElement.addEventListener('load', done);
+			imgElement.addEventListener('error', done);
+			setTimeout(done, 1200);
+		});
+	};
 
-	const blurBackdrop = document.createElement('div');
-	blurBackdrop.className = 'gallery-blur-backdrop';
-	imageContainer.prepend(blurBackdrop);
+	const renderSlideToCanvas = (imgElement, isSlideView, width, height) => {
+		const offscreen = document.createElement('canvas');
+		offscreen.width = width;
+		offscreen.height = height;
+		const ctx = offscreen.getContext('2d');
+		if (!ctx) return offscreen;
 
-	const controls = document.createElement('div');
-	controls.className = 'web-design-gallery-controls';
-	controls.setAttribute('role', 'group');
-	controls.setAttribute('aria-label', `${title} image gallery`);
+		const nw = imgElement.naturalWidth || imgElement.width || width;
+		const nh = imgElement.naturalHeight || imgElement.height || height;
 
-	const previousButton = document.createElement('button');
-	previousButton.type = 'button';
-	previousButton.setAttribute('aria-label', `Previous image for ${title}`);
-	previousButton.textContent = '‹';
-
-	const nextButton = document.createElement('button');
-	nextButton.type = 'button';
-	nextButton.setAttribute('aria-label', `Next image for ${title}`);
-	nextButton.textContent = '›';
-
-	const applySlidePresentation = (index) => {
-		if (index > 0 && images[index]) {
-			blurBackdrop.style.backgroundImage = `url("${images[index].src}")`;
-			blurBackdrop.classList.add('active');
-			imageContainer.classList.add('is-slide-view');
+		if (!isSlideView) {
+			// Mockup: cover the card preserving aspect ratio
+			const imgAspect = nw / nh;
+			const canvasAspect = width / height;
+			let sx = 0, sy = 0, sw = nw, sh = nh;
+			if (imgAspect > canvasAspect) {
+				sw = nh * canvasAspect;
+				sx = (nw - sw) / 2;
+			} else {
+				sh = nw / canvasAspect;
+				sy = (nh - sh) / 2;
+			}
+			ctx.drawImage(imgElement, sx, sy, sw, sh, 0, 0, width, height);
 		} else {
-			blurBackdrop.classList.remove('active');
-			blurBackdrop.style.backgroundImage = 'none';
-			imageContainer.classList.remove('is-slide-view');
+			// Screenshot:
+			// 1. Blurred background
+			ctx.save();
+			if ('filter' in ctx) {
+				ctx.filter = 'blur(28px) brightness(0.65) saturate(1.25)';
+			}
+			ctx.drawImage(imgElement, -30, -30, width + 60, height + 60);
+			ctx.restore();
+
+			// 2. Contained screenshot with padding
+			const padX = 12;
+			const padY = 8;
+			const availW = Math.max(10, width - padX * 2);
+			const availH = Math.max(10, height - padY * 2);
+			const scale = Math.min(availW / nw, availH / nh);
+			const dw = nw * scale;
+			const dh = nh * scale;
+			const dx = (width - dw) / 2;
+			const dy = (height - dh) / 2;
+
+			ctx.drawImage(imgElement, dx, dy, dw, dh);
+		}
+
+		return offscreen;
+	};
+
+	const vertexShader = `
+varying vec2 vUv;
+void main() {
+	vUv = uv;
+	gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`;
+
+	const fragmentShader = `
+varying vec2 vUv;
+uniform float dispFactor;
+uniform sampler2D disp;
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+uniform float angle1;
+uniform float angle2;
+uniform float intensity1;
+uniform float intensity2;
+
+mat2 getRotM(float angle) {
+	float s = sin(angle);
+	float c = cos(angle);
+	return mat2(c, -s, s, c);
+}
+
+void main() {
+	vec4 dispVal = texture2D(disp, vUv);
+	vec2 dispVec = vec2(dispVal.r, dispVal.g);
+
+	vec2 distortedPosition1 = vUv + getRotM(angle1) * dispVec * intensity1 * dispFactor;
+	vec2 distortedPosition2 = vUv + getRotM(angle2) * dispVec * intensity2 * (1.0 - dispFactor);
+
+	vec4 _texture1 = texture2D(texture1, distortedPosition1);
+	vec4 _texture2 = texture2D(texture2, distortedPosition2);
+
+	gl_FragColor = mix(_texture1, _texture2, dispFactor);
+}
+`;
+
+	const transitionWithWaterEffect = (imageContainer, fromImg, toImg, fromIsSlide, toIsSlide, step, onComplete) => {
+		const width = imageContainer.clientWidth || imageContainer.offsetWidth || 680;
+		const height = imageContainer.clientHeight || imageContainer.offsetHeight || 510;
+
+		const canvasFrom = renderSlideToCanvas(fromImg, fromIsSlide, width, height);
+		const canvasTo = renderSlideToCanvas(toImg, toIsSlide, width, height);
+
+		const texture1 = new THREE.CanvasTexture(canvasFrom);
+		texture1.magFilter = THREE.LinearFilter;
+		texture1.minFilter = THREE.LinearFilter;
+
+		const texture2 = new THREE.CanvasTexture(canvasTo);
+		texture2.magFilter = THREE.LinearFilter;
+		texture2.minFilter = THREE.LinearFilter;
+
+		const dispUrl = imageContainer.getAttribute('data-displacement') || 'assets/img/webgl/1.jpg';
+		const dispTexture = getDisplacementTexture(dispUrl);
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 1, 1000);
+		camera.position.z = 1;
+
+		let renderer;
+		try {
+			renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+		} catch (e) {
+			texture1.dispose();
+			texture2.dispose();
+			onComplete();
+			return;
+		}
+
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+		renderer.setSize(width, height);
+		renderer.setClearColor(0x000000, 0);
+
+		const canvas = renderer.domElement;
+		canvas.className = 'web-design-transition-canvas';
+		imageContainer.appendChild(canvas);
+
+		const intensity = parseFloat(imageContainer.getAttribute('data-intensity')) || 0.6;
+		const angle1 = step >= 0 ? Math.PI / 4 : -3 * Math.PI / 4;
+		const angle2 = step >= 0 ? -3 * Math.PI / 4 : Math.PI / 4;
+
+		const material = new THREE.ShaderMaterial({
+			uniforms: {
+				dispFactor: { type: 'f', value: 0 },
+				disp: { type: 't', value: dispTexture },
+				texture1: { type: 't', value: texture1 },
+				texture2: { type: 't', value: texture2 },
+				angle1: { type: 'f', value: angle1 },
+				angle2: { type: 'f', value: angle2 },
+				intensity1: { type: 'f', value: intensity },
+				intensity2: { type: 'f', value: intensity },
+			},
+			vertexShader: vertexShader,
+			fragmentShader: fragmentShader,
+			transparent: true,
+			opacity: 1,
+		});
+
+		const geometry = new THREE.PlaneGeometry(width, height, 1);
+		const mesh = new THREE.Mesh(geometry, material);
+		scene.add(mesh);
+
+		const render = () => {
+			renderer.render(scene, camera);
+		};
+
+		render();
+
+		const cleanup = () => {
+			geometry.dispose();
+			material.dispose();
+			texture1.dispose();
+			texture2.dispose();
+			renderer.dispose();
+			const gl = renderer.getContext();
+			gl?.getExtension('WEBGL_lose_context')?.loseContext();
+			canvas.remove();
+		};
+
+		if (typeof gsap !== 'undefined') {
+			gsap.to(material.uniforms.dispFactor, {
+				duration: 0.85,
+				value: 1,
+				ease: 'power2.inOut',
+				onUpdate: render,
+				onComplete: () => {
+					onComplete();
+					cleanup();
+				},
+			});
+		} else {
+			onComplete();
+			cleanup();
 		}
 	};
 
-	const updateGallery = (step) => {
-		currentImage = (currentImage + step + images.length) % images.length;
+	document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
+		const thumb = card.querySelector('.tp-portfolio-inner-thumb');
+		const imageContainer = thumb?.querySelector('.tp--hover-img');
+		const images = imageContainer ? Array.from(imageContainer.querySelectorAll('img')) : [];
+		const title = card.querySelector('.tp-portfolio-inner-title')?.textContent.trim();
+
+		if (images.length < 2 || !thumb || !title) {
+			return;
+		}
+
+		let currentImage = 0;
+		let isTransitioning = false;
+
+		const blurBackdrop = document.createElement('div');
+		blurBackdrop.className = 'gallery-blur-backdrop';
+		imageContainer.prepend(blurBackdrop);
+
+		const controls = document.createElement('div');
+		controls.className = 'web-design-gallery-controls';
+		controls.setAttribute('role', 'group');
+		controls.setAttribute('aria-label', `${title} image gallery`);
+
+		const previousButton = document.createElement('button');
+		previousButton.type = 'button';
+		previousButton.setAttribute('aria-label', `Previous image for ${title}`);
+		previousButton.textContent = '‹';
+
+		const nextButton = document.createElement('button');
+		nextButton.type = 'button';
+		nextButton.setAttribute('aria-label', `Next image for ${title}`);
+		nextButton.textContent = '›';
+
+		const applySlidePresentation = (index) => {
+			if (index > 0 && images[index]) {
+				blurBackdrop.style.backgroundImage = `url("${images[index].src}")`;
+				blurBackdrop.classList.add('active');
+				imageContainer.classList.add('is-slide-view');
+			} else {
+				blurBackdrop.classList.remove('active');
+				blurBackdrop.style.backgroundImage = 'none';
+				imageContainer.classList.remove('is-slide-view');
+			}
+		};
+
+		const notifyGalleryChange = () => {
+			imageContainer.dispatchEvent(new CustomEvent('gallery:imagechange'));
+			if (typeof jQuery !== 'undefined') {
+				jQuery(imageContainer).trigger('gallery:imagechange');
+			}
+		};
+
+		const updateGalleryImmediate = (targetIndex) => {
+			currentImage = targetIndex;
+			images.forEach((image, index) => {
+				image.hidden = index !== currentImage;
+			});
+			applySlidePresentation(currentImage);
+			notifyGalleryChange();
+		};
+
+		const updateGallery = (step) => {
+			if (isTransitioning) return;
+
+			const fromIndex = currentImage;
+			const toIndex = (currentImage + step + images.length) % images.length;
+			if (fromIndex === toIndex) return;
+
+			const fromImg = images[fromIndex];
+			const toImg = images[toIndex];
+
+			if (typeof THREE === 'undefined' || typeof gsap === 'undefined') {
+				updateGalleryImmediate(toIndex);
+				return;
+			}
+
+			isTransitioning = true;
+			imageContainer.classList.add('is-transitioning');
+			imageContainer.dispatchEvent(new CustomEvent('gallery:transitionstart'));
+			if (typeof jQuery !== 'undefined') {
+				jQuery(imageContainer).trigger('gallery:transitionstart');
+			}
+
+			Promise.all([ensureImageLoaded(fromImg), ensureImageLoaded(toImg)]).then(() => {
+				currentImage = toIndex;
+				transitionWithWaterEffect(
+					imageContainer,
+					fromImg,
+					toImg,
+					fromIndex > 0,
+					toIndex > 0,
+					step,
+					() => {
+						images.forEach((image, index) => {
+							image.hidden = index !== currentImage;
+						});
+						applySlidePresentation(currentImage);
+						isTransitioning = false;
+						imageContainer.classList.remove('is-transitioning');
+						notifyGalleryChange();
+					}
+				);
+			}).catch(() => {
+				updateGalleryImmediate(toIndex);
+				isTransitioning = false;
+				imageContainer.classList.remove('is-transitioning');
+			});
+		};
+
 		images.forEach((image, index) => {
 			image.hidden = index !== currentImage;
 		});
 		applySlidePresentation(currentImage);
-		imageContainer.dispatchEvent(new CustomEvent('gallery:imagechange'));
-	};
 
-	images.forEach((image, index) => {
-		image.hidden = index !== currentImage;
+		previousButton.addEventListener('click', () => updateGallery(-1));
+		nextButton.addEventListener('click', () => updateGallery(1));
+
+		controls.append(previousButton, nextButton);
+		thumb.append(controls);
 	});
-	applySlidePresentation(currentImage);
-
-	previousButton.addEventListener('click', () => updateGallery(-1));
-	nextButton.addEventListener('click', () => updateGallery(1));
-
-	controls.append(previousButton, nextButton);
-	thumb.append(controls);
-});
+})();
 
 
 
@@ -913,7 +1194,7 @@ $(document).ready(function () {
 					return;
 				}
 
-				if (isPortfolioGallery && hoverBox.hasClass('is-slide-view')) {
+				if (isPortfolioGallery && (hoverBox.hasClass('is-slide-view') || hoverBox.hasClass('is-transitioning'))) {
 					return;
 				}
 
@@ -990,6 +1271,18 @@ $(document).ready(function () {
 			}
 
 			if (isPortfolioGallery) {
+				hoverBox.on("gallery:transitionstart", function () {
+					effectGeneration++;
+					loading = false;
+
+					if (cleanupTimer) {
+						clearTimeout(cleanupTimer);
+						cleanupTimer = null;
+					}
+
+					destroyEffect();
+				});
+
 				hoverBox.on("gallery:imagechange", function () {
 					effectGeneration++;
 					loading = false;
@@ -1001,7 +1294,7 @@ $(document).ready(function () {
 
 					destroyEffect();
 
-					if (active && !hoverBox.hasClass('is-slide-view')) {
+					if (active && !hoverBox.hasClass('is-slide-view') && !hoverBox.hasClass('is-transitioning')) {
 						createEffect();
 					}
 				});
@@ -1015,7 +1308,7 @@ $(document).ready(function () {
 					cleanupTimer = null;
 				}
 
-				if (!hoverBox.hasClass('is-slide-view')) {
+				if (!hoverBox.hasClass('is-slide-view') && !hoverBox.hasClass('is-transitioning')) {
 					createEffect();
 				}
 

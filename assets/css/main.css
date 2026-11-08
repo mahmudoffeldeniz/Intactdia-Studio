@@ -60648,6 +60648,18 @@ html.agntix-dark .terms-contact {
   transform: none !important;
 }
 
+/* WebGL water transition canvas */
+.web-design-transition-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
 .web-projects-heading {
   flex: 1 1 auto;
   min-width: 0;
