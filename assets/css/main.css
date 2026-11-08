@@ -15165,11 +15165,17 @@ html.agntix-dark .tp-hero-2-subtitle {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  /* Slider kölgəsi / qaranlıq örtük. Geri qaytarmaq üçün 'transparent' əvəzinə 'rgba(0, 0, 0, 0.3)' yazın və ya .has-overlay class-ı əlavə edin */
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
+}
+
+/* Lazım olduqda kölgəni asanlıqla aktivləşdirmək üçün class */
+.hero-meta-overlay.has-overlay {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .hero-meta-content {
