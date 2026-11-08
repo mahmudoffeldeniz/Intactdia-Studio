@@ -1150,8 +1150,11 @@ $(document).ready(function () {
 					return;
 				}
 
-				if (isPortfolioGallery && hoverBox.hasClass('is-transitioning')) {
-					return;
+				if (isPortfolioGallery) {
+					const isFirstImage = img.first().is(':not([hidden])');
+					if (!isFirstImage || hoverBox.hasClass('is-transitioning')) {
+						return;
+					}
 				}
 
 				loading = true;
@@ -1249,10 +1252,6 @@ $(document).ready(function () {
 					}
 
 					destroyEffect();
-
-					if (active && !hoverBox.hasClass('is-transitioning')) {
-						createEffect();
-					}
 				});
 			}
 
@@ -1268,10 +1267,6 @@ $(document).ready(function () {
 					createEffect();
 				}
 
-				if (effect) {
-					effect.next();
-				}
-
 			});
 
 
@@ -1279,7 +1274,14 @@ $(document).ready(function () {
 
 				active = false;
 
-				if (effect) {
+				if (cleanupTimer) {
+					clearTimeout(cleanupTimer);
+					cleanupTimer = null;
+				}
+
+				if (isPortfolioGallery) {
+					destroyEffect();
+				} else if (effect) {
 					effect.previous();
 
 					const speedOut = Number(hoverBox.data("speedout")) || 1.2;
