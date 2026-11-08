@@ -60603,51 +60603,6 @@ html.agntix-dark .terms-contact {
   display: none !important;
 }
 
-/* Gallery blur backdrop & slide presentation */
-.tp-portfolio-inner-thumb .tp--hover-img {
-  position: relative;
-  overflow: hidden;
-  background-color: #0d0d0f;
-}
-
-.gallery-blur-backdrop {
-  position: absolute;
-  top: -25px;
-  left: -25px;
-  right: -25px;
-  bottom: -25px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: blur(28px) brightness(0.65) saturate(1.25);
-  transform: scale(1.15);
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.35s ease, background-image 0.25s ease;
-}
-
-.gallery-blur-backdrop.active {
-  opacity: 1;
-}
-
-/* Secondary images (screenshots) in gallery slider */
-.tp--hover-img.is-slide-view img:not([hidden]) {
-  position: relative;
-  z-index: 2;
-  object-fit: contain !important;
-  width: 100% !important;
-  height: 100% !important;
-  padding: 8px 12px;
-  box-sizing: border-box;
-  transition: opacity 0.3s ease;
-}
-
-/* Prevent hover zoom from cropping slide screenshots */
-.tp-portfolio-inner-item:hover .tp-portfolio-inner-thumb .tp--hover-img.is-slide-view img:not([hidden]) {
-  transform: none !important;
-}
-
 /* WebGL water transition canvas */
 .web-design-transition-canvas {
   position: absolute;
@@ -60825,6 +60780,45 @@ html.agntix-dark .portfolio-kicker svg path {
   color: rgba(255, 255, 255, 0.72);
   font-size: 13px;
   line-height: 1.6;
+}
+
+.portfolio-review-author {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.portfolio-review-author strong,
+.portfolio-review-author .portfolio-review-name {
+  margin: 0 0 2px 0 !important;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25 !important;
+}
+
+.portfolio-review-author span {
+  display: block;
+  margin: 0 !important;
+  font-size: 12px;
+  letter-spacing: normal;
+  line-height: 1.35 !important;
+  text-transform: none;
+}
+
+.portfolio-review-author .portfolio-review-role {
+  margin: 0 !important;
+  line-height: 1.35 !important;
+  opacity: 0.9;
+}
+
+.portfolio-review-author .portfolio-review-platform {
+  margin-top: 8px !important;
+  margin-bottom: 0 !important;
+  font-size: 11.5px;
+  font-style: italic;
+  opacity: 0.72;
 }
 
 .agntix-light .portfolio-review-toggle {
@@ -61034,16 +61028,18 @@ html.agntix-light .web-design-portfolio .portfolio-review-panel {
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin-top: 8px;
-  padding-top: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
   border-top: 1px solid var(--review-panel-divider);
 }
 
-.web-design-portfolio .portfolio-review-author strong {
-  margin: 0;
+.web-design-portfolio .portfolio-review-author strong,
+.web-design-portfolio .portfolio-review-author .portfolio-review-name {
+  margin: 0 0 2px 0 !important;
   color: var(--review-panel-text);
   font-size: 14px;
   font-weight: 600;
+  line-height: 1.25 !important;
 }
 
 .web-design-portfolio .portfolio-review-author span {
@@ -61052,14 +61048,24 @@ html.agntix-light .web-design-portfolio .portfolio-review-panel {
   color: var(--review-panel-text);
   font-size: 12px;
   letter-spacing: normal;
-  line-height: 1.3;
+  line-height: 1.35;
   text-transform: none;
 }
 
+.web-design-portfolio .portfolio-review-author .portfolio-review-role {
+  margin: 0 !important;
+  line-height: 1.35 !important;
+  opacity: 0.88;
+}
+
 .web-design-portfolio .portfolio-review-author .portfolio-review-platform {
-  margin-top: 0;
+  margin-top: 8px !important;
+  margin-bottom: 0 !important;
   color: var(--review-panel-text);
+  font-size: 11.5px;
+  line-height: 1.3 !important;
   font-style: italic;
+  opacity: 0.72;
 }
 
 /*# sourceMappingURL=main.css.map */

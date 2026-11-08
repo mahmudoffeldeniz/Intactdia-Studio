@@ -61,7 +61,7 @@ images.forEach((img) => {
 		});
 	};
 
-	const renderSlideToCanvas = (imgElement, isSlideView, width, height) => {
+	const renderSlideToCanvas = (imgElement, width, height) => {
 		const offscreen = document.createElement('canvas');
 		offscreen.width = width;
 		offscreen.height = height;
@@ -71,42 +71,17 @@ images.forEach((img) => {
 		const nw = imgElement.naturalWidth || imgElement.width || width;
 		const nh = imgElement.naturalHeight || imgElement.height || height;
 
-		if (!isSlideView) {
-			// Mockup: cover the card preserving aspect ratio
-			const imgAspect = nw / nh;
-			const canvasAspect = width / height;
-			let sx = 0, sy = 0, sw = nw, sh = nh;
-			if (imgAspect > canvasAspect) {
-				sw = nh * canvasAspect;
-				sx = (nw - sw) / 2;
-			} else {
-				sh = nw / canvasAspect;
-				sy = (nh - sh) / 2;
-			}
-			ctx.drawImage(imgElement, sx, sy, sw, sh, 0, 0, width, height);
+		const imgAspect = nw / nh;
+		const canvasAspect = width / height;
+		let sx = 0, sy = 0, sw = nw, sh = nh;
+		if (imgAspect > canvasAspect) {
+			sw = nh * canvasAspect;
+			sx = (nw - sw) / 2;
 		} else {
-			// Screenshot:
-			// 1. Blurred background
-			ctx.save();
-			if ('filter' in ctx) {
-				ctx.filter = 'blur(28px) brightness(0.65) saturate(1.25)';
-			}
-			ctx.drawImage(imgElement, -30, -30, width + 60, height + 60);
-			ctx.restore();
-
-			// 2. Contained screenshot with padding
-			const padX = 12;
-			const padY = 8;
-			const availW = Math.max(10, width - padX * 2);
-			const availH = Math.max(10, height - padY * 2);
-			const scale = Math.min(availW / nw, availH / nh);
-			const dw = nw * scale;
-			const dh = nh * scale;
-			const dx = (width - dw) / 2;
-			const dy = (height - dh) / 2;
-
-			ctx.drawImage(imgElement, dx, dy, dw, dh);
+			sh = nw / canvasAspect;
+			sy = (nh - sh) / 2;
 		}
+		ctx.drawImage(imgElement, sx, sy, sw, sh, 0, 0, width, height);
 
 		return offscreen;
 	};
@@ -150,12 +125,12 @@ void main() {
 }
 `;
 
-	const transitionWithWaterEffect = (imageContainer, fromImg, toImg, fromIsSlide, toIsSlide, step, onComplete) => {
+	const transitionWithWaterEffect = (imageContainer, fromImg, toImg, step, onComplete) => {
 		const width = imageContainer.clientWidth || imageContainer.offsetWidth || 680;
 		const height = imageContainer.clientHeight || imageContainer.offsetHeight || 510;
 
-		const canvasFrom = renderSlideToCanvas(fromImg, fromIsSlide, width, height);
-		const canvasTo = renderSlideToCanvas(toImg, toIsSlide, width, height);
+		const canvasFrom = renderSlideToCanvas(fromImg, width, height);
+		const canvasTo = renderSlideToCanvas(toImg, width, height);
 
 		const texture1 = new THREE.CanvasTexture(canvasFrom);
 		texture1.magFilter = THREE.LinearFilter;
@@ -262,10 +237,6 @@ void main() {
 		let currentImage = 0;
 		let isTransitioning = false;
 
-		const blurBackdrop = document.createElement('div');
-		blurBackdrop.className = 'gallery-blur-backdrop';
-		imageContainer.prepend(blurBackdrop);
-
 		const controls = document.createElement('div');
 		controls.className = 'web-design-gallery-controls';
 		controls.setAttribute('role', 'group');
@@ -281,18 +252,6 @@ void main() {
 		nextButton.setAttribute('aria-label', `Next image for ${title}`);
 		nextButton.textContent = '›';
 
-		const applySlidePresentation = (index) => {
-			if (index > 0 && images[index]) {
-				blurBackdrop.style.backgroundImage = `url("${images[index].src}")`;
-				blurBackdrop.classList.add('active');
-				imageContainer.classList.add('is-slide-view');
-			} else {
-				blurBackdrop.classList.remove('active');
-				blurBackdrop.style.backgroundImage = 'none';
-				imageContainer.classList.remove('is-slide-view');
-			}
-		};
-
 		const notifyGalleryChange = () => {
 			imageContainer.dispatchEvent(new CustomEvent('gallery:imagechange'));
 			if (typeof jQuery !== 'undefined') {
@@ -305,7 +264,6 @@ void main() {
 			images.forEach((image, index) => {
 				image.hidden = index !== currentImage;
 			});
-			applySlidePresentation(currentImage);
 			notifyGalleryChange();
 		};
 
@@ -337,14 +295,11 @@ void main() {
 					imageContainer,
 					fromImg,
 					toImg,
-					fromIndex > 0,
-					toIndex > 0,
 					step,
 					() => {
 						images.forEach((image, index) => {
 							image.hidden = index !== currentImage;
 						});
-						applySlidePresentation(currentImage);
 						isTransitioning = false;
 						imageContainer.classList.remove('is-transitioning');
 						notifyGalleryChange();
@@ -360,7 +315,6 @@ void main() {
 		images.forEach((image, index) => {
 			image.hidden = index !== currentImage;
 		});
-		applySlidePresentation(currentImage);
 
 		previousButton.addEventListener('click', () => updateGallery(-1));
 		nextButton.addEventListener('click', () => updateGallery(1));
@@ -607,11 +561,13 @@ portfolioReviewCards.forEach((card, index) => {
 			author.className = "portfolio-review-author";
 			if (authorName) {
 				const name = document.createElement("strong");
+				name.className = "portfolio-review-name";
 				name.textContent = authorName;
 				author.append(name);
 			}
 			if (authorRole) {
 				const role = document.createElement("span");
+				role.className = "portfolio-review-role";
 				role.textContent = authorRole;
 				author.append(role);
 			}
@@ -1194,7 +1150,7 @@ $(document).ready(function () {
 					return;
 				}
 
-				if (isPortfolioGallery && (hoverBox.hasClass('is-slide-view') || hoverBox.hasClass('is-transitioning'))) {
+				if (isPortfolioGallery && hoverBox.hasClass('is-transitioning')) {
 					return;
 				}
 
@@ -1294,7 +1250,7 @@ $(document).ready(function () {
 
 					destroyEffect();
 
-					if (active && !hoverBox.hasClass('is-slide-view') && !hoverBox.hasClass('is-transitioning')) {
+					if (active && !hoverBox.hasClass('is-transitioning')) {
 						createEffect();
 					}
 				});
@@ -1308,7 +1264,7 @@ $(document).ready(function () {
 					cleanupTimer = null;
 				}
 
-				if (!hoverBox.hasClass('is-slide-view') && !hoverBox.hasClass('is-transitioning')) {
+				if (!hoverBox.hasClass('is-transitioning')) {
 					createEffect();
 				}
 
