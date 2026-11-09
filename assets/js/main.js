@@ -45,19 +45,39 @@ images.forEach((img) => {
 	}
 
 	const ensureImageLoaded = (imgElement) => {
-		if (!imgElement) return Promise.resolve();
-		if (imgElement.complete && imgElement.naturalWidth) {
+		if (!imgElement) return Promise.resolve(imgElement);
+		if (imgElement.complete && imgElement.naturalWidth > 0) {
 			return Promise.resolve(imgElement);
 		}
+		if (imgElement._loadedImage && imgElement._loadedImage.complete && imgElement._loadedImage.naturalWidth > 0) {
+			return Promise.resolve(imgElement);
+		}
+		if (imgElement.getAttribute('loading') === 'lazy') {
+			imgElement.removeAttribute('loading');
+			imgElement.loading = 'eager';
+		}
 		return new Promise((resolve) => {
+			let settled = false;
 			const done = () => {
-				imgElement.removeEventListener('load', done);
-				imgElement.removeEventListener('error', done);
+				if (settled) return;
+				settled = true;
 				resolve(imgElement);
 			};
-			imgElement.addEventListener('load', done);
-			imgElement.addEventListener('error', done);
-			setTimeout(done, 1200);
+
+			const loader = new Image();
+			loader.onload = () => {
+				imgElement._loadedImage = loader;
+				done();
+			};
+			loader.onerror = () => {
+				done();
+			};
+			loader.src = imgElement.src;
+
+			imgElement.addEventListener('load', done, { once: true });
+			imgElement.addEventListener('error', done, { once: true });
+
+			setTimeout(done, 3000);
 		});
 	};
 
@@ -68,8 +88,9 @@ images.forEach((img) => {
 		const ctx = offscreen.getContext('2d');
 		if (!ctx) return offscreen;
 
-		const nw = imgElement.naturalWidth || imgElement.width || width;
-		const nh = imgElement.naturalHeight || imgElement.height || height;
+		const source = (imgElement.naturalWidth > 0) ? imgElement : (imgElement._loadedImage || imgElement);
+		const nw = source.naturalWidth || source.width || width;
+		const nh = source.naturalHeight || source.height || height;
 
 		const imgAspect = nw / nh;
 		const canvasAspect = width / height;
@@ -81,7 +102,7 @@ images.forEach((img) => {
 			sh = nw / canvasAspect;
 			sy = (nh - sh) / 2;
 		}
-		ctx.drawImage(imgElement, sx, sy, sw, sh, 0, 0, width, height);
+		ctx.drawImage(source, sx, sy, sw, sh, 0, 0, width, height);
 
 		return offscreen;
 	};
@@ -316,12 +337,62 @@ void main() {
 			image.hidden = index !== currentImage;
 		});
 
+		const preloadCardImages = () => {
+			images.forEach((img) => {
+				if (img.getAttribute('loading') === 'lazy') {
+					img.removeAttribute('loading');
+					img.loading = 'eager';
+				}
+				if (!img.complete || !img.naturalWidth) {
+					const loader = new Image();
+					loader.onload = () => {
+						img._loadedImage = loader;
+					};
+					loader.src = img.src;
+				}
+			});
+		};
+
+		// Karta və ya oxlara yaxınlaşdıqda şəkilləri dərhal arxa planda preload et
+		card.addEventListener('mouseenter', preloadCardImages, { once: true });
+		controls.addEventListener('mouseenter', preloadCardImages, { once: true });
+
 		previousButton.addEventListener('click', () => updateGallery(-1));
 		nextButton.addEventListener('click', () => updateGallery(1));
 
 		controls.append(previousButton, nextButton);
 		thumb.append(controls);
 	});
+
+	// İstifadəçi səhifəni scroll edərkən ekrana yaxınlaşan layihələrin şəkillərini öncədən yüklə
+	if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+		const cardObserver = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					const card = entry.target;
+					const cardImgs = card.querySelectorAll('.tp--hover-img img');
+					cardImgs.forEach((img) => {
+						if (img.getAttribute('loading') === 'lazy') {
+							img.removeAttribute('loading');
+							img.loading = 'eager';
+						}
+						if (!img.complete || !img.naturalWidth) {
+							const loader = new Image();
+							loader.onload = () => {
+								img._loadedImage = loader;
+							};
+							loader.src = img.src;
+						}
+					});
+					cardObserver.unobserve(card);
+				}
+			});
+		}, { rootMargin: '400px 0px' });
+
+		document.querySelectorAll('.tp-portfolio-inner-item').forEach((card) => {
+			cardObserver.observe(card);
+		});
+	}
 })();
 
 
@@ -641,7 +712,7 @@ $(document).ready(function () {
 	var targetX = 0;
 	var currentX = 0;
 	var rafId = null;
-	var ease = 0.08;
+	var ease = 0.1;
 
 	function lerp(a, b, t) { return a + (b - a) * t; }
 
@@ -736,6 +807,12 @@ $(document).ready(function () {
 	});
 	$(window).on('load', function () {
 		$("#loading").fadeOut(500);
+		if (typeof ScrollTrigger !== 'undefined') {
+			ScrollTrigger.refresh();
+			setTimeout(function () {
+				ScrollTrigger.refresh();
+			}, 200);
+		}
 	});
 
 
@@ -973,13 +1050,30 @@ $(document).ready(function () {
 		// Show the correct static widget for the current theme
 		$('.clutch-widget-light').toggle(!isDark);
 		$('.clutch-widget-dark').toggle(isDark);
+
+		if (typeof ScrollTrigger !== 'undefined') {
+			ScrollTrigger.refresh();
+		}
 	}
 
 	function toggleTheme() {
 		const theme = $("html").hasClass("agntix-dark") ? "light" : "dark";
 		applyTheme(theme);
-		// Scroll to recent work section instantly
-		gsap.to(window, { duration: 0.5, scrollTo: ".design-project-area", ease: "power1.in" });
+
+		// Yalnız ana səhifədə heroda olduqda Our Works bölməsinə enir; aşağı scroll edildikdə yuxarı qalxmır
+		const $target = $(".design-project-area");
+		if ($target.length) {
+			const smoother = (typeof ScrollSmoother !== "undefined") ? ScrollSmoother.get() : null;
+			let currentScroll = smoother ? smoother.scrollTop() : (window.scrollY || $(window).scrollTop() || 0);
+			let targetTop = smoother ? smoother.offset(".design-project-area", "top top") : $target.offset().top;
+			if (typeof targetTop !== "number" || isNaN(targetTop)) {
+				targetTop = $target.offset().top;
+			}
+
+			if (currentScroll < targetTop - 100) {
+				gsap.to(window, { duration: 0.5, scrollTo: ".design-project-area", ease: "power1.in" });
+			}
+		}
 	}
 
 	function injectThemeToggleButton() {
@@ -1444,7 +1538,7 @@ $(document).ready(function () {
 
 	// 24. video-hover //
 	let vd = gsap.matchMedia();
-	vd.add("(min-width: 1199px)", () => {
+	vd.add("(min-width: 1200px)", () => {
 		if ($('.tp-video-area').length) {
 			const tl = gsap.timeline({
 				scrollTrigger: {
@@ -1458,7 +1552,48 @@ $(document).ready(function () {
 				.to(".tp-video-thumb-wrap", {
 					scale: 3.2,
 					ease: "none"
-				})
+				});
+		}
+	});
+
+	const wellaVideo = document.querySelector('.tp-video-thumb video');
+	if (wellaVideo) {
+		wellaVideo.muted = true;
+		wellaVideo.defaultMuted = true;
+		wellaVideo.playsInline = true;
+		wellaVideo.setAttribute('muted', '');
+		wellaVideo.setAttribute('playsinline', '');
+		const tryPlayWella = () => {
+			const playPromise = wellaVideo.play();
+			if (playPromise !== undefined) {
+				playPromise.catch(() => {});
+			}
+		};
+		tryPlayWella();
+		wellaVideo.addEventListener('loadedmetadata', function () {
+			if (typeof ScrollTrigger !== 'undefined') {
+				ScrollTrigger.refresh();
+			}
+		});
+		if ('IntersectionObserver' in window) {
+			const videoObserver = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						tryPlayWella();
+					}
+				});
+			}, { threshold: 0.1 });
+			videoObserver.observe(wellaVideo);
+		}
+	}
+
+	$('.design-project-thumb img').each(function () {
+		if (this.complete) {
+			if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+		} else {
+			$(this).one('load', function () {
+				if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+			});
 		}
 	});
 
@@ -2866,7 +3001,7 @@ $(document).ready(function () {
 
 	// 79. project details anim js //
 	let vs = gsap.matchMedia();
-	vd.add("(min-width: 1200px)", () => {
+	vs.add("(min-width: 1200px)", () => {
 		if ($('.project-details-2-area').length > 0) {
 			ScrollTrigger.create({
 				trigger: ".project-details-2-area",

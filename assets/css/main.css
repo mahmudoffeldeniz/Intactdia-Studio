@@ -8004,16 +8004,6 @@ html.offcanvas-menu-open body {
     transition: opacity 0.2s ease, transform 0.25s ease, visibility 0.2s ease;
   }
 
-  .tp-offcanvas-2-area .tp-offcanvas-menu>nav>ul>li.service-menu-item>.submenu::before {
-    content: "SERVICES";
-    margin: 4px 0 12px;
-    color: currentColor;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    opacity: 0.5;
-  }
-
   .tp-offcanvas-2-area .tp-offcanvas-menu>nav>ul>li.service-menu-item>.submenu>li:not(:last-child) {
     margin-bottom: 8px;
   }
@@ -26424,6 +26414,10 @@ only screen and (min-width: 768px) and (max-width: 991px),
 .design-project-thumb img {
   border-radius: 30px;
   will-change: transform;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .design-project-thumb .tp-portfolio-inner-thumb {
@@ -32073,15 +32067,20 @@ only screen and (min-width: 768px) and (max-width: 991px),
 }
 
 .tp-video-thumb video {
-  height: 100%;
   width: 100%;
+  height: auto;
+  aspect-ratio: 1252 / 880;
   background-position: center center;
   background-size: cover;
   object-fit: cover;
+  display: block;
 }
 
 .tp-video-thumb img {
   width: 100%;
+  height: auto;
+  aspect-ratio: 1252 / 880;
+  display: block;
 }
 
 .design-video-thumb {
@@ -60124,7 +60123,7 @@ body {
   justify-content: center;
   padding: 0;
   margin-top: 50px !important;
-  height: 150vh;
+  height: 230vh;
 }
 
 .slider-wrapper {
@@ -60167,7 +60166,7 @@ html.agntix-dark .social-media-title {
   width: max-content;
   align-items: center;
   will-change: transform;
-  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: none;
 }
 
 .slider-card {
