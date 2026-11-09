@@ -60888,7 +60888,7 @@ html.agntix-dark .portfolio-kicker svg path {
 .web-design-portfolio .tp-portfolio-inner-thumb {
   max-width: none;
   height: auto;
-  aspect-ratio: 1.6;
+  aspect-ratio: 16 / 8;
 }
 
 .web-design-portfolio .portfolio-review-row {
