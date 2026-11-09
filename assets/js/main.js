@@ -41,7 +41,7 @@ images.forEach((img) => {
 	};
 
 	if (typeof THREE !== 'undefined') {
-		getDisplacementTexture('assets/img/webgl/1.jpg');
+		getDisplacementTexture('assets/img/webgl/1.webp');
 	}
 
 	const ensureImageLoaded = (imgElement) => {
@@ -140,7 +140,7 @@ void main() {
 		texture2.magFilter = THREE.LinearFilter;
 		texture2.minFilter = THREE.LinearFilter;
 
-		const dispUrl = imageContainer.getAttribute('data-displacement') || 'assets/img/webgl/1.jpg';
+		const dispUrl = imageContainer.getAttribute('data-displacement') || 'assets/img/webgl/1.webp';
 		const dispTexture = getDisplacementTexture(dispUrl);
 
 		const scene = new THREE.Scene();

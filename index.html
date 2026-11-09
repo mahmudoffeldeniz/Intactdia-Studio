@@ -12,6 +12,9 @@
     <!-- Place favicon.ico in the root directory -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/home-01/fav-icon/fav-icon.webp">
 
+    <!-- Preload Hero Image for instant rendering -->
+    <link rel="preload" as="image" href="assets/img/home-01/hero/slider1.webp" type="image/webp" fetchpriority="high">
+
     <!-- CSS here -->
     <!-- CSS here -->
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -153,10 +156,10 @@
     </div>
     <!-- offcanvas area end -->
 
-    <header>
+    <header class="header-transparent">
 
         <!-- header area start -->
-        <div class="tp-header-2-area header-black-style z-index-3 mt-10" id="header-sticky">
+        <div class="tp-header-2-area header-transparent header-black-style z-index-3 mt-10" id="header-sticky">
             <div class="container container-1750">
                 <div class="row align-items-center">
                     <div class="col-6">
@@ -319,13 +322,13 @@
                     </div>
                     <!-- ********************************************************************** -->
 
-                    <div class="tp-hero-2-area pt-180 pb-160" style="min-height: 100vh; position: relative;">
-                        <div class="tp-hero-2-meta-slider tp_fade_anim" data-delay=".9">
+                    <div class="tp-hero-2-area pt-180 pb-160" style="min-height: 100vh; position: relative; background-color: #1a1a1a;">
+                        <div class="tp-hero-2-meta-slider">
                             <div class="hero-meta-slider swiper">
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
                                         <div class="hero-meta-slide"
-                                            style="background-image: url('/assets/img/home-01/hero/slider1.webp');">
+                                            style="background-image: url('assets/img/home-01/hero/slider1.webp');">
                                             <div class="hero-meta-overlay">
                                                 <div class="hero-meta-content">
                                                     <h5>Creativity With <br> a Purpose<span class="hero-dot">.</span>
@@ -348,7 +351,7 @@
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="hero-meta-slide"
-                                            style="background-image: url('/assets/img/home-01/hero/slider4.webp');">
+                                            style="background-image: url('assets/img/home-01/hero/slider4.webp');">
                                             <div class="hero-meta-overlay">
                                                 <div class="hero-meta-content">
                                                     <h5>Social Media <br> Design</h5>

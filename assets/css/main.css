@@ -15280,6 +15280,7 @@ html.agntix-dark .tp-hero-2-subtitle {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
+  background-color: #1a1a1a;
 }
 
 .hero-meta-overlay {
@@ -58659,8 +58660,25 @@ html.agntix-dark .tp-offcanvas-2-area .tp-offcanvas-2-visit-link {
   max-width: 100%;
 }
 
+.home-page header,
+.home-page .tp-header-2-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 99;
+  background: transparent !important;
+}
+
+.home-page .tp-header-2-area.header-sticky {
+  position: fixed;
+  background: rgba(38, 37, 40, 0.9) !important;
+}
+
 .home-page .tp-hero-2-area {
   min-height: 100svh !important;
+  background-color: #1a1a1a;
 }
 
 .home-page .hero-meta-content {
