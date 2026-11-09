@@ -38755,12 +38755,32 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 
 .st-cta-wrapper .tp-btn-border-2.st {
   background-color: var(--tp-common-white);
+  color: #191919;
+}
+
+.st-cta-wrapper .tp-section-title-playfair .tp-btn-border-2.st span,
+.st-cta-wrapper .tp-btn-border-2.st span {
+  color: #191919 !important;
+}
+
+.st-cta-wrapper .tp-btn-border-2.st svg {
+  color: inherit;
+  vertical-align: middle;
+}
+
+.st-cta-wrapper .tp-btn-border-2.st svg path {
+  stroke: currentColor;
 }
 
 .st-cta-wrapper .tp-btn-border-2.st:hover {
   background-color: transparent;
   color: var(--tp-common-white);
   border-color: var(--tp-common-white);
+}
+
+.st-cta-wrapper .tp-section-title-playfair .tp-btn-border-2.st:hover span,
+.st-cta-wrapper .tp-btn-border-2.st:hover span {
+  color: var(--tp-common-white) !important;
 }
 
 @media (max-width: 767px) {
