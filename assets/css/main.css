@@ -7582,11 +7582,12 @@ html.offcanvas-menu-open body {
   position: fixed;
   top: 0;
   right: 0;
-  width: 450px;
+  width: 490px;
   height: 100vh;
+  height: 100dvh;
   z-index: 999;
-  padding: 50px 50px;
-  overflow-y: scroll;
+  padding: clamp(20px, 3vh, 44px) 36px;
+  overflow-y: auto;
   transition: all 0.3s;
   background: #FFF;
   overscroll-behavior-y: contain;
@@ -7600,12 +7601,14 @@ html.offcanvas-menu-open body {
 @media (max-width: 767px) {
   .tp-offcanvas-wrapper {
     width: 100%;
+    padding: 28px 24px;
   }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
   .tp-offcanvas-wrapper {
     width: 450px;
+    padding: 30px;
   }
 }
 
@@ -7696,7 +7699,7 @@ html.offcanvas-menu-open body {
 }
 
 .tp-offcanvas-top {
-  margin-bottom: 90px;
+  margin-bottom: clamp(16px, 4vh, 64px);
 }
 
 .tp-offcanvas-close-btn {
@@ -7713,38 +7716,56 @@ html.offcanvas-menu-open body {
 }
 
 .tp-offcanvas-content {
-  margin-bottom: 45px;
+  margin-bottom: clamp(14px, 2.6vh, 38px);
 }
 
 .tp-offcanvas-content p {
-  font-size: 16px;
+  font-size: clamp(14px, 1.65vh, 16px);
   font-weight: 400;
-  line-height: 24px;
+  line-height: 1.45;
+  margin-bottom: 0;
   color: #414144;
 }
 
 .tp-offcanvas-title {
-  font-size: 40px;
-  line-height: 1;
-  letter-spacing: -0.8px;
+  font-size: clamp(26px, 2.1vw, 31px);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: clamp(8px, 1.2vh, 14px);
   color: var(--tp-common-black);
 }
 
 .tp-offcanvas-title.sm {
-  font-size: 20px;
+  font-size: clamp(17px, 2vh, 20px);
   font-weight: 700;
-  margin-bottom: 15px;
-  text-transform: uppercase;
+  white-space: normal;
+  margin-bottom: clamp(8px, 1.2vh, 14px);
+  text-transform: none;
   color: var(--tp-common-black);
 }
 
 .tp-offcanvas-gallery {
-  margin-bottom: 65px;
+  margin-bottom: clamp(16px, 3.2vh, 46px);
+}
+
+.tp-offcanvas-gallery-img {
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+}
+
+.tp-offcanvas-gallery-img a {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .tp-offcanvas-gallery-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
   transition: 0.9s;
 }
 
@@ -7753,22 +7774,90 @@ html.offcanvas-menu-open body {
 }
 
 .tp-offcanvas-contact {
-  margin-bottom: 55px;
+  margin-bottom: clamp(16px, 2.8vh, 40px);
 }
 
 .tp-offcanvas-contact ul li {
   list-style: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .tp-offcanvas-contact ul li:not(:last-child) {
-  margin-bottom: 2px;
+  margin-bottom: clamp(5px, 0.85vh, 10px);
+}
+
+.tp-offcanvas-contact-icon {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #474646;
 }
 
 .tp-offcanvas-contact ul li a {
   display: inline-block;
   color: #414144;
-  font-size: 16px;
+  font-size: clamp(14.5px, 1.65vh, 16px);
+  line-height: 1.4;
   position: relative;
+}
+
+.tp-offcanvas-area .tp-offcanvas-2-right-info-item {
+  margin-bottom: 0;
+}
+
+.tp-offcanvas-area .tp-offcanvas-2-right-info-item label {
+  margin-bottom: clamp(8px, 1.2vh, 14px) !important;
+}
+
+@media (min-width: 1200px) {
+  .tp-offcanvas-area .tp-offcanvas-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+    padding: clamp(22px, 3.6vh, 44px) 36px;
+  }
+
+  .tp-offcanvas-area .tp-offcanvas-main {
+    display: contents;
+  }
+
+  .tp-offcanvas-area .tp-offcanvas-top,
+  .tp-offcanvas-area .tp-offcanvas-content,
+  .tp-offcanvas-area .tp-offcanvas-gallery,
+  .tp-offcanvas-area .tp-offcanvas-contact,
+  .tp-offcanvas-area .tp-offcanvas-2-right-info-item {
+    margin-bottom: 0 !important;
+  }
+}
+
+@media (max-height: 760px) {
+  .tp-offcanvas-area .tp-offcanvas-wrapper {
+    padding: 20px 34px;
+    gap: 10px;
+  }
+
+  .tp-offcanvas-top {
+    margin-bottom: 16px;
+  }
+
+  .tp-offcanvas-content {
+    margin-bottom: 14px;
+  }
+
+  .tp-offcanvas-gallery {
+    margin-bottom: 16px;
+  }
+
+  .tp-offcanvas-contact {
+    margin-bottom: 14px;
+  }
 }
 
 .tp-offcanvas-contact ul li a::after {
