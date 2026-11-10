@@ -2564,17 +2564,29 @@ $(document).ready(function () {
 		gsap.set(".tp-gsap-bg", { scaleX: 1 });
 		let mm = gsap.matchMedia();
 		mm.add("(min-width:1400px)", () => {
-			gsap.to(".tp-gsap-bg", {
-				scrollTrigger: {
-					trigger: ".tp-gsap-bg",
-					scrub: 0.2,
-					start: "top 90%",
-					end: "bottom 100%",
-				},
-				scaleX: 0.85,
-				borderRadius: "60px",
-				transformOrigin: "center center",
-				ease: "none",
+			gsap.utils.toArray(".tp-gsap-bg").forEach((bg) => {
+				const getSafeScaleX = () => {
+					const parent = bg.parentElement;
+					const bgWidth = bg.offsetWidth || window.innerWidth;
+					const container = parent ? parent.querySelector(".container") : null;
+					if (!container || !bgWidth) return 0.85;
+					const minAllowedWidth = container.offsetWidth + 48;
+					return Math.min(1, Math.max(0.85, minAllowedWidth / bgWidth));
+				};
+
+				gsap.to(bg, {
+					scrollTrigger: {
+						trigger: bg,
+						scrub: 0.2,
+						start: "top 90%",
+						end: "bottom 100%",
+						invalidateOnRefresh: true,
+					},
+					scaleX: getSafeScaleX,
+					borderRadius: "60px",
+					transformOrigin: "center center",
+					ease: "none",
+				});
 			});
 		});
 	}

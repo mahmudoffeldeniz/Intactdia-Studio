@@ -888,9 +888,12 @@
 		}
 	}
 	&-gradient{
-		display: flex;
+		display: inline-flex;
 		position: relative;
 		align-items: center;
+		justify-content: center;
+		white-space: nowrap;
+		flex-wrap: nowrap;
 		overflow: hidden;
 		font-weight: 600;
 		font-size: 17px;
@@ -900,15 +903,12 @@
 		transition: .4s;
 		border-radius: 14px;
 		padding: 22px 30px;
-		padding-top: 25px;
-		display: inline-block;
 		letter-spacing: -0.01em;
 		color: var(--tp-common-white);
 		background: linear-gradient(230deg, #FF994B 6.7%, #D34BE9 48.83%, #3188FF 90.96%);
 		@media #{$md,$xs}{
 			font-size: 16px;
-			padding: 15px 25px;
-			padding-top: 18px;
+			padding: 16px 25px;
 		}
 		&:hover{
 			color: var(--tp-common-white);
@@ -918,9 +918,11 @@
 		}
 		& span{
 			margin-right: 10px;
-			display: inline-block;
+			display: inline-flex;
+			align-items: center;
+			flex-shrink: 0;
 			& svg{
-				transform: translateY(-2px);
+				transform: translateY(-1px);
 			}
 		}
 		&.sm{
@@ -1163,6 +1165,8 @@
 	line-height: 0;
 	border-radius: 14px;
 	display: inline-block;
+	flex-shrink: 0;
+	white-space: nowrap;
 	transition: .4s;
 	&:hover{
 		transform: scale(1.1);
@@ -1170,6 +1174,7 @@
 	&:before {
 		content: '';
 		z-index: -2;
+		pointer-events: none;
 		text-align: center;
 		top: 50%;
 		left: 50%;

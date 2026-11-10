@@ -247,6 +247,11 @@
 
 .tp-contact-location{
     &-ptb{
+        @media (min-width: 1400px) {
+            & .container-1430{
+                max-width: min(1430px, 78vw);
+            }
+        }
         @media #{$md} {
             padding-bottom: 120px;
         }
@@ -287,6 +292,9 @@
     &-info-thumb{
         overflow: hidden;
         margin-right: 85px;
+        @media #{$xxl}{
+            margin-right: 45px;
+        }
         @media #{$xl}{
             margin-right: 50px;
         }
@@ -304,6 +312,9 @@
         & img{
             width: 320px;
             transition: 0.9s;
+            @media #{$xxl}{
+                width: 280px;
+            }
         }
     }
     &-left{
@@ -317,6 +328,9 @@
             letter-spacing: -0.8px;
             color: var(--tp-common-white);
             margin-bottom: 160px;
+            @media #{$xxl}{
+                font-size: 34px;
+            }
             @media #{$xl}{
                 font-size: 30px;
             }
