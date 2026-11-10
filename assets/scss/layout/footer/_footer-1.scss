@@ -457,21 +457,21 @@
 }
 
 .tp-copyright-big-text{
-    color: yellow !important;
+    color: #FFFB5B !important;
 }
 
 .tp-copyright{
     &-style-6{
         & .tp-copyright-big-text {
-            color: yellow !important;
+            color: #FFFB5B !important;
         }
         & .tp-copyright-left span {
-            color: yellow !important;
+            color: #FFFB5B !important;
         }
         & .tp-copyright-right a {
-            color: yellow !important;
+            color: #FFFB5B !important;
             &:hover{
-                color: yellow !important;
+                color: #FFFB5B !important;
             }
         }
     }
