@@ -95,12 +95,25 @@ images.forEach((img) => {
 		const imgAspect = nw / nh;
 		const canvasAspect = width / height;
 		let sx = 0, sy = 0, sw = nw, sh = nh;
+
+		const isLeftAligned =
+			imgElement.classList?.contains('slide-align-left') ||
+			(imgElement.closest && imgElement.closest('[data-slide-align="left"]') && imgElement.parentElement && imgElement !== imgElement.parentElement.firstElementChild) ||
+			(imgElement.style && imgElement.style.objectPosition && imgElement.style.objectPosition.startsWith('left')) ||
+			(typeof window !== 'undefined' && window.getComputedStyle && getComputedStyle(imgElement).objectPosition.startsWith('left'));
+
+		const isTopAligned =
+			imgElement.classList?.contains('slide-align-top') ||
+			(imgElement.closest && imgElement.closest('[data-slide-align="top"]') && imgElement.parentElement && imgElement !== imgElement.parentElement.firstElementChild) ||
+			(imgElement.style && imgElement.style.objectPosition && imgElement.style.objectPosition.includes('top')) ||
+			(typeof window !== 'undefined' && window.getComputedStyle && getComputedStyle(imgElement).objectPosition.includes('top'));
+
 		if (imgAspect > canvasAspect) {
 			sw = nh * canvasAspect;
-			sx = (nw - sw) / 2;
+			sx = isLeftAligned ? 0 : (nw - sw) / 2;
 		} else {
 			sh = nw / canvasAspect;
-			sy = (nh - sh) / 2;
+			sy = isTopAligned ? 0 : (nh - sh) / 2;
 		}
 		ctx.drawImage(source, sx, sy, sw, sh, 0, 0, width, height);
 

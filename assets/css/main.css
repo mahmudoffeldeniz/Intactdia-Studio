@@ -61263,6 +61263,16 @@ html.agntix-dark .portfolio-kicker svg path {
   aspect-ratio: 16 / 8;
 }
 
+.web-design-portfolio .tp-portfolio-inner-item[data-slide-align="left"] .tp--hover-img img:not(:first-child),
+.web-design-portfolio .tp--hover-img img.slide-align-left {
+  object-position: left center;
+}
+
+.web-design-portfolio .tp-portfolio-inner-item[data-slide-align="top"] .tp--hover-img img:not(:first-child),
+.web-design-portfolio .tp--hover-img img.slide-align-top {
+  object-position: center top;
+}
+
 .web-design-portfolio .portfolio-review-row {
   display: flex;
   flex-wrap: wrap;
