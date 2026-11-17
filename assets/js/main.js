@@ -3361,6 +3361,20 @@ $(document).ready(function () {
 		});
 	}
 
-
+	// Hero scroll down button
+	$(document).on('click', '.hero-scroll-down', function (e) {
+		e.preventDefault();
+		const $target = $('#project-area, .design-project-area');
+		if ($target.length) {
+			const smoother = (typeof ScrollSmoother !== 'undefined') ? ScrollSmoother.get() : null;
+			if (smoother) {
+				smoother.scrollTo($target[0], true, 'top top');
+			} else if (typeof gsap !== 'undefined' && gsap.to) {
+				gsap.to(window, { duration: 0.8, scrollTo: $target[0], ease: 'power2.inOut' });
+			} else {
+				$target[0].scrollIntoView({ behavior: 'smooth' });
+			}
+		}
+	});
 
 })(jQuery);
