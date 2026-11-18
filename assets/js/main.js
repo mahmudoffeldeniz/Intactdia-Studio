@@ -102,18 +102,31 @@ images.forEach((img) => {
 			(imgElement.style && imgElement.style.objectPosition && imgElement.style.objectPosition.startsWith('left')) ||
 			(typeof window !== 'undefined' && window.getComputedStyle && getComputedStyle(imgElement).objectPosition.startsWith('left'));
 
+		const hasExplicitTop = imgElement.classList?.contains('slide-align-top');
+		const hasExplicitBottom = imgElement.classList?.contains('slide-align-bottom');
+
+		const isBottomAligned =
+			hasExplicitBottom ||
+			(!hasExplicitTop && (
+				(imgElement.closest && imgElement.closest('[data-slide-align="bottom"]') && imgElement.parentElement && imgElement !== imgElement.parentElement.firstElementChild) ||
+				(imgElement.style && imgElement.style.objectPosition && imgElement.style.objectPosition.includes('bottom')) ||
+				(typeof window !== 'undefined' && window.getComputedStyle && getComputedStyle(imgElement).objectPosition.includes('bottom'))
+			));
+
 		const isTopAligned =
-			imgElement.classList?.contains('slide-align-top') ||
-			(imgElement.closest && imgElement.closest('[data-slide-align="top"]') && imgElement.parentElement && imgElement !== imgElement.parentElement.firstElementChild) ||
-			(imgElement.style && imgElement.style.objectPosition && imgElement.style.objectPosition.includes('top')) ||
-			(typeof window !== 'undefined' && window.getComputedStyle && getComputedStyle(imgElement).objectPosition.includes('top'));
+			!hasExplicitBottom && (
+				hasExplicitTop ||
+				(imgElement.closest && imgElement.closest('[data-slide-align="top"]') && imgElement.parentElement && imgElement !== imgElement.parentElement.firstElementChild) ||
+				(imgElement.style && imgElement.style.objectPosition && imgElement.style.objectPosition.includes('top')) ||
+				(typeof window !== 'undefined' && window.getComputedStyle && getComputedStyle(imgElement).objectPosition.includes('top'))
+			);
 
 		if (imgAspect > canvasAspect) {
 			sw = nh * canvasAspect;
 			sx = isLeftAligned ? 0 : (nw - sw) / 2;
 		} else {
 			sh = nw / canvasAspect;
-			sy = isTopAligned ? 0 : (nh - sh) / 2;
+			sy = isBottomAligned ? (nh - sh) : (isTopAligned ? 0 : (nh - sh) / 2);
 		}
 		ctx.drawImage(source, sx, sy, sw, sh, 0, 0, width, height);
 
@@ -3361,20 +3374,102 @@ $(document).ready(function () {
 		});
 	}
 
-	// Hero scroll down button
+	// Hero scroll down button - works reliably on all screens (laptops, desktops, tablets, mobiles)
 	$(document).on('click', '.hero-scroll-down', function (e) {
 		e.preventDefault();
-		const $target = $('#project-area, .design-project-area');
-		if ($target.length) {
-			const smoother = (typeof ScrollSmoother !== 'undefined') ? ScrollSmoother.get() : null;
-			if (smoother) {
-				smoother.scrollTo($target[0], true, 'top top');
-			} else if (typeof gsap !== 'undefined' && gsap.to) {
-				gsap.to(window, { duration: 0.8, scrollTo: $target[0], ease: 'power2.inOut' });
-			} else {
-				$target[0].scrollIntoView({ behavior: 'smooth' });
-			}
+		e.stopPropagation();
+
+		const $target = $('#project-area, .design-project-area').first();
+		if (!$target.length) return;
+
+		const targetEl = $target[0];
+		const smoother = (typeof ScrollSmoother !== 'undefined') ? ScrollSmoother.get() : null;
+
+		if (smoother) {
+			try {
+				let targetTop = smoother.offset(targetEl, 'top top');
+				if (typeof targetTop === 'number' && !isNaN(targetTop)) {
+					smoother.scrollTo(targetTop, true);
+					return;
+				}
+			} catch (err) {}
+
+			try {
+				smoother.scrollTo(targetEl, true, 'top top');
+				return;
+			} catch (err) {}
+		}
+
+		if (typeof gsap !== 'undefined' && gsap.to && typeof ScrollToPlugin !== 'undefined') {
+			gsap.to(window, {
+				duration: 0.8,
+				scrollTo: { y: targetEl, offsetY: 0 },
+				ease: 'power2.inOut'
+			});
+			return;
+		}
+
+		if ('scrollIntoView' in targetEl) {
+			targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		} else {
+			const topPos = $target.offset().top;
+			$('html, body').animate({ scrollTop: topPos }, 800);
 		}
 	});
+
+	// Live clocks for contact page branch locations
+	function initBranchLiveClocks() {
+		const $clocks = $('.tp-contact-location-time[data-timezone]');
+		if (!$clocks.length) return;
+
+		function updateClocks() {
+			const now = new Date();
+			$clocks.each(function () {
+				const $el = $(this);
+				const tz = $el.attr('data-timezone');
+				if (!tz) return;
+
+				try {
+					const timeStr = new Intl.DateTimeFormat('en-US', {
+						timeZone: tz,
+						hour: '2-digit',
+						minute: '2-digit',
+						second: '2-digit',
+						hour12: true
+					}).format(now);
+
+					let tzPart = '';
+					try {
+						const parts = new Intl.DateTimeFormat('en-US', {
+							timeZone: tz,
+							timeZoneName: 'shortOffset'
+						}).formatToParts(now);
+						tzPart = parts.find(p => p.type === 'timeZoneName')?.value || '';
+					} catch (e1) {
+						try {
+							const parts = new Intl.DateTimeFormat('en-US', {
+								timeZone: tz,
+								timeZoneName: 'short'
+							}).formatToParts(now);
+							tzPart = parts.find(p => p.type === 'timeZoneName')?.value || '';
+						} catch (e2) {}
+					}
+
+					const displayText = tzPart ? `${timeStr} ${tzPart}` : timeStr;
+					const $target = $el.find('.tp-live-time');
+					if ($target.length) {
+						$target.text(displayText);
+					} else {
+						$el.html(`<i class="fa-regular fa-clock"></i> <span class="tp-live-time">${displayText}</span>`);
+					}
+				} catch (err) {}
+			});
+		}
+
+		updateClocks();
+		setInterval(updateClocks, 1000);
+	}
+
+	initBranchLiveClocks();
 
 })(jQuery);
