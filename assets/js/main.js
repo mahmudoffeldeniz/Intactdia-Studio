@@ -3438,24 +3438,7 @@ $(document).ready(function () {
 						hour12: true
 					}).format(now);
 
-					let tzPart = '';
-					try {
-						const parts = new Intl.DateTimeFormat('en-US', {
-							timeZone: tz,
-							timeZoneName: 'shortOffset'
-						}).formatToParts(now);
-						tzPart = parts.find(p => p.type === 'timeZoneName')?.value || '';
-					} catch (e1) {
-						try {
-							const parts = new Intl.DateTimeFormat('en-US', {
-								timeZone: tz,
-								timeZoneName: 'short'
-							}).formatToParts(now);
-							tzPart = parts.find(p => p.type === 'timeZoneName')?.value || '';
-						} catch (e2) {}
-					}
-
-					const displayText = tzPart ? `${timeStr} ${tzPart}` : timeStr;
+					const displayText = timeStr;
 					const $target = $el.find('.tp-live-time');
 					if ($target.length) {
 						$target.text(displayText);
