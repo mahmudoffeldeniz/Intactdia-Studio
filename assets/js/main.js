@@ -3430,15 +3430,29 @@ $(document).ready(function () {
 				if (!tz) return;
 
 				try {
-					const timeStr = new Intl.DateTimeFormat('en-US', {
+					const parts = new Intl.DateTimeFormat('en-US', {
 						timeZone: tz,
 						hour: '2-digit',
 						minute: '2-digit',
 						second: '2-digit',
-						hour12: true
-					}).format(now);
+						hourCycle: 'h23'
+					}).formatToParts(now);
 
-					const displayText = timeStr;
+					const h24 = parseInt(parts.find(p => p.type === 'hour')?.value || '0', 10);
+					const m = (parts.find(p => p.type === 'minute')?.value || '00').padStart(2, '0');
+					const s = (parts.find(p => p.type === 'second')?.value || '00').padStart(2, '0');
+
+					const ap = h24 >= 12 ? 'PM' : 'AM';
+					let displayHour;
+					if (h24 === 0) {
+						displayHour = '00';
+					} else if (h24 <= 12) {
+						displayHour = h24.toString().padStart(2, '0');
+					} else {
+						displayHour = (h24 - 12).toString().padStart(2, '0');
+					}
+
+					const displayText = `${displayHour}:${m}:${s} ${ap}`;
 					const $target = $el.find('.tp-live-time');
 					if ($target.length) {
 						$target.text(displayText);
