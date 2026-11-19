@@ -58909,13 +58909,13 @@ html.agntix-dark .tp-offcanvas-2-area .tp-offcanvas-2-visit-link {
 
 .home-page .tp-hero-2-img-wrap {
   max-width: 100%;
-  margin-top: calc(-100svh + 40px);
+  margin-top: calc(-100svh + 20px);
   overflow: hidden;
 }
 
 @media (min-width: 1600px) {
   .home-page .tp-hero-2-img-wrap {
-    margin-top: calc(-100svh + 45px);
+    margin-top: calc(-100svh + 25px);
   }
 }
 
