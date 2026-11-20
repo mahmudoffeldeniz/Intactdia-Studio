@@ -1497,7 +1497,7 @@ $(document).ready(function () {
 						pin: true,
 						pinSpacing: false,
 						start: 'top top',
-						endTrigger: '.app-benefits-area',
+						endTrigger: panels[index + 1],
 						end: 'top top',
 						markers: false,
 					});

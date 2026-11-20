@@ -37943,19 +37943,19 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 
 .app-stack-item-01 {
   position: relative;
-  z-index: 1;
+  z-index: 10 !important;
   background-color: #f7f7fd;
 }
 
 .app-stack-item-02 {
   position: relative;
-  z-index: 2;
+  z-index: 20 !important;
   background: linear-gradient(265deg, rgb(208, 242, 240) 16.29%, rgb(197, 224, 252) 84.71%);
 }
 
 .app-stack-item-03 {
   position: relative;
-  z-index: 3;
+  z-index: 30 !important;
   background-color: #f7f7fd;
 }
 
