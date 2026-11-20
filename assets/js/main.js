@@ -841,6 +841,12 @@ $(document).ready(function () {
 		}
 	});
 
+	if (typeof imagesLoaded !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+		imagesLoaded(document.body, function () {
+			ScrollTrigger.refresh();
+		});
+	}
+
 
 	// 02. mobile menu Js//
 	let tpMenuWrap = $('.tp-mobile-menu-active > ul').clone();
@@ -1481,21 +1487,23 @@ $(document).ready(function () {
 
 	// 21. stack panel pin section //
 	let st = gsap.matchMedia();
-	st.add("(min-width: 1199px)", () => {
+	st.add("(min-width: 992px)", () => {
 		let panels = gsap.utils.toArray('.stack-panel-pin');
-		panels.forEach((section, index) => {
-			if (index < panels.length - 1) {
-				ScrollTrigger.create({
-					trigger: section,
-					pin: true,
-					pinSpacing: false,
-					start: 'top top',
-					endTrigger: '.stack-panel-pin-area',
-					end: 'bottom bottom',
-					markers: false,
-				});
-			}
-		});
+		if (panels.length > 0) {
+			panels.forEach((section, index) => {
+				if (index < panels.length - 1) {
+					ScrollTrigger.create({
+						trigger: section,
+						pin: true,
+						pinSpacing: false,
+						start: 'top top',
+						endTrigger: '.app-benefits-area',
+						end: 'top top',
+						markers: false,
+					});
+				}
+			});
+		}
 	});
 
 	// 22. hero animation //

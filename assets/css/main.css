@@ -37920,8 +37920,24 @@ only screen and (min-width: 768px) and (max-width: 991px) {
   }
 }
 
+.app-feature-2-area {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-stack-area {
+  position: relative;
+  z-index: 2;
+}
+
+.app-stack-contain {
+  position: relative;
+  width: 100%;
+}
+
 .app-stack-item {
   position: relative;
+  width: 100%;
   background-color: #f7f7fd;
 }
 
