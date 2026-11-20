@@ -1482,22 +1482,20 @@ $(document).ready(function () {
 	// 21. stack panel pin section //
 	let st = gsap.matchMedia();
 	st.add("(min-width: 1199px)", () => {
-		let tl = gsap.timeline();
-		let panels = document.querySelectorAll('.stack-panel-pin')
+		let panels = gsap.utils.toArray('.stack-panel-pin');
 		panels.forEach((section, index) => {
-			tl.to(section, {
-				scrollTrigger: {
+			if (index < panels.length - 1) {
+				ScrollTrigger.create({
 					trigger: section,
-					pin: section,
-					scrub: 1,
-					start: 'top 0%',
-					end: "bottom 100%",
-					endTrigger: '.stack-panel-pin-area',
+					pin: true,
 					pinSpacing: false,
+					start: 'top top',
+					endTrigger: '.stack-panel-pin-area',
+					end: 'bottom bottom',
 					markers: false,
-				},
-			})
-		})
+				});
+			}
+		});
 	});
 
 	// 22. hero animation //
@@ -2589,20 +2587,18 @@ $(document).ready(function () {
 	if ($('.tp-gsap-bg').length > 0) {
 		gsap.set(".tp-gsap-bg", { scaleX: 1 });
 		let mm = gsap.matchMedia();
-		mm.add("(min-width:1400px)", () => {
+		mm.add("(min-width: 992px)", () => {
 			gsap.utils.toArray(".tp-gsap-bg").forEach((bg) => {
 				const getSafeScaleX = () => {
-					const parent = bg.parentElement;
 					const bgWidth = bg.offsetWidth || window.innerWidth;
-					const container = parent ? parent.querySelector(".container") : null;
-					if (!container || !bgWidth) return 0.85;
-					const minAllowedWidth = container.offsetWidth + 48;
-					return Math.min(1, Math.max(0.85, minAllowedWidth / bgWidth));
+					if (bgWidth >= 1600) return 0.85;
+					if (bgWidth >= 1200) return 0.88;
+					return 0.92;
 				};
 
 				gsap.to(bg, {
 					scrollTrigger: {
-						trigger: bg,
+						trigger: bg.parentElement || bg,
 						scrub: 0.2,
 						start: "top 90%",
 						end: "bottom 100%",
@@ -2637,7 +2633,7 @@ $(document).ready(function () {
 	if ($('.st-cta-area').length > 0) {
 		gsap.set(".st-cta-bg-circle", { scaleX: 1 });
 		let mm = gsap.matchMedia();
-		mm.add("(min-width:1400px)", () => {
+		mm.add("(min-width: 768px)", () => {
 			gsap.to(".st-cta-bg-circle", {
 				scrollTrigger: {
 					trigger: ".st-cta-area",

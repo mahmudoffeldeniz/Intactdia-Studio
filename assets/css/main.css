@@ -17246,8 +17246,10 @@ only screen and (min-width: 768px) and (max-width: 991px),
   gap: 16px 20px;
 }
 
+.app-hero-store-group .animated-border-box,
 .app-hero-store-group .animated-border-box:hover {
-  transform: scale(1.04);
+  transform: none !important;
+  cursor: default;
 }
 
 .app-hero-btn-text {
@@ -37918,8 +37920,27 @@ only screen and (min-width: 768px) and (max-width: 991px) {
   }
 }
 
+.app-stack-item {
+  position: relative;
+  background-color: #f7f7fd;
+}
+
+.app-stack-item-01 {
+  position: relative;
+  z-index: 1;
+  background-color: #f7f7fd;
+}
+
 .app-stack-item-02 {
+  position: relative;
+  z-index: 2;
   background: linear-gradient(265deg, rgb(208, 242, 240) 16.29%, rgb(197, 224, 252) 84.71%);
+}
+
+.app-stack-item-03 {
+  position: relative;
+  z-index: 3;
+  background-color: #f7f7fd;
 }
 
 .app-stack-btn a {
@@ -38607,6 +38628,18 @@ only screen and (min-width: 768px) and (max-width: 991px) {
   z-index: -1;
 }
 
+.app-testimonial-area {
+  padding-top: 50px;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1400px) {
+  .app-benefits-area .container-1630 {
+    max-width: 94%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
 @media only screen and (min-width: 1200px) and (max-width: 1399px),
 only screen and (min-width: 992px) and (max-width: 1199px) {
   .tp-benefits-ptb {
@@ -38833,7 +38866,7 @@ only screen and (min-width: 768px) and (max-width: 991px),
   position: absolute;
   top: 0;
   left: -5%;
-  height: 1000px;
+  height: clamp(520px, 70vw, 1000px);
   width: 110%;
   padding: 0 !important;
   text-align: center;
