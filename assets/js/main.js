@@ -1159,7 +1159,7 @@ $(document).ready(function () {
 	function initThemeFromStorage() {
 		let storedTheme = localStorage.getItem("siteTheme");
 		if (!storedTheme) {
-			storedTheme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+			storedTheme = "light";
 		}
 		applyTheme(storedTheme);
 	}
