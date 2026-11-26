@@ -7773,6 +7773,31 @@ html.offcanvas-menu-open body {
   transform: scale(1.2) rotate(-2deg);
 }
 
+.tp-offcanvas-gallery-name {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  color: #414144;
+  transition: color 0.3s ease;
+}
+
+.tp-offcanvas-gallery-item:hover .tp-offcanvas-gallery-name {
+  color: var(--tp-common-black);
+}
+
+.tp-offcanvas-wrapper.offcanvas-black-bg .tp-offcanvas-gallery-name,
+html.agntix-dark .tp-offcanvas-area .tp-offcanvas-gallery-name {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tp-offcanvas-wrapper.offcanvas-black-bg .tp-offcanvas-gallery-item:hover .tp-offcanvas-gallery-name,
+html.agntix-dark .tp-offcanvas-area .tp-offcanvas-gallery-item:hover .tp-offcanvas-gallery-name {
+  color: var(--tp-common-white);
+}
+
 .tp-offcanvas-contact {
   margin-bottom: clamp(16px, 2.8vh, 40px);
 }
@@ -12149,6 +12174,20 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 .tp-footer-style-6 .tp-footer-widget-menu ul li a {
   color: var(--tp-common-white);
   background-color: rgba(255, 255, 255, 0.06);
+}
+
+.tp-footer-style-6 .tp-footer-widget-menu ul li a.tp-footer-consultation-link,
+.tp-footer-widget-menu ul li a.tp-footer-consultation-link {
+  background-color: #FFFB5B;
+  color: #1b1b1d;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tp-footer-style-6 .tp-footer-widget-menu ul li a.tp-footer-consultation-link:hover,
+.tp-footer-widget-menu ul li a.tp-footer-consultation-link:hover {
+  background-color: #ffffff;
+  color: #1b1b1d;
 }
 
 
